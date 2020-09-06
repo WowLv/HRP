@@ -1,0 +1,31 @@
+@font-face {font-family: "iconfont";
+  src: url('~@/assets/styles/iconfont.ttf')
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add-circle:before {
+  content: "\e664";
+}
+
+.icon-ashbin:before {
+  content: "\e665";
+}
+
+.icon-home:before {
+  content: "\e674";
+}
+
+.icon-sign-out:before {
+  content: "\e67d";
+}
+
+.icon-setting:before {
+  content: "\e67e";
+}
+

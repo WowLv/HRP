@@ -50,6 +50,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { Login } from "@/api/login.js";
 export default {
   name: "login",
   data() {
@@ -94,12 +95,23 @@ export default {
           return false;
         } else {
           // axios
-          if (!this.isLogin) {
-            this.setLogin();
-            this.clearTab();
-          }
-          this.$router.push({ name: "Home" });
-          this.userSuccess("欢迎进入系统");
+          Login(this.ruleForm.user, this.ruleForm.pw)
+            .then(res => {
+              console.log(res);
+              if (res.success) {
+                if (!this.isLogin) {
+                  this.setLogin();
+                  this.clearTab();
+                }
+                this.$router.push({ name: "Home" });
+                this.userSuccess(res.msg);
+              } else {
+                this.userError(res.msg);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
         }
       });
     }
@@ -132,7 +144,7 @@ export default {
   background-color: #f2f6fc;
   position: relative;
   .title {
-    top: 200px;
+    top: 100px;
     color: $theme-color;
     position: absolute;
   }

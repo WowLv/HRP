@@ -6,13 +6,13 @@ const login = {
     isLogin: state => state.isLogin
   },
   mutations: {
-    SET_LOGIN: state => {
+    SET_LOGIN: (state, token) => {
       state.isLogin = true;
-      window.localStorage.setItem("auth", JSON.stringify(state.isLogin));
+      window.localStorage.setItem("token", JSON.stringify(token));
     },
     SET_LOGOUT: state => {
       state.isLogin = false;
-      window.localStorage.setItem("auth", JSON.stringify(state.isLogin));
+      window.localStorage.removeItem("token");
     }
   },
   actions: {

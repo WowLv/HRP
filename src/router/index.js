@@ -2,7 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import store from "@/store";
+// import store from "@/store";
+import { check } from "@/api/login.js";
 
 Vue.use(VueRouter);
 
@@ -62,17 +63,25 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeResolve((to, from, next) => {
-  let auth;
-  if (window.localStorage.getItem("auth"))
-    auth = JSON.parse(window.localStorage.getItem("auth"));
-  const isLogin = auth || store.getters.isLogin;
-  console.log(isLogin);
-  if (to.name !== "Login" && !isLogin)
-    next({
-      name: "Login"
-    });
-  else next();
+router.beforeEach((to, from, next) => {
+  if (from.name !== "Login") {
+    console.log("check");
+    check()
+      .then(res => {
+        if (to.name !== "Login" && !res.success) {
+          next({
+            name: "Login"
+          });
+        } else {
+          next();
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  } else {
+    next();
+  }
 });
 
 //解决导航守卫报错

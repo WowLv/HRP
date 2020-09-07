@@ -1,4 +1,5 @@
 var pages = {
+  home: "控制台",
   userbase: "用户档案",
   rolebase: "角色档案",
   mapbase: "数据字典档案",

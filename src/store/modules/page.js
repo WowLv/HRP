@@ -23,7 +23,8 @@ const pages = {
     ADD_TAB: (state, nowRouter) => {
       state.currPath = nowRouter;
       let isExist = false;
-      if (nowRouter === "/") isExist = true;
+      // if (nowRouter === "/") isExist = true;
+      if (nowRouter === "/") nowRouter = "/home";
       state.pageTabs.map(item => {
         if (item.title === nowRouter.replace("/", "")) {
           isExist = true;
@@ -66,7 +67,11 @@ const pages = {
             let nextTab = tabs[index + 1] || tabs[index - 1];
             if (nextTab) {
               activeName = nextTab.name;
-              router.push(`/${nextTab.title}`);
+              if (nextTab.title === "home") {
+                router.push(`/`);
+              } else {
+                router.push(`/${nextTab.title}`);
+              }
             } else {
               router.push(`/`);
             }
@@ -86,15 +91,6 @@ const pages = {
         })
       );
     },
-    SELECT_TAB: (state, el) => {
-      let currPath = "";
-      state.pageTabs.map(item => {
-        if (item.name === el.name) {
-          currPath = "/" + item.title;
-        }
-      });
-      router.push(`/${currPath}`);
-    },
     CLEAR_TAB: state => {
       state.pageTabs = [];
       state.pageTabsValue = "0";
@@ -112,9 +108,6 @@ const pages = {
     },
     removeTab({ commit }, targetName) {
       commit("REMOVE_TAB", targetName);
-    },
-    selectTab({ commit }, el) {
-      commit("SELECT_TAB", el);
     },
     clearTab({ commit }) {
       commit("CLEAR_TAB");

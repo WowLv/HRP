@@ -8,7 +8,6 @@
       <div class="contain-box">
         <el-tabs
           type="card"
-          closable
           @tab-remove="removeTab"
           @tab-click="handleSelect"
           :value="pageTabsValue"
@@ -19,6 +18,7 @@
             v-for="item in pageTabs"
             :label="item.show"
             :name="item.name"
+            :closable="item.title !== 'home'"
           >
             <router-view />
           </el-tab-pane>
@@ -69,7 +69,11 @@ export default {
         }
       });
       if (this.$route.path !== currPath) {
-        this.$router.push(currPath);
+        if (currPath !== "/home") {
+          this.$router.push(currPath);
+        } else {
+          this.$router.push({ name: "Home" });
+        }
       }
     }
   }

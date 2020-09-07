@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import { Login } from "@/api/login.js";
 export default {
   name: "login",
@@ -66,9 +66,7 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapGetters(["isLogin"])
-  },
+  computed: {},
   methods: {
     ...mapActions(["setLogin", "clearTab"]),
     valiLogin(msg) {
@@ -89,37 +87,29 @@ export default {
         type: "success"
       });
     },
+    async doLogin(user, pw) {
+      const res = await Login(user, pw);
+      console.log(res);
+      if (res.success) {
+        this.setLogin(res.token);
+        this.clearTab();
+        this.$router.push({ name: "Home" });
+        this.userSuccess(res.msg);
+      } else {
+        this.$refs["ruleForm"].resetFields();
+        this.userError(res.msg);
+      }
+    },
     onSubmit() {
       this.$refs["ruleForm"].validate(valid => {
         if (!valid) {
           return false;
         } else {
           // axios
-          Login(this.ruleForm.user, this.ruleForm.pw)
-            .then(res => {
-              console.log(res);
-              if (res.success) {
-                if (!this.isLogin) {
-                  this.setLogin();
-                  this.clearTab();
-                }
-                this.$router.push({ name: "Home" });
-                this.userSuccess(res.msg);
-              } else {
-                this.userError(res.msg);
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          this.doLogin(this.ruleForm.user, this.ruleForm.pw);
         }
       });
     }
-  },
-  created() {
-    // if (!this.$store.state.isLogin) {
-    //   this.valiLogin("请先登录");
-    // }
   }
 };
 </script>
@@ -139,12 +129,11 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   background-color: #f2f6fc;
   position: relative;
   .title {
-    top: 100px;
+    top: 150px;
     color: $theme-color;
     position: absolute;
   }
@@ -152,7 +141,7 @@ export default {
     background-color: white;
     width: 550px;
     // margin: 0 auto;
-    // margin-top: 300px;
+    margin-top: 300px;
     border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
     padding: 60px 50px;

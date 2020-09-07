@@ -41,7 +41,7 @@ export default {
           break;
         case 2:
           this.setLogout();
-          this.$router.push("/login");
+          this.$router.push({ name: "Login" });
           this.$message({
             message: "已退出",
             type: "warning"

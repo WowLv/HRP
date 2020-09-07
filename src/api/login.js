@@ -10,3 +10,10 @@ export function Login(username, password) {
     }
   });
 }
+
+export function check() {
+  return request({
+    url: "/check",
+    method: "post"
+  })
+}

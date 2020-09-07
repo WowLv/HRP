@@ -1,23 +1,18 @@
+
 const login = {
-  state: {
-    isLogin: false
-  },
-  getters: {
-    isLogin: state => state.isLogin
-  },
+  state: {},
+  getters: {},
   mutations: {
     SET_LOGIN: (state, token) => {
-      state.isLogin = true;
       window.localStorage.setItem("token", JSON.stringify(token));
     },
-    SET_LOGOUT: state => {
-      state.isLogin = false;
+    SET_LOGOUT: () => {
       window.localStorage.removeItem("token");
     }
   },
   actions: {
-    setLogin({ commit }) {
-      commit("SET_LOGIN");
+    setLogin({ commit }, token) {
+      commit("SET_LOGIN", token);
     },
     setLogout({ commit }) {
       commit("SET_LOGOUT");

@@ -22,7 +22,7 @@
                   placeholder="请输入用户名"
                 ></el-input>
               </el-form-item>
-              <el-form-item prop="pw" class="form-item">
+              <el-form-item prop="pw" ref="pw" class="form-item">
                 <el-input
                   prefix-icon="el-icon-lock"
                   v-model="ruleForm.pw"
@@ -91,12 +91,12 @@ export default {
       const res = await Login(user, pw);
       console.log(res);
       if (res.success) {
-        this.setLogin(res.token);
+        this.setLogin(res.data);
         this.clearTab();
         this.$router.push({ name: "Home" });
         this.userSuccess(res.msg);
       } else {
-        this.$refs["ruleForm"].resetFields();
+        this.$refs["pw"].resetField();
         this.userError(res.msg);
       }
     },

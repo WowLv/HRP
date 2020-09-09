@@ -3,6 +3,9 @@
     <div class="header">
       <div class="title">绩效考核管理系统</div>
       <div class="util">
+        <div class="link-box">
+          <span class="iconfont icon-account"></span><span>{{ user }}</span>
+        </div>
         <div
           class="link-box"
           v-for="item in linkList"
@@ -18,18 +21,19 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       linkList: [
         { index: 0, name: "主页", icon: "icon-home" },
-        { index: 1, name: "个人", icon: "icon-setting" },
-        { index: 2, name: "退出系统", icon: "icon-sign-out" }
+        { index: 1, name: "退出系统", icon: "icon-sign-out" }
       ]
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["user"])
+  },
   methods: {
     ...mapActions(["setLogout"]),
     handleClick(currIndex) {
@@ -39,7 +43,7 @@ export default {
             this.$router.push("/");
           }
           break;
-        case 2:
+        case 1:
           this.setLogout();
           this.$router.push({ name: "Login" });
           this.$message({
@@ -75,6 +79,11 @@ export default {
     .util {
       float: right;
       display: flex;
+      align-items: center;
+      .user-name {
+        margin-right: 100px;
+        font-size: 20px;
+      }
       .link-box {
         display: flex;
         flex-direction: column;

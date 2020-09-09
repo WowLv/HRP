@@ -32,9 +32,11 @@
 import HeadBar from "@/components/HeadBar.vue";
 import SideBar from "@/components/SideBar.vue";
 import { mapGetters, mapActions } from "vuex";
+// import { check } from "@/api/login.js"
 export default {
   name: "Home",
   created() {
+    // check()
     if (window.sessionStorage.getItem("pageObj")) {
       let pageObj = JSON.parse(window.sessionStorage.getItem("pageObj"));
       this.initTabs(pageObj);

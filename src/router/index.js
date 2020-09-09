@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-// import store from "@/store";
+import store from "@/store";
 import { check } from "@/api/login.js";
 
 Vue.use(VueRouter);
@@ -64,8 +64,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log("check");
   if (from.name !== "Login") {
-    console.log("check");
     check()
       .then(res => {
         if (to.name !== "Login" && !res.success) {
@@ -73,6 +73,9 @@ router.beforeEach((to, from, next) => {
             name: "Login"
           });
         } else {
+          if (!store.getters.user && res.success) {
+            store.dispatch("setUser", res.data.user);
+          }
           next();
         }
       })

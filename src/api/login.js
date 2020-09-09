@@ -14,6 +14,17 @@ export function Login(username, password) {
 export function check() {
   return request({
     url: "/check",
-    method: "post"
-  })
+    method: "get"
+  });
+}
+
+export function modifyPw(oldPassword, newPassword) {
+  return request({
+    url: "/modifyPw",
+    method: "post",
+    data: {
+      oldPassword,
+      newPassword
+    }
+  });
 }

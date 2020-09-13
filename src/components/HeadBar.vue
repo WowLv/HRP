@@ -4,7 +4,7 @@
       <div class="title">绩效考核管理系统</div>
       <div class="util">
         <div class="link-box">
-          <span class="iconfont icon-account"></span><span>{{ user }}</span>
+          <span class="iconfont icon-account"></span><span>{{ username }}</span>
         </div>
         <div
           class="link-box"
@@ -32,7 +32,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["username"])
   },
   methods: {
     ...mapActions(["setLogout"]),

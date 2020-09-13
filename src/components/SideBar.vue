@@ -17,14 +17,14 @@
           <el-submenu index="1-1">
             <template slot="title">基础设置</template>
             <el-menu-item index="/userbase">用户档案</el-menu-item>
-            <el-menu-item index="/rolebase">角色档案</el-menu-item>
+            <el-menu-item index="/infobase">用户信息</el-menu-item>
             <el-menu-item index="/mapbase">数据字典档案</el-menu-item>
             <el-menu-item index="/formbase">单据格式设置</el-menu-item>
             <el-menu-item index="/timebase">考核年度</el-menu-item>
           </el-submenu>
           <el-submenu index="1-2">
             <template slot="title">个人中心</template>
-            <el-menu-item index="/infomodify">资料修改</el-menu-item>
+            <el-menu-item index="/infomodify">个人信息</el-menu-item>
             <el-menu-item index="/pwmodify">密码修改</el-menu-item>
           </el-submenu>
         </el-submenu>

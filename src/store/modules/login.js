@@ -1,17 +1,26 @@
 const login = {
   state: {
-    user: ""
+    user: {
+      uid: "",
+      username: "",
+      power: ""
+    }
   },
   getters: {
-    user: state => state.user
+    uid: state => state.user.uid,
+    power: state => state.user.power,
+    username: state => state.user.username
   },
   mutations: {
     SET_LOGIN: (state, data) => {
-      window.localStorage.setItem("token", JSON.stringify(data.token));
-      state.user = data.user;
+      console.log(data);
+      localStorage.setItem("token", JSON.stringify(data.token));
+      state.user.uid = data.uid;
+      state.user.power = data.power;
+      state.user.username = data.username;
     },
     SET_LOGOUT: () => {
-      window.localStorage.removeItem("token");
+      localStorage.removeItem("token");
     },
     SET_USER: (state, user) => {
       state.user = user;
@@ -19,12 +28,14 @@ const login = {
   },
   actions: {
     setLogin({ commit }, data) {
+      console.log(data);
       commit("SET_LOGIN", data);
     },
     setLogout({ commit }) {
       commit("SET_LOGOUT");
     },
     setUser({ commit }, user) {
+      console.log(user);
       commit("SET_USER", user);
     }
   }

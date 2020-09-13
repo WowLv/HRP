@@ -86,7 +86,6 @@ export default {
           return false;
         } else {
           modifyPw(this.ruleForm.oldpass, this.ruleForm.pass).then(res => {
-            console.log(res);
             if (!res.success) {
               this.$message({
                 message: res.msg,

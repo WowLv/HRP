@@ -19,9 +19,9 @@ const routes = [
         component: () => import("../views/Base/UserBase/UserBase.vue")
       },
       {
-        path: "rolebase",
-        name: "RoleBase",
-        component: () => import("../views/Base/RoleBase/RoleBase.vue")
+        path: "infobase",
+        name: "InfoBase",
+        component: () => import("../views/Base/InfoBase/InfoBase.vue")
       },
       {
         path: "mapbase",
@@ -47,6 +47,11 @@ const routes = [
         path: "pwmodify",
         name: "PwModify",
         component: () => import("../views/Person/PwModify.vue")
+      },
+      {
+        path: "register",
+        name: "Register",
+        component: () => import("../views/Person/Register.vue")
       }
     ]
   },
@@ -64,17 +69,17 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log("check");
-  if (from.name !== "Login") {
+  if (from.name !== "Login" && to.name !== "Login") {
+    console.log("check");
     check()
       .then(res => {
-        if (to.name !== "Login" && !res.success) {
+        if (!res.success) {
           next({
             name: "Login"
           });
         } else {
           if (!store.getters.user && res.success) {
-            store.dispatch("setUser", res.data.user);
+            store.dispatch("setUser", res.data);
           }
           next();
         }

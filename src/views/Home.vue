@@ -20,8 +20,8 @@
             :name="item.name"
             :closable="item.title !== 'home'"
           >
-            <router-view />
           </el-tab-pane>
+          <router-view />
         </el-tabs>
       </div>
     </div>

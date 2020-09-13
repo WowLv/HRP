@@ -18,7 +18,14 @@ import {
   Form,
   FormItem,
   Button,
-  Message
+  Message,
+  Radio,
+  Loading,
+  Tag,
+  Table,
+  TableColumn,
+  Select,
+  Option
 } from "element-ui";
 Vue.use(Row);
 Vue.use(Col);
@@ -32,7 +39,14 @@ Vue.use(Input);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Button);
-Vue.component(Message);
+Vue.use(Radio);
+Vue.use(Tag);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(Loading.directive);
+Vue.component(Message); //基于组件使用，不用use避免报错
 
 Vue.config.productionTip = false;
 Vue.prototype.$message = Message;

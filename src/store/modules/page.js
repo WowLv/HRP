@@ -1,5 +1,5 @@
 import router from "@/router";
-import pageEnum from "@/lib/pageEnum.js";
+import { pagesEnum } from "@/lib/enum.js";
 const pages = {
   state: {
     pageTabs: [],
@@ -23,7 +23,7 @@ const pages = {
     ADD_TAB: (state, nowRouter) => {
       state.currPath = nowRouter;
       let isExist = false;
-      // if (nowRouter === "/") isExist = true;
+      //首页一直显示
       if (nowRouter === "/") nowRouter = "/home";
       state.pageTabs.map(item => {
         if (item.title === nowRouter.replace("/", "")) {
@@ -34,7 +34,7 @@ const pages = {
       if (!isExist) {
         let newTabName = ++state.tabIndex + "";
         state.pageTabs.push({
-          show: pageEnum[nowRouter.replace("/", "")],
+          show: pagesEnum[nowRouter.replace("/", "")],
           title: nowRouter.replace("/", ""),
           name: newTabName
         });

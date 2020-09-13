@@ -14,7 +14,7 @@ export function Login(username, password) {
 export function check() {
   return request({
     url: "/check",
-    method: "get"
+    method: "post"
   });
 }
 
@@ -24,7 +24,8 @@ export function modifyPw(oldPassword, newPassword) {
     method: "post",
     data: {
       oldPassword,
-      newPassword
+      newPassword,
+      noCheck: true
     }
   });
 }

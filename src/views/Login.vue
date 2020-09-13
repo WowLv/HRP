@@ -68,7 +68,7 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapActions(["setLogin", "clearTab"]),
+    ...mapActions(["setLogin", "clearTab", "setPower"]),
     valiLogin(msg) {
       this.$message({
         message: msg,
@@ -89,7 +89,6 @@ export default {
     },
     async doLogin(user, pw) {
       const res = await Login(user, pw);
-      console.log(res);
       if (res.success) {
         this.setLogin(res.data);
         this.clearTab();

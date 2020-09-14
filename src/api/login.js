@@ -1,11 +1,20 @@
 import request from "./request";
 
-export function Login(username, password) {
+function handleId(data) {
+  if (parseInt(data)) {
+    return parseInt(data);
+  } else {
+    return data;
+  }
+}
+
+export function Login(user, password) {
+  user = handleId(user);
   return request({
     url: "/login",
     method: "post",
     data: {
-      username,
+      user,
       password
     }
   });

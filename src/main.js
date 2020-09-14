@@ -19,6 +19,7 @@ import {
   FormItem,
   Button,
   Message,
+  MessageBox,
   Radio,
   Loading,
   Tag,
@@ -50,6 +51,7 @@ Vue.component(Message); //基于组件使用，不用use避免报错
 
 Vue.config.productionTip = false;
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm;
 
 new Vue({
   router,

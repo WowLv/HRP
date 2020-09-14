@@ -1,8 +1,21 @@
 <template>
   <div class="container" v-loading="isLoading">
-    <el-button type="success" class="add-btn" @click="toRegister"
-      >新增用户</el-button
-    >
+    <div class="header">
+      <el-input
+        placeholder="请输入职工号或名字"
+        v-model="search"
+        class="input-with-select"
+      >
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="handleSearch"
+        ></el-button>
+      </el-input>
+      <el-button type="success" class="add-btn" @click="toRegister"
+        >新增用户</el-button
+      >
+    </div>
     <el-table
       ref="filterTable"
       :data="allInfo"
@@ -95,15 +108,13 @@ export default {
         4: "success",
         5: "primary"
       },
-      allInfo: []
+      allInfo: [],
+      search: ""
     };
   },
   methods: {
     toRegister() {
       this.$router.push({ name: "Register" });
-    },
-    formatter(row) {
-      return row.address;
     },
     filterTag(value, row) {
       return row.power === value;
@@ -116,7 +127,27 @@ export default {
       });
     },
     handleDelete(index, row) {
-      console.log(index, row);
+      this.$confirm("确认删除此用户？")
+        .then(res => {
+          if (res === "confirm") {
+            this.$message({
+              message: "假装删除成功了",
+              type: "success"
+            });
+            console.log(row);
+          } else {
+            return;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handleSearch() {
+      this.$message({
+        message: "假装搜索成功了",
+        type: "success"
+      });
     }
   }
 };
@@ -126,8 +157,14 @@ export default {
 .container {
   width: 1540px;
   margin: 0 20px;
-  .add-btn {
-    margin-left: 1350px;
+  .header {
+    .input-with-select {
+      margin-left: 40px;
+      width: 400px;
+    }
+    .add-btn {
+      margin-left: 910px;
+    }
   }
   .tag {
     padding: 0 20px;

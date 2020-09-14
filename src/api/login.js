@@ -1,15 +1,8 @@
 import request from "./request";
-
-function handleId(data) {
-  if (parseInt(data)) {
-    return parseInt(data);
-  } else {
-    return data;
-  }
-}
+import { handleUser } from "@/lib/validate";
 
 export function Login(user, password) {
-  user = handleId(user);
+  user = handleUser(user);
   return request({
     url: "/login",
     method: "post",
@@ -35,6 +28,16 @@ export function modifyPw(oldPassword, newPassword) {
       oldPassword,
       newPassword,
       noCheck: true
+    }
+  });
+}
+
+export function register(userData) {
+  return request({
+    url: "/register",
+    method: "post",
+    data: {
+      userData
     }
   });
 }

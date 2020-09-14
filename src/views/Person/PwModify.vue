@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     validatePw1(rule, value, callback) {
-      if (value === "") {
+      if (value.trim() === "") {
         callback(new Error("请输入新密码"));
       } else if (value === this.ruleForm.oldpass) {
         callback(new Error("与原密码相同"));
@@ -70,7 +70,7 @@ export default {
       }
     },
     validatePw2(rule, value, callback) {
-      if (value === "") {
+      if (value.trim() === "") {
         callback(new Error("请再次输入密码"));
       } else if (value !== this.ruleForm.pass) {
         callback(new Error("两次输入密码不一致!"));

@@ -20,8 +20,8 @@ html {
   @media screen and (min-width: 1600px) and (max-width: 1920px) {
     font-size: 16px;
   }
-  @media screen and (min-width: 2560px) {
-    font-size: 21.33333px;
-  }
+  // @media screen and (min-width: 2560px) {
+  //   font-size: 21.33333px;
+  // }
 }
 </style>

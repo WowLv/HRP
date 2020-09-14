@@ -10,7 +10,9 @@
           slot="append"
           icon="el-icon-search"
           @click="handleSearch"
+          v-if="!searched"
         ></el-button>
+        <el-button slot="append" v-else @click="handleBack">返回</el-button>
       </el-input>
       <el-button type="success" class="add-btn" @click="toRegister"
         >新增用户</el-button
@@ -82,20 +84,11 @@
 
 <script>
 import { powerEnum } from "@/lib/enum.js";
-import { getAllInfo } from "@/api/allInfo.js";
+import { getAllInfo, searchInfo } from "@/api/allInfo.js";
 export default {
   created() {
     this.powerEnum = powerEnum;
-    getAllInfo()
-      .then(res => {
-        this.allInfo = res.data;
-      })
-      .then(() => {
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
-      })
-      .catch(err => console.log(err));
+    this.myGetAllInfo();
   },
   data() {
     return {
@@ -109,7 +102,8 @@ export default {
         5: "primary"
       },
       allInfo: [],
-      search: ""
+      search: "",
+      searched: false
     };
   },
   methods: {
@@ -118,6 +112,18 @@ export default {
     },
     filterTag(value, row) {
       return row.power === value;
+    },
+    myGetAllInfo() {
+      getAllInfo()
+        .then(res => {
+          this.allInfo = res.data;
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 500);
+        })
+        .catch(err => console.log(err));
     },
     handleEdit(index, row) {
       console.log(index, row);
@@ -144,10 +150,30 @@ export default {
         });
     },
     handleSearch() {
-      this.$message({
-        message: "假装搜索成功了",
-        type: "success"
-      });
+      searchInfo(this.search)
+        .then(res => {
+          if (res.success) {
+            this.searched = true;
+            this.allInfo = res.data;
+            this.search = "";
+            this.$message({
+              message: res.msg,
+              type: "success"
+            });
+          } else {
+            this.$message({
+              message: res.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handleBack() {
+      this.searched = false;
+      this.myGetAllInfo();
     }
   }
 };

@@ -95,6 +95,7 @@ export default {
       flex: 8;
       overflow: hidden;
       padding: 10px;
+      // max-width: 1350px;
       // height: 800px;
       // background-color: yellowgreen;
     }

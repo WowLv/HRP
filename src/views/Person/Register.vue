@@ -19,11 +19,25 @@
       <el-form-item label="年龄" class="form-item" prop="age">
         <el-input v-model="personInfo.age"></el-input>
       </el-form-item>
-      <el-form-item label="手机号码" type="tel" class="form-item" prop="phone">
+      <el-form-item label="手机号码" class="form-item" prop="phone">
         <el-input v-model="personInfo.phone"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" class="form-item" prop="email">
         <el-input v-model="personInfo.email"></el-input>
+      </el-form-item>
+      <el-form-item label="新密码" prop="password" class="form-item">
+        <el-input
+          type="password"
+          v-model="personInfo.password"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPass" class="form-item">
+        <el-input
+          type="password"
+          v-model="personInfo.checkPass"
+          autocomplete="off"
+        ></el-input>
       </el-form-item>
       <el-form-item label="权限" class="form-item" prop="power">
         <el-select
@@ -50,6 +64,7 @@
 </template>
 
 <script>
+import { register } from "@/api/login.js";
 import {
   validatePhone,
   validateEmail,
@@ -57,25 +72,23 @@ import {
   validateName
 } from "@/lib/validate.js";
 export default {
-  created() {},
   data() {
     return {
-      personInfo: {
-        username: "",
-        age: "",
-        sex: "",
-        phone: "",
-        email: "",
-        power: ""
-      },
+      personInfo: {},
       rule: {
         username: [
           { required: true, validator: validateName, trigger: "blur" }
         ],
-        age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
-        sex: [{ required: true, validator: validateAge, trigger: "change" }],
+        age: [{ required: true, validator: validateAge, trigger: "blur" }],
+        sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
         email: [{ validator: validateEmail, trigger: "blur" }],
+        password: [
+          { required: true, validator: this.validatePass, trigger: "blur" }
+        ],
+        checkPass: [
+          { required: true, validator: this.validatePass2, trigger: "blur" }
+        ],
         power: [{ required: true, message: "请选择权限", trigger: "change" }]
       },
       powerOptions: [
@@ -104,15 +117,41 @@ export default {
   },
   computed: {},
   methods: {
+    validatePass(rule, value, callback) {
+      if (value.trim() === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        callback();
+      }
+    },
+    validatePass2(rule, value, callback) {
+      if (value.trim() === "") {
+        callback(new Error("请输入密码"));
+      } else if (value !== this.personInfo.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    },
     doRegister() {
-      this.personInfo.username.trim();
-      this.personInfo.age.trim();
-      console.log(this.personInfo);
-      this.$refs["forms"].resetFields();
-      this.$message({
-        message: "假装注册成功",
-        type: "success"
-      });
+      register(
+        Object.assign(this.personInfo, {
+          age: parseInt(this.personInfo.age.trim()),
+          username: this.personInfo.username.trim()
+        })
+      )
+        .then(res => {
+          if (res.success) {
+            this.$message({
+              message: res.msg,
+              type: "success"
+            });
+            this.$refs["forms"].resetFields();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     handleSubmit() {
       this.$refs["forms"].validate(valid => {

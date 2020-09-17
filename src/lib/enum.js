@@ -7,7 +7,11 @@ var pagesEnum = {
   timebase: "考核年度",
   infomodify: "个人信息",
   pwmodify: "密码修改",
-  register: "用户注册"
+  register: "用户注册",
+  memberfile: "人员档案",
+  personfile: "个人档案",
+  resignapply: "离职申请",
+  resignmanage: "离职管理"
 };
 
 var powerEnum = {

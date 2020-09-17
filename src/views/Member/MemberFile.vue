@@ -9,14 +9,11 @@
         <el-button
           slot="append"
           icon="el-icon-search"
-          @click="handleSearch"
           v-if="!searched"
         ></el-button>
-        <el-button slot="append" v-else @click="handleBack">返回</el-button>
+        <el-button slot="append" v-else>返回</el-button>
       </el-input>
-      <el-button type="success" class="add-btn" @click="toRegister"
-        >新增用户</el-button
-      >
+      <el-button type="success" class="add-btn">新增用户</el-button>
     </div>
     <el-table
       ref="filterTable"
@@ -25,14 +22,14 @@
       class="table"
     >
       <el-table-column
-        prop="uid"
+        prop="fid"
         align="center"
         label="职工号"
         sortable
         width="150"
       >
       </el-table-column>
-      <el-table-column prop="username" align="center" label="姓名" width="150">
+      <el-table-column prop="name" align="center" label="姓名" width="150">
       </el-table-column>
       <el-table-column prop="age" align="center" label="年龄" width="120">
       </el-table-column>
@@ -43,26 +40,21 @@
       <el-table-column prop="email" label="邮箱" width="280"> </el-table-column>
       <el-table-column
         prop="power"
-        label="权限"
+        label="职位/部门"
         width="200"
         align="center"
-        :filters="[
-          { text: '管理员', value: 1 },
-          { text: '院长', value: 2 },
-          { text: '部门主管', value: 3 },
-          { text: '教务员', value: 4 },
-          { text: '教师', value: 5 }
-        ]"
-        :filter-method="filterTag"
-        filter-placement="bottom-end"
       >
         <template slot-scope="scope">
           <el-tag
-            :type="tagType[scope.row.power]"
+            type="primary"
             disable-transitions
             class="tag"
-            >{{ powerEnum[scope.row.power] }}</el-tag
+            v-if="scope.row.pid"
+            >{{ scope.row.positionType }}</el-tag
           >
+          <el-tag type="success" disable-transitions class="tag" v-else>{{
+            scope.row.sectionName
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
@@ -83,38 +75,22 @@
 </template>
 
 <script>
-import { powerEnum } from "@/lib/enum.js";
-import { getAllInfo, searchInfo } from "@/api/allInfo.js";
+import { getMemberFile } from "@/api/memberFile";
 export default {
   created() {
-    this.powerEnum = powerEnum;
-    this.myGetAllInfo();
+    this.doGetMemberFile();
   },
   data() {
     return {
       isLoading: true,
-      powerEnum: {},
-      tagType: {
-        1: "warning",
-        2: "success",
-        3: "success",
-        4: "success",
-        5: "primary"
-      },
       allInfo: [],
       search: "",
       searched: false
     };
   },
   methods: {
-    toRegister() {
-      this.$router.push({ name: "Register" });
-    },
-    filterTag(value, row) {
-      return row.power === value;
-    },
-    myGetAllInfo() {
-      getAllInfo()
+    doGetMemberFile() {
+      getMemberFile()
         .then(res => {
           this.allInfo = res.data;
         })
@@ -123,13 +99,21 @@ export default {
             this.isLoading = false;
           }, 500);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // toRegister() {
+    //   this.$router.push({ name: "Register" });
+    // },
+    filterTag(value, row) {
+      return row.power === value;
     },
     handleEdit(index, row) {
       console.log(index, row);
       this.$router.push({
-        name: "InfoModify",
-        params: { mode: "admin", userObj: row }
+        name: "PersonFile",
+        params: { mode: "admin", personFile: row }
       });
     },
     handleDelete(index, row) {
@@ -148,32 +132,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
-    handleSearch() {
-      searchInfo(this.search)
-        .then(res => {
-          if (res.success) {
-            this.searched = true;
-            this.allInfo = res.data;
-            this.search = "";
-            this.$message({
-              message: res.msg,
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.msg,
-              type: "warning"
-            });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    handleBack() {
-      this.searched = false;
-      this.myGetAllInfo();
     }
   }
 };

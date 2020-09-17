@@ -26,7 +26,9 @@ import {
   Table,
   TableColumn,
   Select,
-  Option
+  Option,
+  Drawer,
+  DatePicker
 } from "element-ui";
 Vue.use(Row);
 Vue.use(Col);
@@ -46,6 +48,8 @@ Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(Drawer);
+Vue.use(DatePicker);
 Vue.use(Loading.directive);
 Vue.component(Message); //基于组件使用，不用use避免报错
 

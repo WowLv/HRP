@@ -52,6 +52,26 @@ const routes = [
         path: "register",
         name: "Register",
         component: () => import("../views/Person/Register.vue")
+      },
+      {
+        path: "personfile",
+        name: "PersonFile",
+        component: () => import("../views/Member/PersonFile.vue")
+      },
+      {
+        path: "memberfile",
+        name: "MemberFile",
+        component: () => import("../views/Member/MemberFile.vue")
+      },
+      {
+        path: "resignapply",
+        name: "ResignApply",
+        component: () => import("../views/Member/ResignApply.vue")
+      },
+      {
+        path: "resignmanage",
+        name: "ResignManage",
+        component: () => import("../views/Member/ResignManage.vue")
       }
     ]
   },

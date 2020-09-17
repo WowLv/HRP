@@ -19,7 +19,7 @@
                 <el-input
                   prefix-icon="el-icon-user-solid"
                   v-model="ruleForm.user"
-                  placeholder="请输入用户名"
+                  placeholder="请输入用户名或职工号"
                 ></el-input>
               </el-form-item>
               <el-form-item prop="pw" ref="pw" class="form-item">

@@ -16,14 +16,16 @@ const login = {
       console.log(data);
       localStorage.setItem("token", JSON.stringify(data.token));
       state.user.uid = data.uid;
-      state.user.power = data.power;
+      state.user.power = data.pid;
       state.user.username = data.username;
     },
     SET_LOGOUT: () => {
       localStorage.removeItem("token");
     },
     SET_USER: (state, user) => {
-      state.user = user;
+      state.user.uid = user.uid;
+      state.user.power = user.pid;
+      state.user.username = user.username;
     }
   },
   actions: {

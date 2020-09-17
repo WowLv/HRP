@@ -109,37 +109,26 @@ var info_disable = {
   password: true,
   power: true
 };
-import { getInfo, setInfo } from "@/api/personInfo.js";
+import { getInfo, setInfo } from "@/api/personInfo";
 import {
   validatePhone,
   validateEmail,
   validateAge,
   validateName
-} from "@/lib/validate.js";
+} from "@/lib/validate";
+import { Teacher, Admin } from "@/lib/class";
 import { mapGetters } from "vuex";
 export default {
   created() {
     if (this.$route.params.mode) {
       this.mode = this.$route.params.mode;
-      this.personInfo = this.$route.params.userObj;
+      this.personInfo = new Admin(...Object.values(this.$route.params.userObj));
       this.disabled = info_disable;
       setTimeout(() => {
         this.isLoading = false;
       }, 500);
     } else {
-      getInfo()
-        .then(res => {
-          this.personInfo = res.data;
-          this.disabled = info_disable;
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 500);
-        })
-        .catch(err => {
-          throw err;
-        });
+      this.doGetInfo();
     }
   },
   data() {
@@ -187,8 +176,24 @@ export default {
     ...mapGetters(["power"])
   },
   methods: {
+    doGetInfo() {
+      getInfo()
+        .then(res => {
+          this.personInfo = new Teacher(...Object.values(res.data));
+          this.disabled = info_disable;
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 500);
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
     editInfo() {
       this.Editable = true;
+      //管理员与其他用户界面区别
       if (this.power === 1) {
         this.disabled = Object.assign(info_able, { uid: true });
       } else {
@@ -200,27 +205,26 @@ export default {
       this.Editable = false;
       this.disabled = info_disable;
       let personInfo = this.personInfo;
-      console.log(personInfo);
       if (!personInfo.password || !personInfo.password.trim()) {
         delete personInfo.password;
+        console.log("no password");
       }
       //将个人用户信息对象调整后上传
       setInfo(
         Object.assign(personInfo, {
-          age: parseInt(personInfo.age).trim(),
+          age: parseInt(`${personInfo.age}`.trim()),
           username: personInfo.username.trim()
         })
       )
         .then(res => {
-          console.log(res);
+          this.$message({
+            message: res.msg,
+            type: "success"
+          });
         })
         .catch(err => {
           throw err;
         });
-      this.$message({
-        message: "保存成功",
-        type: "success"
-      });
     }
   }
 };

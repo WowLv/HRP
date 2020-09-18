@@ -81,26 +81,24 @@ export default {
       }
     },
     submitForm() {
-      this.$refs["passForm"].validate(valid => {
+      this.$refs["passForm"].validate(async valid => {
         if (!valid) {
           return false;
         } else {
-          modifyPw(this.ruleForm.oldpass, this.ruleForm.pass).then(res => {
-            if (!res.success) {
-              this.$message({
-                message: res.msg,
-                type: "error"
-              });
-              this.$refs["passForm"].resetFields();
-            } else {
-              this.$message({
-                message: res.msg,
-                type: "success"
-              });
-              this.$router.push({ name: "Home" });
-            }
-          });
-          console.log("submit!!");
+          let res = await modifyPw(this.ruleForm.oldpass, this.ruleForm.pass);
+          if (!res.success) {
+            this.$message({
+              message: res.msg,
+              type: "error"
+            });
+            this.$refs["passForm"].resetFields();
+          } else {
+            this.$message({
+              message: res.msg,
+              type: "success"
+            });
+            this.$router.push({ name: "Home" });
+          }
         }
       });
     },

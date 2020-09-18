@@ -7,6 +7,9 @@
       ref="forms"
       :rules="rule"
     >
+      <el-form-item label="职工号" class="form-item" prop="uid">
+        <el-input v-model="personInfo.uid" @input="checkUid"></el-input>
+      </el-form-item>
       <el-form-item label="姓名" class="form-item" prop="username">
         <el-input v-model="personInfo.username"></el-input>
       </el-form-item>
@@ -43,7 +46,7 @@
         <el-select
           v-model="personInfo.power"
           placeholder="请选择"
-          class="power-item"
+          class="option-item"
         >
           <el-option
             v-for="item in powerOptions"
@@ -64,18 +67,24 @@
 </template>
 
 <script>
-import { register } from "@/api/login.js";
+var timer = null;
+
+import { register } from "@/api/login";
+import { getPersonFile } from "@/api/memberFile";
 import {
   validatePhone,
   validateEmail,
   validateAge,
-  validateName
-} from "@/lib/validate.js";
+  validateName,
+  validatePass,
+  validateUid
+} from "@/lib/validate";
 export default {
   data() {
     return {
       personInfo: {},
       rule: {
+        uid: [{ required: true, validator: validateUid, trigger: "blur" }],
         username: [
           { required: true, validator: validateName, trigger: "blur" }
         ],
@@ -84,10 +93,14 @@ export default {
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
         email: [{ validator: validateEmail, trigger: "blur" }],
         password: [
-          { required: true, validator: this.validatePass, trigger: "blur" }
+          { required: true, validator: validatePass, trigger: "blur" }
         ],
         checkPass: [
-          { required: true, validator: this.validatePass2, trigger: "blur" }
+          {
+            required: true,
+            validator: this.validateCheckPass,
+            trigger: "blur"
+          }
         ],
         power: [{ required: true, message: "请选择权限", trigger: "change" }]
       },
@@ -117,15 +130,15 @@ export default {
   },
   computed: {},
   methods: {
-    validatePass(rule, value, callback) {
-      if (value.trim() === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        callback();
-      }
+    checkUid(e) {
+      timer && clearTimeout(timer);
+      timer = setTimeout(() => {
+        this.doGetPersonFile(e);
+      }, 2000);
     },
-    validatePass2(rule, value, callback) {
-      if (value.trim() === "") {
+    validateCheckPass(rule, value, callback) {
+      console.log(rule);
+      if (!value || !value.trim()) {
         callback(new Error("请输入密码"));
       } else if (value !== this.personInfo.password) {
         callback(new Error("两次输入密码不一致!"));
@@ -133,25 +146,43 @@ export default {
         callback();
       }
     },
-    doRegister() {
-      register(
-        Object.assign(this.personInfo, {
-          age: parseInt(this.personInfo.age.trim()),
-          username: this.personInfo.username.trim()
-        })
-      )
-        .then(res => {
-          if (res.success) {
-            this.$message({
-              message: res.msg,
-              type: "success"
-            });
-            this.$refs["forms"].resetFields();
-          }
-        })
-        .catch(err => {
-          console.log(err);
+    async doGetPersonFile(uid) {
+      let res = await getPersonFile(uid);
+      if (res.success) {
+        console.log(res);
+        this.personInfo = Object.assign(res.data, {
+          username: res.data.name,
+          uid: this.personInfo.uid
         });
+      } else {
+        this.personInfo = { uid: this.personInfo.uid };
+      }
+    },
+    async doRegister() {
+      let res = await register(
+        Object.assign({
+          uid: parseInt(this.personInfo.uid),
+          username: this.personInfo.username.trim(),
+          password: this.personInfo.password,
+          age: parseInt(this.personInfo.age.trim()),
+          sex: this.personInfo.sex,
+          phone: this.personInfo.phone.trim(),
+          email: this.personInfo.email && this.personInfo.email.trim(),
+          power: this.personInfo.power
+        })
+      );
+      if (res.success) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.$refs["forms"].resetFields();
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "error"
+        });
+      }
     },
     handleSubmit() {
       this.$refs["forms"].validate(valid => {
@@ -178,7 +209,7 @@ export default {
       .sex-item {
         margin: 0 30px;
       }
-      .power-item {
+      .option-item {
         width: 450px;
         @media screen and (max-width: 1600px) {
           width: 300px;

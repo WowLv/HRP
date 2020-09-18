@@ -16,7 +16,6 @@
           </template>
           <el-submenu index="1-1">
             <template slot="title">基础设置</template>
-            <el-menu-item index="/userbase">用户档案</el-menu-item>
             <el-menu-item index="/infobase">用户信息</el-menu-item>
             <el-menu-item index="/mapbase">数据字典档案</el-menu-item>
             <el-menu-item index="/formbase">单据格式设置</el-menu-item>

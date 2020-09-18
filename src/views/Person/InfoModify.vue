@@ -176,20 +176,15 @@ export default {
     ...mapGetters(["power"])
   },
   methods: {
-    doGetInfo() {
-      getInfo()
-        .then(res => {
-          this.personInfo = new Teacher(...Object.values(res.data));
-          this.disabled = info_disable;
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 500);
-        })
-        .catch(err => {
-          throw err;
-        });
+    async doGetInfo() {
+      let res = await getInfo();
+      if (res.success) {
+        this.personInfo = new Teacher(...Object.values(res.data));
+        this.disabled = info_disable;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
+      }
     },
     editInfo() {
       this.Editable = true;
@@ -201,7 +196,7 @@ export default {
       }
     },
     //当权限为管理员时可在此强制改密码,不输入则不改
-    saveInfo() {
+    async saveInfo() {
       this.Editable = false;
       this.disabled = info_disable;
       let personInfo = this.personInfo;
@@ -210,21 +205,23 @@ export default {
         console.log("no password");
       }
       //将个人用户信息对象调整后上传
-      setInfo(
+      let res = await setInfo(
         Object.assign(personInfo, {
           age: parseInt(`${personInfo.age}`.trim()),
           username: personInfo.username.trim()
         })
-      )
-        .then(res => {
-          this.$message({
-            message: res.msg,
-            type: "success"
-          });
-        })
-        .catch(err => {
-          throw err;
+      );
+      if (res.success) {
+        this.$message({
+          message: res.msg,
+          type: "success"
         });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "error"
+        });
+      }
     }
   }
 };

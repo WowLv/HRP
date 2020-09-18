@@ -13,7 +13,9 @@
         ></el-button>
         <el-button slot="append" v-else>返回</el-button>
       </el-input>
-      <el-button type="success" class="add-btn">新增用户</el-button>
+      <el-button type="success" class="add-btn" @click="toRegister"
+        >新增人员档案</el-button
+      >
     </div>
     <el-table
       ref="filterTable"
@@ -89,23 +91,18 @@ export default {
     };
   },
   methods: {
-    doGetMemberFile() {
-      getMemberFile()
-        .then(res => {
-          this.allInfo = res.data;
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 500);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    async doGetMemberFile() {
+      let res = await getMemberFile();
+      if (res.success) {
+        this.allInfo = res.data;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
+      }
     },
-    // toRegister() {
-    //   this.$router.push({ name: "Register" });
-    // },
+    toRegister() {
+      this.$router.push({ name: "MemberRegister" });
+    },
     filterTag(value, row) {
       return row.power === value;
     },

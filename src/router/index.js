@@ -14,29 +14,24 @@ const routes = [
     component: Home,
     children: [
       {
-        path: "userbase",
-        name: "UserBase",
-        component: () => import("../views/Base/UserBase/UserBase.vue")
-      },
-      {
         path: "infobase",
         name: "InfoBase",
-        component: () => import("../views/Base/InfoBase/InfoBase.vue")
+        component: () => import("../views/Base/InfoBase.vue")
       },
       {
         path: "mapbase",
         name: "MapBase",
-        component: () => import("../views/Base/MapBase/MapBase.vue")
+        component: () => import("../views/Base/MapBase.vue")
       },
       {
         path: "formbase",
         name: "FormBase",
-        component: () => import("../views/Base/FormBase/FormBase.vue")
+        component: () => import("../views/Base/FormBase.vue")
       },
       {
         path: "timebase",
         name: "TimeBase",
-        component: () => import("../views/Base/TimeBase/TimeBase.vue")
+        component: () => import("../views/Base/TimeBase.vue")
       },
       {
         path: "infomodify",
@@ -49,9 +44,9 @@ const routes = [
         component: () => import("../views/Person/PwModify.vue")
       },
       {
-        path: "register",
-        name: "Register",
-        component: () => import("../views/Person/Register.vue")
+        path: "userregister",
+        name: "UserRegister",
+        component: () => import("../views/Person/UserRegister.vue")
       },
       {
         path: "personfile",
@@ -62,6 +57,11 @@ const routes = [
         path: "memberfile",
         name: "MemberFile",
         component: () => import("../views/Member/MemberFile.vue")
+      },
+      {
+        path: "memberregister",
+        name: "MemberRegister",
+        component: () => import("../views/Member/MemberRegister.vue")
       },
       {
         path: "resignapply",

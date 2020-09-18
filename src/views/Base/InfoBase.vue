@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     toRegister() {
-      this.$router.push({ name: "Register" });
+      this.$router.push({ name: "UserRegister" });
     },
     filterTag(value, row) {
       return row.power === value;
@@ -149,27 +149,22 @@ export default {
           console.log(err);
         });
     },
-    handleSearch() {
-      searchInfo(this.search)
-        .then(res => {
-          if (res.success) {
-            this.searched = true;
-            this.allInfo = res.data;
-            this.search = "";
-            this.$message({
-              message: res.msg,
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.msg,
-              type: "warning"
-            });
-          }
-        })
-        .catch(err => {
-          console.log(err);
+    async handleSearch() {
+      let res = await searchInfo(this.search);
+      if (res.success) {
+        this.searched = true;
+        this.allInfo = res.data;
+        this.search = "";
+        this.$message({
+          message: res.msg,
+          type: "success"
         });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "warning"
+        });
+      }
     },
     handleBack() {
       this.searched = false;

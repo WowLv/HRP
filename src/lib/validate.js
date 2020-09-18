@@ -8,6 +8,14 @@ export function validatePhone(rule, value, callback) {
   }
 }
 
+export function validateUid(rule, value, callback) {
+  if (!/[0-9]{5}/.test(value)) {
+    callback(new Error("请输入正确的职工号格式"));
+  } else {
+    callback();
+  }
+}
+
 export function validateEmail(rule, value, callback) {
   if (
     !/^([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(
@@ -16,6 +24,13 @@ export function validateEmail(rule, value, callback) {
     value
   ) {
     callback(new Error("请输入正确的邮箱"));
+  } else {
+    callback();
+  }
+}
+export function validatePass(rule, value, callback) {
+  if (!value || !value.trim()) {
+    callback(new Error("请输入密码"));
   } else {
     callback();
   }

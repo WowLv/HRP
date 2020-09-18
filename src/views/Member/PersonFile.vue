@@ -37,40 +37,60 @@
           :disabled="disabled.email"
         ></el-input>
       </el-form-item>
-      <el-form-item
-        label="职位"
-        class="form-item"
-        prop="position"
-        v-if="mode === 'teacher'"
-      >
+      <el-form-item label="职位" class="form-item" prop="pid">
         <el-col :span="10">
-          <el-input
-            v-model="personInfo.position"
+          <el-select
+            v-model="personInfo.pid"
+            placeholder="请选择职位"
+            class="power-item"
             :disabled="disabled.position"
-          ></el-input>
+          >
+            <el-option
+              v-for="item in posOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-col>
-        <el-col :span="4" class="space-item"
-          ><span class="iconfont icon-office-supplies"></span
-        ></el-col>
+        <el-col :span="4" class="space-item">
+          <span class="iconfont icon-office-supplies"></span>
+        </el-col>
         <el-col :span="10">
-          <el-input
+          <el-select
             v-model="personInfo.level"
+            placeholder="职位等级"
+            class="power-item"
             :disabled="disabled.position"
-          ></el-input>
+          >
+            <el-option
+              v-for="item in levelOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-col>
       </el-form-item>
       <el-form-item
         label="部门"
         class="form-item"
-        prop="section"
+        prop="sectionName"
         v-if="mode === 'section'"
       >
         <el-input
-          v-model="personInfo.section"
-          :disabled="disabled.section"
+          v-model="personInfo.sectionName"
+          :disabled="disabled.sectionName"
         ></el-input>
       </el-form-item>
-      <el-form-item label="基础教学课时" class="form-item" prop="classHour">
+      <el-form-item
+        label="基础教学课时"
+        class="form-item"
+        prop="classHour"
+        v-if="mode === 'teacher'"
+      >
         <el-input
           v-model="personInfo.classHour"
           :disabled="disabled.classHour"
@@ -80,6 +100,7 @@
         label="教科研/公共工作量"
         class="form-item"
         prop="publicWork"
+        v-if="mode === 'teacher'"
       >
         <el-button class="work-item" @click="openDrawer">点击查看</el-button>
       </el-form-item>
@@ -129,7 +150,7 @@ var info_able = {
   phone: false,
   email: false,
   position: false,
-  section: false,
+  sectionName: false,
   classHour: false
 };
 var info_disable = {
@@ -140,24 +161,24 @@ var info_disable = {
   phone: true,
   email: true,
   position: true,
-  section: true,
+  sectionName: true,
   classHour: true
 };
 export default {
   created() {
     this.disabled = info_disable;
-    if (this.personInfo.power === 5 || this.$route.params.personFile.pid)
-      this.mode = "teacher";
-    if (this.personInfo.power === 4 || this.$route.params.personFile.sid)
-      this.mode = "section";
     if (this.$route.params.mode && this.$route.params.mode === "admin") {
+      if (this.$route.params.personFile.pid) this.mode = "teacher";
+      if (this.$route.params.personFile.sid) this.mode = "section";
       this.admin = true;
       this.personInfo = this.$route.params.personFile;
       setTimeout(() => {
         this.isLoading = false;
       }, 500);
     } else {
-      this.doGetPersonFile();
+      this.doGetPersonFile(this.uid);
+      if (this.power === 5) this.mode = "teacher";
+      if (this.power === 4) this.mode = "section";
     }
   },
   data() {
@@ -185,26 +206,54 @@ export default {
           workType: "教科研",
           workName: "省级教学成果一等奖"
         }
+      ],
+      posOptions: [
+        {
+          value: 1,
+          label: "教师主体型"
+        },
+        {
+          value: 2,
+          label: "科研主体性"
+        },
+        {
+          value: 3,
+          label: "教学建设综合性"
+        },
+        {
+          value: 4,
+          label: "实践教学型"
+        }
+      ],
+      levelOptions: [
+        { value: 1, label: "一级" },
+        { value: 2, label: "二级" },
+        { value: 3, label: "三级" },
+        { value: 4, label: "四级" },
+        { value: 5, label: "五级" },
+        { value: 6, label: "六级" },
+        { value: 7, label: "七级" },
+        { value: 8, label: "八级" },
+        { value: 9, label: "九级" },
+        { value: 10, label: "十级" },
+        { value: 11, label: "十一级" },
+        { value: 12, label: "十二级" }
       ]
     };
   },
   computed: {
-    ...mapGetters(["power"])
+    ...mapGetters(["power", "uid"])
   },
   methods: {
-    doGetPersonFile() {
-      getPersonFile()
-        .then(res => {
-          this.personInfo = res.data;
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 500);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    async doGetPersonFile(uid) {
+      let res = await getPersonFile(uid);
+      console.log(res);
+      if (res.success) {
+        this.personInfo = res.data;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
+      }
     },
     editInfo() {
       this.disabled = info_able;
@@ -231,7 +280,6 @@ export default {
     margin-top: 50px;
     .form-item {
       margin-bottom: 20px;
-      .power-item,
       .work-item {
         width: 450px;
         @media screen and (max-width: 1600px) {

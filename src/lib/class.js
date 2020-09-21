@@ -1,12 +1,12 @@
 class User {
-  constructor(uid, username, sex, age, phone, email, power) {
+  constructor(uid, username, sex, age, phone, email, pid) {
     this.uid = uid;
     this.username = username;
     this.age = age;
     this.sex = sex;
     this.phone = phone;
     this.email = email;
-    this.power = power;
+    this.pid = pid;
   }
 }
 
@@ -21,14 +21,14 @@ class Member {
 }
 
 export class Admin extends User {
-  constructor(uid, username, sex, age, phone, email, power) {
-    super(uid, username, sex, age, phone, email, power);
+  constructor(uid, username, sex, age, phone, email, pid) {
+    super(uid, username, sex, age, phone, email, pid);
     this.password = "";
   }
 }
 export class Teacher extends User {
-  constructor(uid, username, sex, age, phone, email, power) {
-    super(uid, username, sex, age, phone, email, power);
+  constructor(uid, username, sex, age, phone, email, pid) {
+    super(uid, username, sex, age, phone, email, pid);
   }
 }
 

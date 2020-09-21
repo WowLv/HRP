@@ -37,7 +37,12 @@
           :disabled="disabled.email"
         ></el-input>
       </el-form-item>
-      <el-form-item label="职位" class="form-item" prop="pid">
+      <el-form-item
+        label="职位"
+        class="form-item"
+        prop="pid"
+        v-if="mode === 'teacher'"
+      >
         <el-col :span="10">
           <el-select
             v-model="personInfo.pid"

@@ -160,16 +160,19 @@ export default {
     },
     async doRegister() {
       let res = await register(
-        Object.assign({
-          uid: parseInt(this.personInfo.uid),
-          username: this.personInfo.username.trim(),
-          password: this.personInfo.password,
-          age: parseInt(this.personInfo.age.trim()),
-          sex: this.personInfo.sex,
-          phone: this.personInfo.phone.trim(),
-          email: this.personInfo.email && this.personInfo.email.trim(),
-          power: this.personInfo.power
-        })
+        Object.assign(
+          {},
+          {
+            uid: parseInt(this.personInfo.uid),
+            username: this.personInfo.username.trim(),
+            pwd: this.personInfo.password,
+            age: parseInt(this.personInfo.age.trim()),
+            sex: this.personInfo.sex,
+            phone: this.personInfo.phone.trim(),
+            email: this.personInfo.email && this.personInfo.email.trim(),
+            power: this.personInfo.power
+          }
+        )
       );
       if (res.success) {
         this.$message({

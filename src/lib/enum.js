@@ -10,8 +10,9 @@ var pagesEnum = {
   memberfile: "人员档案",
   memberregister: "人员档案录入",
   personfile: "个人档案",
+  entryapply: "入职申请",
   resignapply: "离职申请",
-  resignmanage: "离职管理"
+  resignmanage: "入/离职管理"
 };
 
 var powerEnum = {

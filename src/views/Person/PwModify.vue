@@ -40,6 +40,7 @@
 
 <script>
 import { modifyPw } from "@/api/login.js";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -58,6 +59,9 @@ export default {
         ]
       }
     };
+  },
+  computed: {
+    ...mapGetters(["uid"])
   },
   methods: {
     validatePw1(rule, value, callback) {
@@ -85,7 +89,11 @@ export default {
         if (!valid) {
           return false;
         } else {
-          let res = await modifyPw(this.ruleForm.oldpass, this.ruleForm.pass);
+          let res = await modifyPw(
+            this.uid,
+            this.ruleForm.oldpass,
+            this.ruleForm.pass
+          );
           if (!res.success) {
             this.$message({
               message: res.msg,

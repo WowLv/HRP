@@ -39,24 +39,24 @@
       </el-form-item>
       <el-form-item
         label="密码"
-        prop="password"
+        prop="pwd"
         class="form-item"
         v-if="mode === 'admin'"
       >
         <el-input
           prefix-icon="el-icon-lock"
-          v-model="personInfo.password"
+          v-model="personInfo.pwd"
           placeholder="请输入新密码"
-          :disabled="disabled.password"
+          :disabled="disabled.pwd"
           show-password
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="权限" class="form-item" prop="power">
+      <el-form-item label="权限" class="form-item" prop="pid">
         <el-select
-          v-model="personInfo.power"
+          v-model="personInfo.pid"
           placeholder="请选择"
-          :disabled="disabled.power"
+          :disabled="disabled.pid"
           class="power-item"
         >
           <el-option
@@ -96,8 +96,8 @@ var info_able = {
   age: false,
   phone: false,
   email: false,
-  password: false,
-  power: false
+  pwd: false,
+  pid: false
 };
 var info_disable = {
   uid: true,
@@ -106,8 +106,8 @@ var info_disable = {
   age: true,
   phone: true,
   email: true,
-  password: true,
-  power: true
+  pwd: true,
+  pid: true
 };
 import { getInfo, setInfo } from "@/api/personInfo";
 import {
@@ -128,7 +128,7 @@ export default {
         this.isLoading = false;
       }, 500);
     } else {
-      this.doGetInfo();
+      this.doGetInfo(this.uid);
     }
   },
   data() {
@@ -168,16 +168,17 @@ export default {
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
         email: [{ validator: validateEmail, trigger: "blur" }],
-        power: [{ required: true, message: "请选择权限", trigger: "change" }]
+        pid: [{ required: true, message: "请选择权限", trigger: "change" }]
       }
     };
   },
   computed: {
-    ...mapGetters(["power"])
+    ...mapGetters(["power", "uid"])
   },
   methods: {
-    async doGetInfo() {
-      let res = await getInfo();
+    async doGetInfo(uid) {
+      let res = await getInfo(uid);
+      console.log(res.data);
       if (res.success) {
         this.personInfo = new Teacher(...Object.values(res.data));
         this.disabled = info_disable;
@@ -192,7 +193,7 @@ export default {
       if (this.power === 1) {
         this.disabled = Object.assign(info_able, { uid: true });
       } else {
-        this.disabled = Object.assign(info_able, { uid: true, power: true });
+        this.disabled = Object.assign(info_able, { uid: true, pid: true });
       }
     },
     //当权限为管理员时可在此强制改密码,不输入则不改
@@ -200,8 +201,8 @@ export default {
       this.Editable = false;
       this.disabled = info_disable;
       let personInfo = this.personInfo;
-      if (!personInfo.password || !personInfo.password.trim()) {
-        delete personInfo.password;
+      if (!personInfo.pwd || !personInfo.pwd.trim()) {
+        delete personInfo.pwd;
         console.log("no password");
       }
       //将个人用户信息对象调整后上传

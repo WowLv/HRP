@@ -40,8 +40,9 @@
             <template slot="title">人员管理</template>
             <el-menu-item index="/personfile">个人档案</el-menu-item>
             <el-menu-item index="/memberfile">人员档案</el-menu-item>
+            <el-menu-item index="/entryapply">入职申请</el-menu-item>
             <el-menu-item index="/resignapply">离职申请</el-menu-item>
-            <el-menu-item index="/resignmanage">离职管理</el-menu-item>
+            <el-menu-item index="/resignmanage">入/离职管理</el-menu-item>
           </el-submenu>
           <el-submenu index="2-3">
             <template slot="title">部门管理</template>

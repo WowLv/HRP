@@ -64,6 +64,11 @@ const routes = [
         component: () => import("../views/Member/MemberRegister.vue")
       },
       {
+        path: "entryapply",
+        name: "entryapply",
+        component: () => import("../views/Member/EntryApply.vue")
+      },
+      {
         path: "resignapply",
         name: "ResignApply",
         component: () => import("../views/Member/ResignApply.vue")

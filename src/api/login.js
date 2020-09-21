@@ -1,14 +1,14 @@
 import request from "./request";
 import { handleUser } from "@/lib/validate";
 
-export function Login(user, password) {
+export function Login(user, pwd) {
   user = handleUser(user);
   return request({
     url: "/login",
     method: "post",
     data: {
       user,
-      password
+      pwd
     }
   });
 }
@@ -20,14 +20,14 @@ export function check() {
   });
 }
 
-export function modifyPw(oldPassword, newPassword) {
+export function modifyPw(uid, oldPassword, newPassword) {
   return request({
     url: "/modifyPw",
     method: "post",
     data: {
+      uid,
       oldPassword,
-      newPassword,
-      noCheck: true
+      newPassword
     }
   });
 }
@@ -36,8 +36,6 @@ export function register(userData) {
   return request({
     url: "/uregister",
     method: "post",
-    data: {
-      userData
-    }
+    data: userData
   });
 }

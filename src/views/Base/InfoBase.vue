@@ -58,10 +58,10 @@
       >
         <template slot-scope="scope">
           <el-tag
-            :type="tagType[scope.row.power]"
+            :type="tagType[scope.row.pid]"
             disable-transitions
             class="tag"
-            >{{ powerEnum[scope.row.power] }}</el-tag
+            >{{ powerEnum[scope.row.pid] }}</el-tag
           >
         </template>
       </el-table-column>

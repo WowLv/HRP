@@ -1,13 +1,22 @@
 <template>
   <div class="conatiner">
-    <el-form ref="form" :model="applyForm" label-width="80px" class="form">
-      <el-form-item label="职工号" class="form-item">
-        <el-input v-model="applyForm.fid"></el-input>
+    <el-form
+      ref="form"
+      :model="applyForm"
+      label-width="100px"
+      class="form"
+      :rules="rule"
+    >
+      <el-form-item label="职工号" class="form-item" prop="operator">
+        <el-input v-model="applyForm.operator" @input="checkFid"></el-input>
       </el-form-item>
-      <el-form-item label="申请人" class="form-item">
-        <el-input v-model="applyForm.name"></el-input>
+      <el-form-item label="申请人" class="form-item" prop="applicant">
+        <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item label="申请时间" class="form-item">
+      <el-form-item label="职位/部门" class="form-item" prop="posType">
+        <el-input v-model="applyForm.posType"></el-input>
+      </el-form-item>
+      <el-form-item label="申请时间" class="form-item" prop="applyTime">
         <el-date-picker
           type="date"
           placeholder="选择日期"
@@ -19,23 +28,96 @@
         <el-input type="textarea" v-model="applyForm.reason"></el-input>
       </el-form-item>
       <el-form-item class="form-item">
-        <el-button type="primary" class="form-btn">提交</el-button>
+        <el-button type="primary" class="form-btn" @click="handleSubmit"
+          >提交</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+let timer = null;
+import { validateUid } from "@/lib/validate";
+import { getPersonFile, resignApply } from "@/api/memberFile";
 export default {
   data() {
     return {
       applyForm: {
-        fid: "",
-        name: "",
+        operator: "",
+        posType: "",
+        applicant: "",
         applyTime: "",
         reason: ""
+      },
+      rule: {
+        operator: [{ required: true, validator: validateUid, trigger: "blur" }],
+        applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        posType: [
+          { required: true, message: "请填写职位/部门", trigger: "blur" }
+        ],
+        applyTime: [
+          { required: true, message: "请选择时间", trigger: "change" }
+        ]
       }
     };
+  },
+  methods: {
+    checkFid(e) {
+      timer && clearTimeout(timer);
+      timer = setTimeout(() => {
+        this.doGetPersonFile(e);
+      }, 2000);
+    },
+    async resignApply() {
+      let res = await resignApply(
+        Object.assign(this.applyForm, {
+          posType: null,
+          applyType: 2,
+          processMode: 0
+        })
+      );
+      if (res.success) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "error"
+        });
+      }
+    },
+    async doGetPersonFile(fid) {
+      let res = await getPersonFile(fid);
+      if (res.success) {
+        console.log(res.data);
+        let { name, positionType, sectionName } = res.data;
+        this.applyForm.applicant = name;
+        if (positionType) {
+          this.applyForm.posType = positionType;
+        } else {
+          this.applyForm.posType = sectionName;
+        }
+      } else {
+        this.applyForm = {
+          operator: parseInt(this.applyForm.operator),
+          reason: this.applyForm.reason,
+          applyTime: this.applyForm.applyTime
+        };
+      }
+    },
+    handleSubmit() {
+      this.$refs["form"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else {
+          this.resignApply();
+          this.$refs["form"].resetFields();
+        }
+      });
+    }
   }
 };
 </script>
@@ -47,7 +129,13 @@ export default {
     margin-top: 50px;
     .form-item {
       margin-bottom: 20px;
-      margin-left: 50px;
+      margin-left: 70px;
+      .option-item {
+        width: 450px;
+        @media screen and (max-width: 1600px) {
+          width: 320px;
+        }
+      }
       .form-btn {
         width: 150px;
         height: 40px;

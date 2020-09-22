@@ -10,7 +10,7 @@
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="admin"
+            prop="operator"
             label="负责人"
             align="center"
             width="180"
@@ -74,7 +74,7 @@
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="admin"
+            prop="operator"
             label="负责人"
             width="180"
           ></el-table-column>
@@ -132,11 +132,7 @@
 </template>
 
 <script>
-import {
-  getAllMenberApply,
-  passMenberApply,
-  rejectMenberApply
-} from "@/api/memberFile";
+import { getAllMenberApply, passMember, rejectMember } from "@/api/memberFile";
 export default {
   created() {
     this.doGetAllMenberApply();
@@ -171,7 +167,7 @@ export default {
       }
     },
     async handldPass(mid) {
-      let res = await passMenberApply(mid);
+      let res = await passMember(mid);
       this.doGetAllMenberApply();
       if (res.success) {
         this.$message({
@@ -186,7 +182,7 @@ export default {
       }
     },
     async handleReject(mid) {
-      let res = await rejectMenberApply(mid);
+      let res = await rejectMember(mid);
       this.doGetAllMenberApply();
       if (res.success) {
         this.$message({

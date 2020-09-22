@@ -27,7 +27,15 @@ export function memberRegister(memberData) {
 
 export function entryApply(data) {
   return request({
-    url: "/entry",
+    url: "/memberApply",
+    method: "post",
+    data: data
+  });
+}
+
+export function resignApply(data) {
+  return request({
+    url: "/memberApply",
     method: "post",
     data: data
   });
@@ -40,9 +48,9 @@ export function getAllMenberApply() {
   });
 }
 
-export function passMenberApply(mid) {
+export function passMember(mid) {
   return request({
-    url: "/passMemberApply",
+    url: "/passMember",
     method: "post",
     data: {
       mid
@@ -50,9 +58,9 @@ export function passMenberApply(mid) {
   });
 }
 
-export function rejectMenberApply(mid) {
+export function rejectMember(mid) {
   return request({
-    url: "/rejectMemberApply",
+    url: "/rejectMember",
     method: "post",
     data: {
       mid

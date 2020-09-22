@@ -1,6 +1,12 @@
 <template>
   <div class="conatiner">
-    <el-form ref="form" :model="applyForm" label-width="80px" class="form">
+    <el-form
+      ref="form"
+      :model="applyForm"
+      label-width="80px"
+      class="form"
+      :rules="rule"
+    >
       <el-form-item label="负责人" class="form-item">
         <el-input disabled v-model="username"></el-input>
       </el-form-item>
@@ -34,7 +40,7 @@
         <el-input type="textarea" v-model="applyForm.reason"></el-input>
       </el-form-item>
       <el-form-item class="form-item">
-        <el-button type="primary" class="form-btn" @click="doEntryApply"
+        <el-button type="primary" class="form-btn" @click="handleSubmit"
           >提交</el-button
         >
       </el-form-item>
@@ -59,7 +65,16 @@ export default {
         { value: 3, label: "部门主管" },
         { value: 4, label: "教务员" },
         { value: 5, label: "教师" }
-      ]
+      ],
+      rule: {
+        applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        posType: [
+          { required: true, message: "请选择职位类型", trigger: "change" }
+        ],
+        applyTime: [
+          { required: true, message: "请选择时间", trigger: "change" }
+        ]
+      }
     };
   },
   computed: {
@@ -69,7 +84,7 @@ export default {
     async doEntryApply() {
       let res = await entryApply(
         Object.assign(this.applyForm, {
-          admin: this.uid,
+          operator: this.uid,
           applyType: 1,
           processMode: 0
         })
@@ -85,7 +100,17 @@ export default {
           type: "error"
         });
       }
-      this.$refs["form"].resetFields();
+    },
+    handleSubmit() {
+      this.$refs["form"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else {
+          this.doEntryApply();
+          this.$refs["form"].resetFields();
+          this.applyForm.reason = "";
+        }
+      });
     }
   }
 };

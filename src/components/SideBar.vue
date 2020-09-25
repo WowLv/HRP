@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <el-row class="tac">
-      <!-- <el-col :span="4"> -->
       <el-menu
         :default-active="nowCurrPath"
         class="el-menu-vertical-demo"
@@ -16,15 +15,15 @@
           </template>
           <el-submenu index="1-1">
             <template slot="title">基础设置</template>
-            <el-menu-item index="/infobase">用户信息</el-menu-item>
-            <el-menu-item index="/mapbase">数据字典档案</el-menu-item>
-            <el-menu-item index="/formbase">单据格式设置</el-menu-item>
-            <el-menu-item index="/timebase">考核年度</el-menu-item>
+            <el-menu-item index="/info_base">用户信息</el-menu-item>
+            <el-menu-item index="/map_base">数据字典档案</el-menu-item>
+            <el-menu-item index="/form_base">单据格式设置</el-menu-item>
+            <el-menu-item index="/time_base">考核年度</el-menu-item>
           </el-submenu>
           <el-submenu index="1-2">
             <template slot="title">个人中心</template>
-            <el-menu-item index="/infomodify">个人信息</el-menu-item>
-            <el-menu-item index="/pwmodify">密码修改</el-menu-item>
+            <el-menu-item index="/info_modify">个人信息</el-menu-item>
+            <el-menu-item index="/pw_modify">密码修改</el-menu-item>
           </el-submenu>
         </el-submenu>
         <el-submenu index="2">
@@ -38,11 +37,11 @@
           </el-submenu>
           <el-submenu index="2-2">
             <template slot="title">人员管理</template>
-            <el-menu-item index="/personfile">个人档案</el-menu-item>
-            <el-menu-item index="/memberfile">人员档案</el-menu-item>
-            <el-menu-item index="/entryapply">入职申请</el-menu-item>
-            <el-menu-item index="/resignapply">离职申请</el-menu-item>
-            <el-menu-item index="/resignmanage">入/离职管理</el-menu-item>
+            <el-menu-item index="/person_file">个人档案</el-menu-item>
+            <el-menu-item index="/member_file">人员档案</el-menu-item>
+            <el-menu-item index="/entry_apply">入职申请</el-menu-item>
+            <el-menu-item index="/resign_apply">离职申请</el-menu-item>
+            <el-menu-item index="/resign_manage">入/离职管理</el-menu-item>
           </el-submenu>
           <el-submenu index="2-3">
             <template slot="title">部门管理</template>
@@ -50,13 +49,12 @@
           </el-submenu>
           <el-submenu index="2-4">
             <template slot="title">工作量管理</template>
-            <el-menu-item index="2-4-1">工作量类型</el-menu-item>
-            <el-menu-item index="2-4-1">工作量项设置</el-menu-item>
-            <el-menu-item index="2-4-1">岗位目标设置</el-menu-item>
+            <el-menu-item index="teach_load">基础教学工作量</el-menu-item>
+            <el-menu-item index="scientific_load">教科研工作量</el-menu-item>
+            <el-menu-item index="public_load">公共工作量</el-menu-item>
           </el-submenu>
         </el-submenu>
       </el-menu>
-      <!-- </el-col> -->
     </el-row>
   </div>
 </template>

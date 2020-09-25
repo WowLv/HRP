@@ -1,10 +1,13 @@
 import request from "./request";
 import { handleUser } from "@/lib/validate";
 
-export function getAllInfo() {
+export function getAllInfo(page) {
   return request({
     url: "/allInfo",
-    method: "get"
+    method: "get",
+    params: {
+      page
+    }
   });
 }
 

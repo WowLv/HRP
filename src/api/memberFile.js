@@ -10,10 +10,13 @@ export function getPersonFile(uid) {
   });
 }
 
-export function getMemberFile() {
+export function getMemberFile(page) {
   return request({
     url: "/memberFile",
-    method: "get"
+    method: "get",
+    params: {
+      page
+    }
   });
 }
 

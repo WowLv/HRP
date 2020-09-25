@@ -73,6 +73,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="table-pagination">
+      <el-pagination
+        background
+        :pageSize="10"
+        layout="prev, pager, next, jumper"
+        @current-change="handlePageChange"
+        :total="sum"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -84,6 +94,7 @@ export default {
   },
   data() {
     return {
+      sum: 0,
       isLoading: true,
       allInfo: [],
       search: "",
@@ -91,14 +102,19 @@ export default {
     };
   },
   methods: {
-    async doGetMemberFile() {
-      let res = await getMemberFile();
+    async doGetMemberFile(page) {
+      let res = await getMemberFile(page);
       if (res.success) {
-        this.allInfo = res.data;
+        this.allInfo = res.data.data;
+        this.sum = res.data.sum;
+        console.log(res.data);
         setTimeout(() => {
           this.isLoading = false;
         }, 500);
       }
+    },
+    handlePageChange(e) {
+      this.doGetMemberFile(e);
     },
     toRegister() {
       this.$router.push({ name: "MemberRegister" });
@@ -137,6 +153,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1540px;
+  height: 770px;
+  position: relative;
   margin: 0 20px;
   .header {
     .input-with-select {
@@ -149,6 +167,13 @@ export default {
   }
   .tag {
     padding: 0 20px;
+  }
+  .table-pagination {
+    width: 100%;
+    position: absolute;
+    top: 700px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

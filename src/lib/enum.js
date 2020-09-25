@@ -1,18 +1,21 @@
 var pagesEnum = {
   home: "控制台",
-  infobase: "用户信息",
-  mapbase: "数据字典档案",
-  formbase: "单据格式档案",
-  timebase: "考核年度",
-  infomodify: "个人信息",
-  pwmodify: "密码修改",
-  userregister: "用户注册",
-  memberfile: "人员档案",
-  memberregister: "人员档案录入",
-  personfile: "个人档案",
-  entryapply: "入职申请",
-  resignapply: "离职申请",
-  resignmanage: "入/离职管理"
+  info_base: "用户信息",
+  map_base: "数据字典档案",
+  form_base: "单据格式档案",
+  time_base: "考核年度",
+  info_modify: "个人信息",
+  pw_modify: "密码修改",
+  user_register: "用户注册",
+  member_file: "人员档案",
+  member_register: "人员档案录入",
+  person_file: "个人档案",
+  entry_apply: "入职申请",
+  resign_apply: "离职申请",
+  resign_manage: "入/离职管理",
+  teach_load: "基础教学工作量",
+  scientific_load: "教科研工作量",
+  public_load: "公共工作量"
 };
 
 var powerEnum = {

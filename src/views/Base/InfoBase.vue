@@ -79,6 +79,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="table-pagination">
+      <el-pagination
+        background
+        :pageSize="10"
+        layout="prev, pager, next, jumper"
+        @current-change="handlePageChange"
+        :total="sum"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -88,11 +98,12 @@ import { getAllInfo, searchInfo } from "@/api/allInfo.js";
 export default {
   created() {
     this.powerEnum = powerEnum;
-    this.myGetAllInfo();
+    this.doGetAllInfo(1);
   },
   data() {
     return {
       isLoading: true,
+      sum: 0,
       powerEnum: {},
       tagType: {
         1: "warning",
@@ -107,18 +118,20 @@ export default {
     };
   },
   methods: {
+    handlePageChange(e) {
+      this.doGetAllInfo(e);
+    },
     toRegister() {
       this.$router.push({ name: "UserRegister" });
     },
     filterTag(value, row) {
-      return row.power === value;
+      return row.pid === value;
     },
-    myGetAllInfo() {
-      getAllInfo()
+    doGetAllInfo(page) {
+      getAllInfo(page)
         .then(res => {
-          this.allInfo = res.data;
-        })
-        .then(() => {
+          this.allInfo = res.data.data;
+          this.sum = res.data.sum;
           setTimeout(() => {
             this.isLoading = false;
           }, 500);
@@ -177,6 +190,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1540px;
+  height: 770px;
+  position: relative;
   margin: 0 20px;
   .header {
     .input-with-select {
@@ -189,6 +204,13 @@ export default {
   }
   .tag {
     padding: 0 20px;
+  }
+  .table-pagination {
+    width: 100%;
+    position: absolute;
+    top: 700px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

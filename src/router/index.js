@@ -14,69 +14,84 @@ const routes = [
     component: Home,
     children: [
       {
-        path: "infobase",
+        path: "info_base",
         name: "InfoBase",
         component: () => import("../views/Base/InfoBase.vue")
       },
       {
-        path: "mapbase",
+        path: "map_base",
         name: "MapBase",
         component: () => import("../views/Base/MapBase.vue")
       },
       {
-        path: "formbase",
+        path: "form_base",
         name: "FormBase",
         component: () => import("../views/Base/FormBase.vue")
       },
       {
-        path: "timebase",
+        path: "time_base",
         name: "TimeBase",
         component: () => import("../views/Base/TimeBase.vue")
       },
       {
-        path: "infomodify",
+        path: "info_modify",
         name: "InfoModify",
         component: () => import("../views/Person/InfoModify.vue")
       },
       {
-        path: "pwmodify",
+        path: "pw_modify",
         name: "PwModify",
         component: () => import("../views/Person/PwModify.vue")
       },
       {
-        path: "userregister",
+        path: "user_register",
         name: "UserRegister",
         component: () => import("../views/Person/UserRegister.vue")
       },
       {
-        path: "personfile",
+        path: "person_file",
         name: "PersonFile",
         component: () => import("../views/Member/PersonFile.vue")
       },
       {
-        path: "memberfile",
+        path: "member_file",
         name: "MemberFile",
         component: () => import("../views/Member/MemberFile.vue")
       },
       {
-        path: "memberregister",
+        path: "member_register",
         name: "MemberRegister",
         component: () => import("../views/Member/MemberRegister.vue")
       },
       {
-        path: "entryapply",
+        path: "entry_apply",
         name: "entryapply",
         component: () => import("../views/Member/EntryApply.vue")
       },
       {
-        path: "resignapply",
+        path: "resign_apply",
         name: "ResignApply",
         component: () => import("../views/Member/ResignApply.vue")
       },
       {
-        path: "resignmanage",
+        path: "resign_manage",
         name: "ResignManage",
         component: () => import("../views/Member/ResignManage.vue")
+      },
+      {
+        path: "teach_load",
+        name: "TeachingLoad",
+        component: () => import("../views/WorkLoad/TeachingLoad.vue")
+      },
+      {
+        path: "public_load",
+        name: "PublicLoad",
+        component: () => import("../views/WorkLoad/PublicLoad.vue")
+      },
+      {
+        path: "scientific_load",
+        name: "ScientificLoad",
+        component: () => import("../views/WorkLoad/ScientificLoad.vue")
       }
     ]
   },

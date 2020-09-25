@@ -1,7 +1,7 @@
 export function validatePhone(rule, value, callback) {
-  if (!value || !value.trim()) {
+  if (!value) {
     callback(new Error("请输入手机号码"));
-  } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(value)) {
+  } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(value) || /\s/g.test(value)) {
     callback(new Error("请输入正确的手机号码"));
   } else {
     callback();
@@ -31,15 +31,17 @@ export function validateEmail(rule, value, callback) {
 export function validatePass(rule, value, callback) {
   if (!value || !value.trim()) {
     callback(new Error("请输入密码"));
+  } else if (/\s/g.test(value)) {
+    callback(new Error("密码不能出现空格"));
   } else {
     callback();
   }
 }
 
 export function validateAge(rule, value, callback) {
-  if (!value || !value.trim()) {
+  if (!value) {
     callback(new Error("请输入年龄"));
-  } else if (!parseInt(value)) {
+  } else if (!parseInt(value) || /\s/g.test(value)) {
     callback(new Error("请输入数字类型"));
   } else {
     callback();
@@ -47,8 +49,10 @@ export function validateAge(rule, value, callback) {
 }
 
 export function validateName(rule, value, callback) {
-  if (!value || !value.trim()) {
+  if (!value) {
     callback(new Error("请输入用户名"));
+  } else if (/\s/g.test(value)) {
+    callback(new Error("用户名不能出现空格"));
   } else {
     callback();
   }

@@ -13,25 +13,35 @@
             prop="operator"
             label="负责人"
             align="center"
-            width="180"
+            width="170"
           ></el-table-column>
           <el-table-column
             prop="applicant"
             label="姓名"
             align="center"
-            width="180"
+            width="170"
           ></el-table-column>
           <el-table-column
             prop="reason"
             label="申请描述"
             align="center"
-            width="300"
+            width="280"
           >
+          </el-table-column>
+          <el-table-column prop="power" label="职位" width="180" align="center">
+            <template slot-scope="scope">
+              <el-tag
+                :type="tagType[scope.row.positionId]"
+                disable-transitions
+                class="tag"
+                >{{ scope.row.positionName }}</el-tag
+              >
+            </template>
           </el-table-column>
           <el-table-column
             prop="applyType"
             label="申请类型"
-            width="280"
+            width="180"
             align="center"
           >
             <template slot-scope="scope">
@@ -45,7 +55,7 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="280"
+            width="240"
             align="center"
             class="form-item"
           >
@@ -76,19 +86,29 @@
           <el-table-column
             prop="operator"
             label="负责人"
-            width="180"
+            width="160"
           ></el-table-column>
           <el-table-column
             prop="applicant"
             label="姓名"
-            width="180"
+            width="160"
           ></el-table-column>
-          <el-table-column prop="reason" label="申请描述" width="300">
+          <el-table-column prop="reason" label="申请描述" width="240">
+          </el-table-column>
+          <el-table-column prop="power" label="职位" width="180" align="center">
+            <template slot-scope="scope">
+              <el-tag
+                :type="tagType[scope.row.positionId]"
+                disable-transitions
+                class="tag"
+                >{{ scope.row.positionName }}</el-tag
+              >
+            </template>
           </el-table-column>
           <el-table-column
             prop="applyType"
             label="申请类型"
-            width="200"
+            width="180"
             align="center"
           >
             <template slot-scope="scope">
@@ -102,7 +122,7 @@
           </el-table-column>
           <el-table-column
             label="状态"
-            width="200"
+            width="180"
             align="center"
             class="form-item"
           >
@@ -142,7 +162,13 @@ export default {
       isLoading: true,
       activeName: "unfinish",
       applyData: [],
-      finishedData: []
+      finishedData: [],
+      tagType: {
+        1: "warning",
+        2: "warning",
+        3: "success",
+        4: "primary"
+      }
     };
   },
   methods: {

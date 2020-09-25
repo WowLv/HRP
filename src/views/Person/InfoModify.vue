@@ -52,11 +52,11 @@
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="权限" class="form-item" prop="pid">
+      <el-form-item label="权限" class="form-item" prop="powerId">
         <el-select
-          v-model="personInfo.pid"
+          v-model="personInfo.powerId"
           placeholder="请选择"
-          :disabled="disabled.pid"
+          :disabled="disabled.powerId"
           class="power-item"
         >
           <el-option
@@ -97,7 +97,7 @@ var info_able = {
   phone: false,
   email: false,
   pwd: false,
-  pid: false
+  powerId: false
 };
 var info_disable = {
   uid: true,
@@ -107,7 +107,7 @@ var info_disable = {
   phone: true,
   email: true,
   pwd: true,
-  pid: true
+  powerId: true
 };
 import { getInfo, setInfo } from "@/api/personInfo";
 import {
@@ -168,7 +168,7 @@ export default {
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
         email: [{ validator: validateEmail, trigger: "blur" }],
-        pid: [{ required: true, message: "请选择权限", trigger: "change" }]
+        powerId: [{ required: true, message: "请选择权限", trigger: "change" }]
       }
     };
   },
@@ -193,7 +193,7 @@ export default {
       if (this.power === 1) {
         this.disabled = Object.assign(info_able, { uid: true });
       } else {
-        this.disabled = Object.assign(info_able, { uid: true, pid: true });
+        this.disabled = Object.assign(info_able, { uid: true, powerId: true });
       }
     },
     //当权限为管理员时可在此强制改密码,不输入则不改

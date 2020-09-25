@@ -13,8 +13,8 @@
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item label="职位/部门" class="form-item" prop="posType">
-        <el-input v-model="applyForm.posType"></el-input>
+      <el-form-item label="职位" class="form-item" prop="positionName">
+        <el-input v-model="applyForm.positionName" disabled></el-input>
       </el-form-item>
       <el-form-item label="申请时间" class="form-item" prop="applyTime">
         <el-date-picker
@@ -45,7 +45,7 @@ export default {
     return {
       applyForm: {
         operator: "",
-        posType: "",
+        positionName: "",
         applicant: "",
         applyTime: "",
         reason: ""
@@ -53,8 +53,8 @@ export default {
       rule: {
         operator: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        posType: [
-          { required: true, message: "请填写职位/部门", trigger: "blur" }
+        positionName: [
+          { required: true, message: "请填写职位", trigger: "blur" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }
@@ -72,7 +72,6 @@ export default {
     async resignApply() {
       let res = await resignApply(
         Object.assign(this.applyForm, {
-          posType: null,
           applyType: 2,
           processMode: 0
         })
@@ -93,13 +92,9 @@ export default {
       let res = await getPersonFile(fid);
       if (res.success) {
         console.log(res.data);
-        let { name, positionType, sectionName } = res.data;
+        let { name, positionName } = res.data;
         this.applyForm.applicant = name;
-        if (positionType) {
-          this.applyForm.posType = positionType;
-        } else {
-          this.applyForm.posType = sectionName;
-        }
+        this.applyForm.positionName = positionName;
       } else {
         this.applyForm = {
           operator: parseInt(this.applyForm.operator),

@@ -16,7 +16,7 @@ const login = {
       console.log(data);
       localStorage.setItem("token", JSON.stringify(data.token));
       state.user.uid = data.uid;
-      state.user.power = data.pid;
+      state.user.power = data.powerId;
       state.user.username = data.username;
     },
     SET_LOGOUT: () => {
@@ -24,7 +24,7 @@ const login = {
     },
     SET_USER: (state, user) => {
       state.user.uid = user.uid;
-      state.user.power = user.pid;
+      state.user.power = user.powerId;
       state.user.username = user.username;
     }
   },

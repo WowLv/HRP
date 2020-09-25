@@ -7,9 +7,9 @@
       ref="forms"
       :rules="rule"
     >
-      <el-form-item label="职位类别" class="form-item" prop="posType">
+      <el-form-item label="职位类别" class="form-item" prop="positionId">
         <el-select
-          v-model="posType"
+          v-model="positionId"
           placeholder="请选择职位类别"
           class="option-item"
         >
@@ -43,11 +43,11 @@
       <el-form-item
         label="部门"
         class="form-item"
-        prop="sid"
-        v-if="posType === 3"
+        prop="sectionId"
+        v-if="positionId === 3"
       >
         <el-select
-          v-model="personInfo.sid"
+          v-model="personInfo.sectionId"
           placeholder="请选择部门"
           class="option-item"
         >
@@ -61,14 +61,14 @@
         </el-select>
       </el-form-item>
       <el-form-item
-        label="职位"
+        label="岗位"
         class="form-item"
-        v-if="posType === 4"
-        prop="position"
+        v-if="positionId === 4"
+        prop="station"
       >
         <el-col :span="10">
-          <el-form-item prop="pid">
-            <el-select v-model="personInfo.pid" placeholder="请选择职位">
+          <el-form-item prop="stationId">
+            <el-select v-model="personInfo.stationId" placeholder="请选择岗位">
               <el-option
                 v-for="item in posOptions"
                 :key="item.value"
@@ -117,7 +117,7 @@ import {
 export default {
   data() {
     return {
-      posType: 4,
+      positionId: 4,
       personInfo: {},
       rule: {
         name: [{ required: true, validator: validateName, trigger: "blur" }],
@@ -125,8 +125,12 @@ export default {
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
         email: [{ validator: validateEmail, trigger: "blur" }],
-        sid: [{ required: true, message: "请选择部门", trigger: "change" }],
-        pid: [{ required: true, message: "请选择职位", trigger: "change" }],
+        sectionId: [
+          { required: true, message: "请选择部门", trigger: "change" }
+        ],
+        stationId: [
+          { required: true, message: "请选择岗位", trigger: "change" }
+        ],
         level: [
           { required: true, message: "请选择职位等级", trigger: "change" }
         ]
@@ -180,15 +184,40 @@ export default {
   methods: {
     handleSubmit() {
       let memberData = {};
-      if (this.posType === 1 || this.posType === 2) {
-        let { name, sex, age, phone, email } = this.personInfo;
-        memberData = new DeanMember(name, sex, age, phone, email);
-      } else if (this.posType === 3) {
-        let { name, sex, age, phone, email, sid } = this.personInfo;
-        memberData = new SectionMember(name, sex, age, phone, email, sid);
+      let {
+        name,
+        sex,
+        age,
+        phone,
+        email,
+        sectionId,
+        stationId,
+        level,
+        positionId
+      } = this.personInfo;
+      if (this.positionId === 1 || this.positionId === 2) {
+        memberData = new DeanMember(name, sex, age, phone, email, positionId);
+      } else if (this.positionId === 3) {
+        memberData = new SectionMember(
+          name,
+          sex,
+          age,
+          phone,
+          email,
+          sectionId,
+          positionId
+        );
       } else {
-        let { name, sex, age, phone, email, pid, level } = this.personInfo;
-        memberData = new TeachMember(name, sex, age, phone, email, pid, level);
+        memberData = new TeachMember(
+          name,
+          sex,
+          age,
+          phone,
+          email,
+          stationId,
+          level,
+          positionId
+        );
       }
       this.$refs["forms"].validate(async valid => {
         if (!valid) {

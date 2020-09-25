@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column prop="email" label="邮箱" width="280"> </el-table-column>
       <el-table-column
-        prop="power"
+        prop="powerId"
         label="权限"
         width="200"
         align="center"
@@ -58,10 +58,10 @@
       >
         <template slot-scope="scope">
           <el-tag
-            :type="tagType[scope.row.pid]"
+            :type="tagType[scope.row.powerId]"
             disable-transitions
             class="tag"
-            >{{ powerEnum[scope.row.pid] }}</el-tag
+            >{{ powerEnum[scope.row.powerId] }}</el-tag
           >
         </template>
       </el-table-column>
@@ -125,7 +125,7 @@ export default {
       this.$router.push({ name: "UserRegister" });
     },
     filterTag(value, row) {
-      return row.pid === value;
+      return row.powerId === value;
     },
     doGetAllInfo(page) {
       getAllInfo(page)

@@ -40,23 +40,14 @@
       <el-table-column prop="phone" align="center" label="手机号码" width="280">
       </el-table-column>
       <el-table-column prop="email" label="邮箱" width="280"> </el-table-column>
-      <el-table-column
-        prop="power"
-        label="职位/部门"
-        width="200"
-        align="center"
-      >
+      <el-table-column prop="power" label="职位" width="200" align="center">
         <template slot-scope="scope">
           <el-tag
-            type="primary"
+            :type="tagType[scope.row.positionId]"
             disable-transitions
             class="tag"
-            v-if="scope.row.pid"
-            >{{ scope.row.positionType }}</el-tag
+            >{{ scope.row.positionName }}</el-tag
           >
-          <el-tag type="success" disable-transitions class="tag" v-else>{{
-            scope.row.sectionName
-          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200">
@@ -98,7 +89,13 @@ export default {
       isLoading: true,
       allInfo: [],
       search: "",
-      searched: false
+      searched: false,
+      tagType: {
+        1: "warning",
+        2: "warning",
+        3: "success",
+        4: "primary"
+      }
     };
   },
   methods: {
@@ -123,10 +120,19 @@ export default {
       return row.power === value;
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      let type = "";
+      if (row.positionId === 4) {
+        type = "teacher";
+      } else if (row.positionId === 3) {
+        type = "section";
+      }
       this.$router.push({
         name: "PersonFile",
-        params: { mode: "admin", personFile: row }
+        params: {
+          mode: "admin",
+          fid: row.fid,
+          type
+        }
       });
     },
     handleDelete(index, row) {

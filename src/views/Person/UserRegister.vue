@@ -42,9 +42,9 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      <el-form-item label="权限" class="form-item" prop="power">
+      <el-form-item label="权限" class="form-item" prop="powerId">
         <el-select
-          v-model="personInfo.power"
+          v-model="personInfo.powerId"
           placeholder="请选择"
           class="option-item"
         >
@@ -102,7 +102,7 @@ export default {
             trigger: "blur"
           }
         ],
-        power: [{ required: true, message: "请选择权限", trigger: "change" }]
+        powerId: [{ required: true, message: "请选择权限", trigger: "change" }]
       },
       powerOptions: [
         {
@@ -137,8 +137,7 @@ export default {
       }, 2000);
     },
     validateCheckPass(rule, value, callback) {
-      console.log(rule);
-      if (!value || !value.trim()) {
+      if (!value) {
         callback(new Error("请输入密码"));
       } else if (value !== this.personInfo.password) {
         callback(new Error("两次输入密码不一致!"));
@@ -166,11 +165,11 @@ export default {
             uid: parseInt(this.personInfo.uid),
             username: this.personInfo.username.trim(),
             pwd: this.personInfo.password,
-            age: parseInt(this.personInfo.age.trim()),
+            age: parseInt(this.personInfo.age),
             sex: this.personInfo.sex,
             phone: this.personInfo.phone.trim(),
             email: this.personInfo.email && this.personInfo.email.trim(),
-            power: this.personInfo.power
+            powerId: this.personInfo.powerId
           }
         )
       );

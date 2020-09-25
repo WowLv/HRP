@@ -13,9 +13,9 @@
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item label="职位类别" class="form-item" prop="posType">
+      <el-form-item label="职位类别" class="form-item" prop="positionId">
         <el-select
-          v-model="applyForm.posType"
+          v-model="applyForm.positionId"
           placeholder="请选择职位类别"
           class="option-item"
         >
@@ -55,21 +55,21 @@ export default {
   data() {
     return {
       applyForm: {
-        posType: "",
+        positionId: "",
         applicant: "",
         applyTime: "",
         reason: ""
       },
       posTypeOptions: [
-        { value: 2, label: "院长" },
-        { value: 3, label: "部门主管" },
-        { value: 4, label: "教务员" },
-        { value: 5, label: "教师" }
+        { value: 1, label: "院长" },
+        { value: 2, label: "部门主管" },
+        { value: 3, label: "教务员" },
+        { value: 4, label: "教师" }
       ],
       rule: {
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        posType: [
-          { required: true, message: "请选择职位类型", trigger: "change" }
+        positionId: [
+          { required: true, message: "请选择职位", trigger: "change" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }

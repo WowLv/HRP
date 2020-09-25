@@ -37,18 +37,34 @@
           :disabled="disabled.email"
         ></el-input>
       </el-form-item>
+      <el-form-item label="职位" class="form-item" prop="position">
+        <el-select
+          v-model="personInfo.positionId"
+          placeholder="请选择职位"
+          class="option-item"
+          :disabled="disabled.position"
+        >
+          <el-option
+            v-for="item in posTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item
-        label="职位"
+        label="岗位"
         class="form-item"
-        prop="pid"
+        prop="stationId"
         v-if="mode === 'teacher'"
       >
         <el-col :span="10">
           <el-select
-            v-model="personInfo.pid"
-            placeholder="请选择职位"
+            v-model="personInfo.stationId"
+            placeholder="请选择岗位"
             class="power-item"
-            :disabled="disabled.position"
+            :disabled="disabled.station"
           >
             <el-option
               v-for="item in posOptions"
@@ -65,9 +81,9 @@
         <el-col :span="10">
           <el-select
             v-model="personInfo.level"
-            placeholder="职位等级"
+            placeholder="岗位等级"
             class="power-item"
-            :disabled="disabled.position"
+            :disabled="disabled.station"
           >
             <el-option
               v-for="item in levelOptions"
@@ -107,7 +123,7 @@
         prop="publicWork"
         v-if="mode === 'teacher'"
       >
-        <el-button class="work-item" @click="openDrawer">点击查看</el-button>
+        <el-button class="option-item" @click="openDrawer">点击查看</el-button>
       </el-form-item>
       <el-form-item class="form-item" v-if="admin">
         <el-button
@@ -154,9 +170,10 @@ var info_able = {
   age: false,
   phone: false,
   email: false,
-  position: false,
+  station: false,
   sectionName: false,
-  classHour: false
+  classHour: false,
+  position: false
 };
 var info_disable = {
   fid: true,
@@ -165,18 +182,18 @@ var info_disable = {
   age: true,
   phone: true,
   email: true,
-  position: true,
+  station: true,
   sectionName: true,
-  classHour: true
+  classHour: true,
+  position: true
 };
 export default {
   created() {
     this.disabled = info_disable;
     if (this.$route.params.mode && this.$route.params.mode === "admin") {
-      if (this.$route.params.personFile.pid) this.mode = "teacher";
-      if (this.$route.params.personFile.sid) this.mode = "section";
+      this.mode = this.$route.params.type;
       this.admin = true;
-      this.personInfo = this.$route.params.personFile;
+      this.doGetPersonFile(this.$route.params.fid);
       setTimeout(() => {
         this.isLoading = false;
       }, 500);
@@ -195,6 +212,12 @@ export default {
       drawer: false,
       disabled: {},
       personInfo: {},
+      posTypeOptions: [
+        { value: 1, label: "院长" },
+        { value: 2, label: "部门主管" },
+        { value: 3, label: "教务员" },
+        { value: 4, label: "教师" }
+      ],
       publicWork: [
         {
           date: "2020-05-02",
@@ -231,7 +254,6 @@ export default {
         }
       ],
       levelOptions: [
-        { value: 1, label: "一级" },
         { value: 2, label: "二级" },
         { value: 3, label: "三级" },
         { value: 4, label: "四级" },
@@ -252,6 +274,7 @@ export default {
   methods: {
     async doGetPersonFile(uid) {
       let res = await getPersonFile(uid);
+      console.log(res.data);
       if (res.success) {
         this.personInfo = res.data;
         setTimeout(() => {
@@ -284,7 +307,7 @@ export default {
     margin-top: 50px;
     .form-item {
       margin-bottom: 20px;
-      .work-item {
+      .option-item {
         width: 450px;
         @media screen and (max-width: 1600px) {
           width: 300px;

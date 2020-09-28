@@ -69,14 +69,24 @@ const routes = [
         component: () => import("../views/Member/EntryApply.vue")
       },
       {
+        path: "transfer_apply",
+        name: "TransferApply",
+        component: () => import("../views/Member/TransferApply.vue")
+      },
+      {
         path: "resign_apply",
         name: "ResignApply",
         component: () => import("../views/Member/ResignApply.vue")
       },
       {
-        path: "resign_manage",
-        name: "ResignManage",
-        component: () => import("../views/Member/ResignManage.vue")
+        path: "e_r_manage",
+        name: "ERManage",
+        component: () => import("../views/Member/ERManage.vue")
+      },
+      {
+        path: "transfer_manage",
+        name: "TransferManage",
+        component: () => import("../views/Member/TransferManage.vue")
       },
       {
         path: "teach_load",

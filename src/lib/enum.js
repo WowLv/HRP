@@ -11,8 +11,10 @@ var pagesEnum = {
   member_register: "人员档案录入",
   person_file: "个人档案",
   entry_apply: "入职申请",
+  transfer_apply: "调职申请",
   resign_apply: "离职申请",
-  resign_manage: "入/离职管理",
+  e_r_manage: "入/离职管理",
+  transfer_manage: "调职管理",
   teach_load: "基础教学工作量",
   scientific_load: "教科研工作量",
   public_load: "公共工作量"

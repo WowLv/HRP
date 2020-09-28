@@ -25,7 +25,7 @@
             prop="reason"
             label="申请描述"
             align="center"
-            width="280"
+            width="300"
           >
           </el-table-column>
           <el-table-column prop="power" label="职位" width="180" align="center">
@@ -55,7 +55,7 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="240"
+            width="300"
             align="center"
             class="form-item"
           >
@@ -93,7 +93,7 @@
             label="姓名"
             width="160"
           ></el-table-column>
-          <el-table-column prop="reason" label="申请描述" width="240">
+          <el-table-column prop="reason" label="申请描述" width="280">
           </el-table-column>
           <el-table-column prop="power" label="职位" width="180" align="center">
             <template slot-scope="scope">

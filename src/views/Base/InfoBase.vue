@@ -166,7 +166,8 @@ export default {
       let res = await searchInfo(this.search);
       if (res.success) {
         this.searched = true;
-        this.allInfo = res.data;
+        this.allInfo = res.data.data;
+        this.sum = res.data.sum;
         this.search = "";
         this.$message({
           message: res.msg,
@@ -181,7 +182,7 @@ export default {
     },
     handleBack() {
       this.searched = false;
-      this.myGetAllInfo();
+      this.doGetAllInfo(1);
     }
   }
 };

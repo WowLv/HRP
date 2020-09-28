@@ -58,6 +58,14 @@ export function validateName(rule, value, callback) {
   }
 }
 
+export function validateTeachLoad(rule, value, callback) {
+  if (value < 0) {
+    callback(new Error("课时量不能小于0"));
+  } else {
+    callback();
+  }
+}
+
 export function handleUser(data) {
   if (parseInt(data)) {
     return parseInt(data);

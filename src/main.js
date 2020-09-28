@@ -29,7 +29,8 @@ import {
   Option,
   Drawer,
   DatePicker,
-  Pagination
+  Pagination,
+  Upload
 } from "element-ui";
 Vue.use(Row);
 Vue.use(Col);
@@ -52,6 +53,7 @@ Vue.use(Option);
 Vue.use(Drawer);
 Vue.use(DatePicker);
 Vue.use(Pagination);
+Vue.use(Upload);
 Vue.use(Loading.directive);
 Vue.component(Message); //基于组件使用，不用use避免报错
 

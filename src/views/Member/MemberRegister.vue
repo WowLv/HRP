@@ -192,11 +192,17 @@ export default {
         email,
         sectionId,
         stationId,
-        level,
-        positionId
+        level
       } = this.personInfo;
       if (this.positionId === 1 || this.positionId === 2) {
-        memberData = new DeanMember(name, sex, age, phone, email, positionId);
+        memberData = new DeanMember(
+          name,
+          sex,
+          age,
+          phone,
+          email,
+          this.positionId
+        );
       } else if (this.positionId === 3) {
         memberData = new SectionMember(
           name,
@@ -205,7 +211,7 @@ export default {
           phone,
           email,
           sectionId,
-          positionId
+          this.positionId
         );
       } else {
         memberData = new TeachMember(
@@ -216,7 +222,7 @@ export default {
           email,
           stationId,
           level,
-          positionId
+          this.positionId
         );
       }
       this.$refs["forms"].validate(async valid => {

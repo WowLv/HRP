@@ -28,22 +28,17 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="操作时间" class="form-item" prop="date">
-        <el-date-picker
-          type="date"
-          placeholder="选择日期"
-          v-model="loadInfo.date"
-          style="width: 100%;"
-        ></el-date-picker>
-      </el-form-item>
       <el-upload
         class="upload-item"
-        action=""
+        action="/api/scient_load"
         ref="upload"
         drag
         multiple
-        :http-request="uploadFile"
         :file-list="fileList"
+        :data="loadInfo"
+        :on-success="handleRes"
+        :on-change="handleChange"
+        :before-upload="handleBefore"
         :auto-upload="false"
       >
         <i class="el-icon-upload"></i>
@@ -62,31 +57,62 @@
 </template>
 
 <script>
-import { postScientificLoad } from "@/api/workLoad";
+// import { postScientificLoad } from "@/api/workLoad";
 import { validateUid, validateName } from "@/lib/validate";
 export default {
   data() {
     return {
-      loadInfo: {},
+      readyCount: 0,
+      successCount: 0,
+      loadInfo: { mode: "scientific" },
       workLoadOptions: [],
       fileList: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
-        name: [{ required: true, validator: validateName, trigger: "blur" }],
-        scientificLoad: [
-          { required: true, message: "请选择工作量项", trigger: "change" }
-        ]
+        name: [{ required: true, validator: validateName, trigger: "blur" }]
+        // scientificLoad: [
+        //   { required: true, message: "请选择工作量项", trigger: "change" }
+        // ],
       }
     };
   },
   methods: {
-    async uploadFile(fileObj) {
-      let res = await postScientificLoad(fileObj);
-      console.log(res);
+    handleChange(file, fileList) {
+      this.fileList = fileList;
+    },
+    handleBefore() {
+      this.readyCount = this.fileList.filter(item => {
+        return item.status === "ready";
+      }).length;
+    },
+    handleRes(res) {
+      if (res.success) {
+        this.successCount++;
+      }
+      //当全部传成功才出现成功提示
+      if (this.successCount === this.readyCount) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.successCount = 0;
+      }
     },
     submit() {
-      console.log("submit");
-      this.$refs.upload.submit();
+      this.$refs["forms"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else {
+          if (!this.fileList.length) {
+            this.$message({
+              message: "请添加工作量佐证",
+              type: "warning"
+            });
+          } else {
+            this.$refs.upload.submit();
+          }
+        }
+      });
     }
   }
 };

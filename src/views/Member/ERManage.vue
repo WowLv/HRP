@@ -46,7 +46,7 @@
           >
             <template slot-scope="scope">
               <el-tag
-                :type="scope.row.aid === 1 ? 'primary' : 'warning'"
+                :type="scope.row.applyTypeId === 1 ? 'primary' : 'warning'"
                 disable-transitions
                 class="tag"
                 >{{ scope.row.applyType }}</el-tag
@@ -113,7 +113,7 @@
           >
             <template slot-scope="scope">
               <el-tag
-                :type="scope.row.aid === 1 ? 'primary' : 'warning'"
+                :type="scope.row.applyTypeId === 1 ? 'primary' : 'warning'"
                 disable-transitions
                 class="tag"
                 >{{ scope.row.applyType }}</el-tag

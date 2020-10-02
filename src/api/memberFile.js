@@ -1,11 +1,11 @@
 import request from "./request";
 
-export function getPersonFile(uid) {
+export function getPersonFile(fid) {
   return request({
     url: "/personFile",
     method: "get",
     params: {
-      uid
+      fid
     }
   });
 }

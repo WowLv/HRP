@@ -85,8 +85,8 @@ export default {
       let res = await entryApply(
         Object.assign(this.applyForm, {
           operator: this.uid,
-          applyType: 1,
-          processMode: 0
+          applyTypeId: 1,
+          modeId: 0
         })
       );
       if (res.success) {

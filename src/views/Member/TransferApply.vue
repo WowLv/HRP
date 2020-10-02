@@ -162,7 +162,7 @@ export default {
         if (!valid) {
           return false;
         } else {
-          this.resignApply();
+          // this.transferApply();
           this.$refs["form"].resetFields();
         }
       });

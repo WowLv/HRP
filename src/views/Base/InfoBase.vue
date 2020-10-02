@@ -209,7 +209,7 @@ export default {
   .table-pagination {
     width: 100%;
     position: absolute;
-    top: 700px;
+    top: 720px;
     display: flex;
     justify-content: center;
   }

@@ -15,8 +15,8 @@ export function searchInfo(user) {
   user = handleUser(user);
   return request({
     url: "/searchInfo",
-    method: "get",
-    params: {
+    method: "post",
+    data: {
       user
     }
   });

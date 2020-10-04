@@ -1,4 +1,5 @@
 import request from "./request";
+import { handleUser } from "@/lib/validate";
 
 export function getPersonFile(fid) {
   return request({
@@ -20,9 +21,20 @@ export function getMemberFile(page) {
   });
 }
 
+export function searchMemberFile(user) {
+  user = handleUser(user);
+  return request({
+    url: "/searchFile",
+    method: "post",
+    data: {
+      user
+    }
+  });
+}
+
 export function memberRegister(memberData) {
   return request({
-    url: "/mregister",
+    url: "/m_register",
     method: "post",
     data: memberData
   });

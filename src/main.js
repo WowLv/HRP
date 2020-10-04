@@ -30,7 +30,10 @@ import {
   Drawer,
   DatePicker,
   Pagination,
-  Upload
+  Upload,
+  Notification,
+  Steps,
+  Step
 } from "element-ui";
 Vue.use(Row);
 Vue.use(Col);
@@ -54,10 +57,13 @@ Vue.use(Drawer);
 Vue.use(DatePicker);
 Vue.use(Pagination);
 Vue.use(Upload);
+Vue.use(Step);
+Vue.use(Steps);
 Vue.use(Loading.directive);
 Vue.component(Message); //基于组件使用，不用use避免报错
 
 Vue.config.productionTip = false;
+Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 Vue.prototype.$confirm = MessageBox.confirm;
 

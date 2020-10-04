@@ -13,10 +13,10 @@
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item label="职位类别" class="form-item" prop="positionId">
+      <el-form-item label="职位" class="form-item" prop="positionId">
         <el-select
           v-model="applyForm.positionId"
-          placeholder="请选择职位类别"
+          placeholder="请选择职位"
           class="option-item"
         >
           <el-option
@@ -30,7 +30,7 @@
       </el-form-item>
       <el-form-item label="申请时间" class="form-item" prop="applyTime">
         <el-date-picker
-          type="date"
+          type="datetime"
           placeholder="选择日期"
           v-model="applyForm.applyTime"
           style="width: 100%;"

@@ -1,9 +1,16 @@
 <template>
   <div class="conatiner">
+    <div class="step" v-if="isResign">
+      <el-steps :active="resignStep" finish-status="success" class="step-item">
+        <el-step title="申请"></el-step>
+        <el-step title="审核"></el-step>
+      </el-steps>
+    </div>
     <el-form
+      v-else
       ref="form"
       :model="applyForm"
-      label-width="100px"
+      label-width="80px"
       class="form"
       :rules="rule"
     >
@@ -13,12 +20,20 @@
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item label="职位" class="form-item" prop="positionName">
-        <el-input v-model="applyForm.positionName" disabled></el-input>
+      <el-form-item label="职位" class="form-item" prop="positionId">
+        <el-select v-model="applyForm.positionId" class="option-item" disabled>
+          <el-option
+            v-for="item in posTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="申请时间" class="form-item" prop="applyTime">
         <el-date-picker
-          type="date"
+          type="datetime"
           placeholder="选择日期"
           v-model="applyForm.applyTime"
           style="width: 100%;"
@@ -38,29 +53,45 @@
 
 <script>
 let timer = null;
+import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
 import { getPersonFile, resignApply } from "@/api/memberFile";
+import { checkResign } from "@/api/notification";
 export default {
+  mounted() {
+    this.doCheckResign(this.uid);
+  },
   data() {
     return {
+      isResign: false,
+      resignStep: 0,
       applyForm: {
         operator: "",
-        positionName: "",
+        positionId: "",
         applicant: "",
         applyTime: "",
         reason: ""
       },
+      posTypeOptions: [
+        { value: 1, label: "院长" },
+        { value: 2, label: "部门主管" },
+        { value: 3, label: "教务员" },
+        { value: 4, label: "教师" }
+      ],
       rule: {
         operator: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        positionName: [
-          { required: true, message: "请填写职位", trigger: "blur" }
+        positionId: [
+          { required: true, message: "请填写职位", trigger: "change" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }
         ]
       }
     };
+  },
+  computed: {
+    ...mapGetters(["uid"])
   },
   methods: {
     checkFid(e) {
@@ -69,11 +100,31 @@ export default {
         this.doGetPersonFile(e);
       }, 2000);
     },
+    async doCheckResign(fid) {
+      let res = await checkResign(fid);
+
+      if (res.success && res.data.modeId === 0) {
+        this.isResign = true;
+        this.resignStep = 1;
+      } else if (res.success && res.data.modeId === 1) {
+        this.isResign = true;
+        this.resignStep = 2;
+      } else if (res.success && res.data.modeId === 2) {
+        this.$notify({
+          title: "新通知",
+          message: this.$createElement(
+            "div",
+            { style: "color: #CD5C5C" },
+            "您的离职申请被驳回！"
+          )
+        });
+      }
+    },
     async resignApply() {
       let res = await resignApply(
         Object.assign(this.applyForm, {
-          applyType: 2,
-          processMode: 0
+          applyTypeId: 2,
+          modeId: 0
         })
       );
       if (res.success) {
@@ -91,10 +142,9 @@ export default {
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);
       if (res.success) {
-        console.log(res.data);
-        let { name, positionName } = res.data;
+        let { name, positionId } = res.data;
         this.applyForm.applicant = name;
-        this.applyForm.positionName = positionName;
+        this.applyForm.positionId = positionId;
       } else {
         this.applyForm = {
           operator: parseInt(this.applyForm.operator),
@@ -119,6 +169,15 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  .step {
+    margin-top: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .step-item {
+      width: 700px;
+    }
+  }
   .form {
     width: 600px;
     margin-top: 50px;

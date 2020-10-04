@@ -28,7 +28,13 @@ var powerEnum = {
   5: "教师"
 };
 
+// var noticeEnum = {
+//   1: "您有一条申请信息待审核",
+//   2: "您有一条审核完成的信息待查看"
+// };
+
 module.exports = {
   pagesEnum,
   powerEnum
+  // noticeEnum
 };

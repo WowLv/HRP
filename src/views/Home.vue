@@ -32,7 +32,7 @@
 import HeadBar from "@/components/HeadBar.vue";
 import SideBar from "@/components/SideBar.vue";
 import { mapGetters, mapActions } from "vuex";
-// import { check } from "@/api/login.js"
+import { getNotice } from "@/api/notification";
 export default {
   name: "Home",
   created() {
@@ -42,6 +42,15 @@ export default {
       this.initTabs(pageObj);
     }
     this.addTab(this.$route.path);
+    this.doGetNotice(this.uid);
+    // this.$notify({
+    //   title: "您有一条新通知",
+    //   message: this.$createElement(
+    //     "div",
+    //     { style: "color: teal" },
+    //     "我是你爹！我是你爹！我是你爹！我是你爹！我是你爹！"
+    //   )
+    // });
   },
   data() {
     return {};
@@ -51,13 +60,57 @@ export default {
     SideBar
   },
   computed: {
-    ...mapGetters(["pageTabs", "pageTabsValue", "tabIndex", "currPath"])
+    ...mapGetters(["pageTabs", "pageTabsValue", "tabIndex", "currPath", "uid"])
   },
   watch: {
     $route: "fetchRouter"
   },
   methods: {
     ...mapActions(["addTab", "removeTab", "initTabs", "selectTab"]),
+    async doGetNotice(fid) {
+      let res = await getNotice(fid);
+      if (res.success) {
+        console.log(res.data);
+        // let finishNum = res.data.filter(item => {
+        //   return item.noticeModeId === 3;
+        // }).length;
+        let uncheckNum = res.data.filter(item => {
+          return item.noticeModeId === 1;
+        }).length;
+        let checkNum = res.data.filter(item => {
+          return item.noticeModeId === 2;
+        }).length;
+
+        if (uncheckNum) {
+          //待审核消息
+          setTimeout(() => {
+            this.$notify({
+              title: "新通知",
+              duration: 10000,
+              message: this.$createElement(
+                "div",
+                { style: "color: #00CD66" },
+                `您有${uncheckNum}条待审核信息`
+              )
+            });
+          }, 0);
+        }
+        if (checkNum) {
+          //已审核消息
+          setTimeout(() => {
+            this.$notify({
+              title: "新通知",
+              duration: 10000,
+              message: this.$createElement(
+                "div",
+                { style: "color: #00CED1" },
+                `您有${checkNum}条审核完成的信息`
+              )
+            });
+          }, 0);
+        }
+      }
+    },
     fetchRouter() {
       let nowRouter = this.$route.path;
       this.addTab(nowRouter);

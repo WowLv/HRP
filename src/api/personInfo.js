@@ -1,11 +1,11 @@
 import request from "./request";
 
-export function getInfo(Uid) {
+export function getInfo(uid) {
   return request({
     url: "/personInfo",
     method: "get",
     params: {
-      Uid
+      uid
     }
   });
 }

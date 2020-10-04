@@ -9,9 +9,10 @@
         <el-button
           slot="append"
           icon="el-icon-search"
+          @click="handleSearch"
           v-if="!searched"
         ></el-button>
-        <el-button slot="append" v-else>返回</el-button>
+        <el-button slot="append" v-else @click="handleBack">返回</el-button>
       </el-input>
       <el-button type="success" class="add-btn" @click="toRegister"
         >新增人员档案</el-button
@@ -69,7 +70,7 @@
         background
         :pageSize="10"
         layout="prev, pager, next, jumper"
-        @current-change="handlePageChange"
+        @current-change="doGetMemberFile"
         :total="sum"
       >
       </el-pagination>
@@ -78,10 +79,10 @@
 </template>
 
 <script>
-import { getMemberFile } from "@/api/memberFile";
+import { getMemberFile, searchMemberFile } from "@/api/memberFile";
 export default {
   created() {
-    this.doGetMemberFile();
+    this.doGetMemberFile(1);
   },
   data() {
     return {
@@ -109,9 +110,6 @@ export default {
           this.isLoading = false;
         }, 500);
       }
-    },
-    handlePageChange(e) {
-      this.doGetMemberFile(e);
     },
     toRegister() {
       this.$router.push({ name: "MemberRegister" });
@@ -151,6 +149,28 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    async handleSearch() {
+      let res = await searchMemberFile(this.search);
+      if (res.success) {
+        this.searched = true;
+        this.allInfo = res.data.data;
+        this.sum = res.data.sum;
+        this.search = "";
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "warning"
+        });
+      }
+    },
+    handleBack() {
+      this.searched = false;
+      this.doGetMemberFile(1);
     }
   }
 };

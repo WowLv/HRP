@@ -34,7 +34,7 @@ export function modifyPw(uid, oldPassword, newPassword) {
 
 export function register(userData) {
   return request({
-    url: "/uregister",
+    url: "/u_register",
     method: "post",
     data: userData
   });

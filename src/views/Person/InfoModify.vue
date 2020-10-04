@@ -122,7 +122,24 @@ export default {
   created() {
     if (this.$route.params.mode) {
       this.mode = this.$route.params.mode;
-      this.personInfo = new Admin(...Object.values(this.$route.params.userObj));
+      let {
+        uid,
+        username,
+        sex,
+        age,
+        phone,
+        email,
+        powerId
+      } = this.$route.params.userObj;
+      this.personInfo = new Admin(
+        uid,
+        username,
+        sex,
+        age,
+        phone,
+        email,
+        powerId
+      );
       this.disabled = info_disable;
       setTimeout(() => {
         this.isLoading = false;
@@ -176,11 +193,20 @@ export default {
     ...mapGetters(["power", "uid"])
   },
   methods: {
-    async doGetInfo(uid) {
-      let res = await getInfo(uid);
+    async doGetInfo(Uid) {
+      let res = await getInfo(Uid);
       console.log(res.data);
+      let { uid, username, sex, age, phone, email, powerId } = res.data;
       if (res.success) {
-        this.personInfo = new Teacher(...Object.values(res.data));
+        this.personInfo = new Teacher(
+          uid,
+          username,
+          sex,
+          age,
+          phone,
+          email,
+          powerId
+        );
         this.disabled = info_disable;
         setTimeout(() => {
           this.isLoading = false;

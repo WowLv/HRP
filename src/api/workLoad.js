@@ -1,14 +1,15 @@
 import request from "./request";
 
-export function postScientificLoad(fileObj) {
-  var fd = new FormData();
-
-  fd.append("file", fileObj.file);
-  fd.append("loadInfo", fileObj.data);
+export function getPublicLoadSum() {
   return request({
-    url: "/scient_load",
-    method: "post",
-    // headers: { "Content-Type": "multipart/form-data" },
-    data: fd
+    url: "/publicLoad_sum",
+    method: "get"
+  });
+}
+
+export function getScientLoadSum() {
+  return request({
+    url: "/scientLoad_sum",
+    method: "get"
   });
 }

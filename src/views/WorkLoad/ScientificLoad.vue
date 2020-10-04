@@ -19,18 +19,24 @@
           placeholder="请选择工作量项"
           class="option-item"
         >
-          <el-option
-            v-for="item in workLoadOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          <el-option-group
+            v-for="group in workLoadOptions"
+            :key="group.scientTypeId"
+            :label="group.scientLoadType"
           >
-          </el-option>
+            <el-option
+              v-for="item in group.options"
+              :key="item.workLoadId"
+              :label="item.workLoad"
+              :value="item.workLoadId"
+            >
+            </el-option>
+          </el-option-group>
         </el-select>
       </el-form-item>
       <el-upload
         class="upload-item"
-        action="/api/scient_load"
+        action="/api/scientLoad"
         ref="upload"
         drag
         multiple
@@ -57,9 +63,12 @@
 </template>
 
 <script>
-// import { postScientificLoad } from "@/api/workLoad";
+import { getScientLoadSum } from "@/api/workLoad";
 import { validateUid, validateName } from "@/lib/validate";
 export default {
+  created() {
+    this.doGetScientLoadSum();
+  },
   data() {
     return {
       readyCount: 0,
@@ -77,6 +86,34 @@ export default {
     };
   },
   methods: {
+    async doGetScientLoadSum() {
+      let res = await getScientLoadSum();
+      let workLoadList = [];
+      let flag = false;
+      if (res.success) {
+        res.data.map(resItem => {
+          // var scientTypeId = ""
+          for (let i = 0; i < workLoadList.length; i++) {
+            if (workLoadList[i].scientTypeId === resItem.scientTypeId) {
+              flag = true;
+              workLoadList[i].options.push(resItem);
+              break;
+            }
+          }
+
+          if (flag) {
+            flag = false;
+          } else {
+            workLoadList.push({
+              scientTypeId: resItem.scientTypeId,
+              scientLoadType: resItem.scientLoadType,
+              options: [resItem]
+            });
+          }
+        });
+        this.workLoadOptions = workLoadList;
+      }
+    },
     handleChange(file, fileList) {
       this.fileList = fileList;
     },

@@ -32,6 +32,9 @@
           </template>
           <el-submenu index="2-1">
             <template slot="title">岗位管理</template>
+            <el-menu-item index="/s_transfer_apply">调岗申请</el-menu-item>
+            <el-menu-item index="/p_transfer_apply">调职申请</el-menu-item>
+            <el-menu-item index="/transfer_manage">调职管理</el-menu-item>
             <el-menu-item index="2-1-1">岗位</el-menu-item>
             <el-menu-item index="2-1-2">岗位类别</el-menu-item>
           </el-submenu>
@@ -40,10 +43,8 @@
             <el-menu-item index="/person_file">个人档案</el-menu-item>
             <el-menu-item index="/member_file">人员档案</el-menu-item>
             <el-menu-item index="/entry_apply">入职申请</el-menu-item>
-            <el-menu-item index="/transfer_apply">调职申请</el-menu-item>
             <el-menu-item index="/resign_apply">离职申请</el-menu-item>
             <el-menu-item index="/e_r_manage">入/离职管理</el-menu-item>
-            <el-menu-item index="/transfer_manage">调职管理</el-menu-item>
           </el-submenu>
           <el-submenu index="2-3">
             <template slot="title">部门管理</template>

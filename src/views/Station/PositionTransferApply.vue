@@ -3,7 +3,7 @@
     <el-form
       ref="form"
       :model="applyForm"
-      label-width="100px"
+      label-width="80px"
       class="form"
       :rules="rule"
     >
@@ -13,43 +13,46 @@
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item label="职位" class="form-item" prop="positionName">
-        <el-input v-model="applyForm.positionName"></el-input>
+      <el-form-item label="原职位" class="form-item" required>
+        <el-select
+          class="option-item"
+          v-model="applyForm.oldPositionId"
+          placeholder="请选择职位"
+          disabled
+        >
+          <el-option
+            v-for="item in posOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="岗位" class="form-item" required>
-        <el-col :span="10">
-          <el-form-item prop="stationId">
-            <el-select v-model="applyForm.stationId" placeholder="请选择岗位">
-              <el-option
-                v-for="item in posOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4" class="space-item">
-          <span class="iconfont icon-office-supplies"></span>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item prop="level">
-            <el-select v-model="applyForm.level" placeholder="职位等级">
-              <el-option
-                v-for="item in levelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
+
+      <el-form-item
+        label="目标职位"
+        class="form-item"
+        prop="positionId"
+        required
+      >
+        <el-select
+          class="option-item"
+          v-model="applyForm.positionId"
+          placeholder="请选择职位"
+        >
+          <el-option
+            v-for="item in posOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="申请时间" class="form-item" prop="applyTime">
         <el-date-picker
-          type="date"
+          type="datetime"
           placeholder="选择日期"
           v-model="applyForm.applyTime"
           style="width: 100%;"
@@ -69,6 +72,7 @@
 
 <script>
 let timer = null;
+import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
 import { getPersonFile } from "@/api/memberFile";
 export default {
@@ -76,61 +80,44 @@ export default {
     return {
       applyForm: {
         operator: "",
-        positionName: "",
-        stationId: "",
-        level: "",
         applicant: "",
+        oldPositionId: "",
+        positionId: "",
         applyTime: "",
         reason: ""
       },
       posOptions: [
         {
           value: 1,
-          label: "教师主体型"
+          label: "院长"
         },
         {
           value: 2,
-          label: "科研主体性"
+          label: "部门主管"
         },
         {
           value: 3,
-          label: "教学建设综合性"
+          label: "教务员"
         },
         {
           value: 4,
-          label: "实践教学型"
+          label: "教师"
         }
-      ],
-      levelOptions: [
-        { value: 2, label: "二级" },
-        { value: 3, label: "三级" },
-        { value: 4, label: "四级" },
-        { value: 5, label: "五级" },
-        { value: 6, label: "六级" },
-        { value: 7, label: "七级" },
-        { value: 8, label: "八级" },
-        { value: 9, label: "九级" },
-        { value: 10, label: "十级" },
-        { value: 11, label: "十一级" },
-        { value: 12, label: "十二级" }
       ],
       rule: {
         operator: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        positionName: [
-          { required: true, message: "请填写职位", trigger: "blur" }
-        ],
-        stationId: [
-          { required: true, message: "请选择岗位", trigger: "change" }
-        ],
-        level: [
-          { required: true, message: "请选择岗位等级", trigger: "change" }
+        positionId: [
+          { required: true, message: "请选择职位", trigger: "change" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }
         ]
       }
     };
+  },
+  computed: {
+    ...mapGetters(["uid"])
   },
   methods: {
     checkFid(e) {
@@ -143,26 +130,22 @@ export default {
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);
       if (res.success) {
-        console.log(res.data);
-        let { name, positionName, stationId, level } = res.data;
+        let { name, positionId } = res.data;
         this.applyForm.applicant = name;
-        this.applyForm.positionName = positionName;
-        this.applyForm.stationId = stationId;
-        this.applyForm.level = level;
-      } else {
-        this.applyForm = {
-          operator: parseInt(this.applyForm.operator),
-          reason: this.applyForm.reason,
-          applyTime: this.applyForm.applyTime
-        };
+        this.applyForm.oldPositionId = positionId;
       }
     },
     handleSubmit() {
       this.$refs["form"].validate(valid => {
         if (!valid) {
           return false;
-        } else {
+        } else if (this.uid !== this.applyForm.operator) {
           // this.transferApply();
+          this.$message({
+            message: "请使用本人职工号",
+            type: "warning"
+          });
+        } else {
           this.$refs["form"].resetFields();
         }
       });

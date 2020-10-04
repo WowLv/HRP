@@ -27,6 +27,7 @@ import {
   TableColumn,
   Select,
   Option,
+  OptionGroup,
   Drawer,
   DatePicker,
   Pagination,
@@ -53,6 +54,7 @@ Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(OptionGroup);
 Vue.use(Drawer);
 Vue.use(DatePicker);
 Vue.use(Pagination);

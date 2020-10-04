@@ -18,7 +18,7 @@
       </el-form-item>
       <el-form-item label="操作时间" class="form-item" prop="date">
         <el-date-picker
-          type="date"
+          type="datetime"
           placeholder="选择日期"
           v-model="loadInfo.date"
           style="width: 100%;"

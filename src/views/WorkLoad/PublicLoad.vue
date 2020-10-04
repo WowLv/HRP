@@ -21,16 +21,16 @@
         >
           <el-option
             v-for="item in workLoadOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.workLoadId"
+            :label="item.workLoad"
+            :value="item.workLoadId"
           >
           </el-option>
         </el-select>
       </el-form-item>
       <el-upload
         class="upload-item"
-        action="/api/public_load"
+        action="/api/publicLoad"
         ref="upload"
         drag
         multiple
@@ -58,7 +58,11 @@
 
 <script>
 import { validateUid, validateName } from "@/lib/validate";
+import { getPublicLoadSum } from "@/api/workLoad";
 export default {
+  created() {
+    this.doGetPublicLoadSum();
+  },
   data() {
     return {
       successCount: 0,
@@ -75,6 +79,12 @@ export default {
     };
   },
   methods: {
+    async doGetPublicLoadSum() {
+      let res = await getPublicLoadSum();
+      if (res.success) {
+        this.workLoadOptions = res.data;
+      }
+    },
     handleChange(file, fileList) {
       this.fileList = fileList;
     },

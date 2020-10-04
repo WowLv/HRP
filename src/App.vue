@@ -9,10 +9,6 @@ export default {};
 </script>
 
 <style lang="scss">
-* {
-  padding: 0;
-  margin: 0;
-}
 html {
   @media screen and (max-width: 1600px) {
     font-size: 12px;

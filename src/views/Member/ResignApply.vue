@@ -14,8 +14,8 @@
       class="form"
       :rules="rule"
     >
-      <el-form-item label="职工号" class="form-item" prop="operator">
-        <el-input v-model="applyForm.operator" @input="checkFid"></el-input>
+      <el-form-item label="职工号" class="form-item" prop="fid">
+        <el-input v-model="applyForm.fid" @input="checkFid"></el-input>
       </el-form-item>
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
@@ -66,7 +66,7 @@ export default {
       isResign: false,
       resignStep: 0,
       applyForm: {
-        operator: "",
+        fid: "",
         positionId: "",
         applicant: "",
         applyTime: "",
@@ -79,7 +79,7 @@ export default {
         { value: 4, label: "教师" }
       ],
       rule: {
-        operator: [{ required: true, validator: validateUid, trigger: "blur" }],
+        fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         positionId: [
           { required: true, message: "请填写职位", trigger: "change" }
@@ -147,7 +147,7 @@ export default {
         this.applyForm.positionId = positionId;
       } else {
         this.applyForm = {
-          operator: parseInt(this.applyForm.operator),
+          fid: parseInt(this.applyForm.fid),
           reason: this.applyForm.reason,
           applyTime: this.applyForm.applyTime
         };

@@ -107,6 +107,11 @@ const routes = [
         path: "scientific_load",
         name: "ScientificLoad",
         component: () => import("../views/WorkLoad/ScientificLoad.vue")
+      },
+      {
+        path: "load_manage",
+        name: "WorkLoadManage",
+        component: () => import("../views/WorkLoad/WorkLoadManage.vue")
       }
     ]
   },

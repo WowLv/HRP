@@ -7,8 +7,8 @@
       class="form"
       :rules="rule"
     >
-      <el-form-item label="职工号" class="form-item" prop="operator">
-        <el-input v-model="applyForm.operator" @input="checkFid"></el-input>
+      <el-form-item label="职工号" class="form-item" prop="fid">
+        <el-input v-model="applyForm.fid" @input="checkFid"></el-input>
       </el-form-item>
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
@@ -113,7 +113,7 @@ export default {
   data() {
     return {
       applyForm: {
-        operator: "",
+        fid: "",
         oldStationId: "",
         oldLevel: "",
         stationId: "",
@@ -154,7 +154,7 @@ export default {
         { value: 12, label: "十二级" }
       ],
       rule: {
-        operator: [{ required: true, validator: validateUid, trigger: "blur" }],
+        fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         stationId: [
           { required: true, message: "请选择岗位", trigger: "change" }
@@ -193,7 +193,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (!valid) {
           return false;
-        } else if (this.uid !== this.applyForm.operator) {
+        } else if (this.uid !== this.applyForm.fid) {
           // this.transferApply();
           this.$message({
             message: "请使用本人职工号",

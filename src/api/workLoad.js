@@ -13,3 +13,10 @@ export function getScientLoadSum() {
     method: "get"
   });
 }
+
+export function getWorkLoadList() {
+  return request({
+    url: "/load_manage",
+    method: "get"
+  });
+}

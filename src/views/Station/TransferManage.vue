@@ -10,7 +10,7 @@
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="operator"
+            prop="fid"
             label="负责人"
             align="center"
             width="170"
@@ -89,7 +89,7 @@
             width="200"
           ></el-table-column>
           <el-table-column
-            prop="operator"
+            prop="fid"
             label="负责人"
             width="160"
           ></el-table-column>

@@ -14,11 +14,12 @@ var pagesEnum = {
   s_transfer_apply: "调岗申请",
   p_transfer_apply: "调职申请",
   resign_apply: "离职申请",
-  e_r_manage: "入/离职管理",
-  transfer_manage: "调职管理",
+  e_r_manage: "入/离职审核",
+  transfer_manage: "调职审核",
   teach_load: "基础教学工作量",
   scientific_load: "教科研工作量",
-  public_load: "公共工作量"
+  public_load: "公共工作量",
+  load_manage: "工作量审核"
 };
 
 var powerEnum = {

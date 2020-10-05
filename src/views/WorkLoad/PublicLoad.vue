@@ -4,7 +4,7 @@
       label-width="150px"
       :model="loadInfo"
       class="form"
-      ref="forms"
+      ref="form"
       :rules="rule"
     >
       <el-form-item label="职工号" class="form-item" prop="fid">
@@ -13,9 +13,9 @@
       <el-form-item label="姓名" class="form-item" prop="name">
         <el-input v-model="loadInfo.name"></el-input>
       </el-form-item>
-      <el-form-item label="工作量项" class="form-item" prop="publicLoad">
+      <el-form-item label="工作量项" class="form-item" prop="workLoadId">
         <el-select
-          v-model="loadInfo.publicLoad"
+          v-model="loadInfo.workLoadId"
           placeholder="请选择工作量项"
           class="option-item"
         >
@@ -59,24 +59,29 @@
 <script>
 import { validateUid, validateName } from "@/lib/validate";
 import { getPublicLoadSum } from "@/api/workLoad";
+import { mapGetters } from "vuex";
 export default {
   created() {
     this.doGetPublicLoadSum();
   },
   data() {
     return {
+      readyCount: 0,
       successCount: 0,
-      loadInfo: { mode: "public" },
+      loadInfo: { workLoadType: "public", workLoadTypeId: 2, modeId: 0 },
       workLoadOptions: [],
       fileList: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
-        name: [{ required: true, validator: validateName, trigger: "blur" }]
-        // publicLoad: [
-        //   { required: true, message: "请选择工作量项", trigger: "change" }
-        // ],
+        name: [{ required: true, validator: validateName, trigger: "blur" }],
+        workLoadId: [
+          { required: true, message: "请选择工作量项", trigger: "change" }
+        ]
       }
     };
+  },
+  computed: {
+    ...mapGetters(["uid"])
   },
   methods: {
     async doGetPublicLoadSum() {
@@ -112,7 +117,7 @@ export default {
       }
     },
     submit() {
-      this.$refs["forms"].validate(valid => {
+      this.$refs["form"].validate(valid => {
         if (!valid) {
           return false;
         } else {
@@ -121,8 +126,14 @@ export default {
               message: "请添加工作量佐证",
               type: "warning"
             });
+          } else if (this.uid !== parseInt(this.loadInfo.fid)) {
+            this.$message({
+              message: "请输入本人职工号",
+              type: "warning"
+            });
           } else {
             this.$refs.upload.submit();
+            this.$refs["form"].resetFields();
           }
         }
       });

@@ -84,7 +84,7 @@ export default {
     async doEntryApply() {
       let res = await entryApply(
         Object.assign(this.applyForm, {
-          operator: this.uid,
+          fid: this.uid,
           applyTypeId: 1,
           modeId: 0
         })

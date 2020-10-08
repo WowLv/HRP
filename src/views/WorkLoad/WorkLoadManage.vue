@@ -17,7 +17,7 @@
     </div>
     <el-table
       ref="filterTable"
-      :data="allInfo"
+      :data="nowAllInfo"
       style="width: 100%"
       class="table"
     >
@@ -82,6 +82,7 @@
         background
         :pageSize="10"
         layout="prev, pager, next, jumper"
+        @current-change="handlePageChange"
         :total="sum"
       >
       </el-pagination>
@@ -110,6 +111,18 @@ export default {
       }
     };
   },
+  computed: {
+    nowAllInfo() {
+      let list = this.allInfo;
+      list = list.sort((a, b) => {
+        return (
+          parseInt(b.uploadTime.replace(/-/g, "")) -
+          parseInt(a.uploadTime.replace(/-/g, ""))
+        );
+      });
+      return list;
+    }
+  },
   methods: {
     async doGetWorkLoadList() {
       let res = await getWorkLoadList();
@@ -120,6 +133,7 @@ export default {
         }, 500);
       }
     },
+    handlePageChange() {},
     filterTag(value, row) {
       return row.power === value;
     },

@@ -45,10 +45,10 @@
           :disabled="disabled.position"
         >
           <el-option
-            v-for="item in posTypeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in posOptions"
+            :key="item.positionId"
+            :label="item.positionName"
+            :value="item.positionId"
           >
           </el-option>
         </el-select>
@@ -67,10 +67,10 @@
             :disabled="disabled.station"
           >
             <el-option
-              v-for="item in posOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in stationOptions"
+              :key="item.stationId"
+              :label="item.stationName"
+              :value="item.stationId"
             >
             </el-option>
           </el-select>
@@ -80,16 +80,16 @@
         </el-col>
         <el-col :span="10">
           <el-select
-            v-model="personInfo.level"
+            v-model="personInfo.levelId"
             placeholder="岗位等级"
             class="power-item"
             :disabled="disabled.station"
           >
             <el-option
               v-for="item in levelOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.levelId"
+              :label="item.levelName"
+              :value="item.levelId"
             >
             </el-option>
           </el-select>
@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { getPersonFile } from "@/api/memberFile";
+import { getPersonFile, getLevel } from "@/api/memberFile";
 import { mapGetters } from "vuex";
 var info_able = {
   fid: false,
@@ -190,6 +190,7 @@ var info_disable = {
 export default {
   created() {
     this.disabled = info_disable;
+    this.doGetLevel();
     if (this.$route.params.mode && this.$route.params.mode === "admin") {
       this.mode = this.$route.params.type;
       this.admin = true;
@@ -212,12 +213,7 @@ export default {
       drawer: false,
       disabled: {},
       personInfo: {},
-      posTypeOptions: [
-        { value: 1, label: "院长" },
-        { value: 2, label: "部门主管" },
-        { value: 3, label: "教务员" },
-        { value: 4, label: "教师" }
-      ],
+      posOptions: [],
       publicWork: [
         {
           date: "2020-05-02",
@@ -235,43 +231,22 @@ export default {
           workName: "省级教学成果一等奖"
         }
       ],
-      posOptions: [
-        {
-          value: 1,
-          label: "教师主体型"
-        },
-        {
-          value: 2,
-          label: "科研主体性"
-        },
-        {
-          value: 3,
-          label: "教学建设综合性"
-        },
-        {
-          value: 4,
-          label: "实践教学型"
-        }
-      ],
-      levelOptions: [
-        { value: 2, label: "二级" },
-        { value: 3, label: "三级" },
-        { value: 4, label: "四级" },
-        { value: 5, label: "五级" },
-        { value: 6, label: "六级" },
-        { value: 7, label: "七级" },
-        { value: 8, label: "八级" },
-        { value: 9, label: "九级" },
-        { value: 10, label: "十级" },
-        { value: 11, label: "十一级" },
-        { value: 12, label: "十二级" }
-      ]
+      stationOptions: [],
+      levelOptions: []
     };
   },
   computed: {
     ...mapGetters(["power", "uid"])
   },
   methods: {
+    async doGetLevel() {
+      let res = await getLevel();
+      if (res.success) {
+        this.levelOptions = res.data.levelRow;
+        this.posOptions = res.data.positionRow;
+        this.stationOptions = res.data.stationRow;
+      }
+    },
     async doGetPersonFile(uid) {
       let res = await getPersonFile(uid);
       console.log(res.data);

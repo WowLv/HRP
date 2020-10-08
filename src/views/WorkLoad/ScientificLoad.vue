@@ -34,6 +34,40 @@
           </el-option-group>
         </el-select>
       </el-form-item>
+      <el-form-item
+        label="附加项"
+        class="form-item"
+        v-if="extraList.includes(loadInfo.workLoadId)"
+      >
+        <el-col :span="11">
+          <el-form-item prop="extra">
+            <el-input
+              type="number"
+              placeholder="请输入数量"
+              v-model="loadInfo.extra"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"
+          ><i class="icon-item el-icon-document-add"></i
+        ></el-col>
+        <el-col :span="11">
+          <el-form-item>
+            <el-select
+              placeholder="请选择附加项类型"
+              v-model="loadInfo.extraMeasureId"
+            >
+              <el-option
+                v-for="item in extraMeasureOptions"
+                :key="item.extraMeasureId"
+                :label="item.extraMeasureName"
+                :value="item.extraMeasureId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
       <el-upload
         class="upload-item"
         action="/api/scientLoad"
@@ -64,7 +98,7 @@
 
 <script>
 import { getScientLoadSum } from "@/api/workLoad";
-import { validateUid, validateName } from "@/lib/validate";
+import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
 import { mapGetters } from "vuex";
 export default {
   created() {
@@ -74,15 +108,23 @@ export default {
     return {
       readyCount: 0,
       successCount: 0,
-      loadInfo: { workLoadType: "scientific", workLoadTypeId: 1, modeId: 0 },
+      loadInfo: {
+        workLoadType: "scientific",
+        workLoadTypeId: 1,
+        modeId: 0,
+        extra: 0
+      },
       workLoadOptions: [],
       fileList: [],
+      extraList: [],
+      extraMeasureOptions: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         name: [{ required: true, validator: validateName, trigger: "blur" }],
         workLoadId: [
           { required: true, message: "请选择工作量项", trigger: "change" }
-        ]
+        ],
+        extra: [{ validator: validateTeachLoad, trigger: "blur" }]
       }
     };
   },
@@ -95,7 +137,9 @@ export default {
       let workLoadList = [];
       let flag = false;
       if (res.success) {
-        res.data.map(resItem => {
+        this.extraList = res.data.extraList;
+        this.extraMeasureOptions = res.data.extraMeasureList;
+        res.data.scientList.map(resItem => {
           // var scientTypeId = ""
           for (let i = 0; i < workLoadList.length; i++) {
             if (workLoadList[i].scientTypeId === resItem.scientTypeId) {
@@ -177,6 +221,14 @@ export default {
     margin-top: 50px;
     .form-item {
       margin-bottom: 20px;
+      .icon-item {
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        line-height: 40px;
+        font-size: 22px;
+        color: #666666;
+      }
       .option-item {
         width: 450px;
         @media screen and (max-width: 1600px) {

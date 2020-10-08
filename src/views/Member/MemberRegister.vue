@@ -14,10 +14,10 @@
           class="option-item"
         >
           <el-option
-            v-for="item in posTypeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in posOptions"
+            :key="item.positionId"
+            :label="item.positionName"
+            :value="item.positionId"
           >
           </el-option>
         </el-select>
@@ -53,9 +53,9 @@
         >
           <el-option
             v-for="item in sectionOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.sectionId"
+            :label="item.sectionName"
+            :value="item.sectionId"
           >
           </el-option>
         </el-select>
@@ -70,10 +70,10 @@
           <el-form-item prop="stationId">
             <el-select v-model="personInfo.stationId" placeholder="请选择岗位">
               <el-option
-                v-for="item in posOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in stationOptions"
+                :key="item.stationId"
+                :label="item.stationName"
+                :value="item.stationId"
               >
               </el-option>
             </el-select>
@@ -83,13 +83,13 @@
           <span class="iconfont icon-office-supplies"></span>
         </el-col>
         <el-col :span="10">
-          <el-form-item prop="level">
-            <el-select v-model="personInfo.level" placeholder="职位等级">
+          <el-form-item prop="levelId">
+            <el-select v-model="personInfo.levelId" placeholder="职位等级">
               <el-option
                 v-for="item in levelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.levelId"
+                :label="item.levelName"
+                :value="item.levelId"
               >
               </el-option>
             </el-select>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { memberRegister } from "@/api/memberFile";
+import { memberRegister, getLevel } from "@/api/memberFile";
 import { TeachMember, SectionMember, DeanMember } from "@/lib/class";
 import {
   validatePhone,
@@ -115,6 +115,9 @@ import {
   validateName
 } from "@/lib/validate.js";
 export default {
+  created() {
+    this.doGetLevel();
+  },
   data() {
     return {
       positionId: 4,
@@ -131,57 +134,27 @@ export default {
         stationId: [
           { required: true, message: "请选择岗位", trigger: "change" }
         ],
-        level: [
+        levelId: [
           { required: true, message: "请选择职位等级", trigger: "change" }
         ]
       },
-      posTypeOptions: [
-        { value: 1, label: "院长" },
-        { value: 2, label: "部门主管" },
-        { value: 3, label: "教务员" },
-        { value: 4, label: "教师" }
-      ],
-      sectionOptions: [
-        { value: 1, label: "人事处" },
-        { value: 2, label: "教务处" },
-        { value: 3, label: "科研处" }
-      ],
-      posOptions: [
-        {
-          value: 1,
-          label: "教师主体型"
-        },
-        {
-          value: 2,
-          label: "科研主体性"
-        },
-        {
-          value: 3,
-          label: "教学建设综合性"
-        },
-        {
-          value: 4,
-          label: "实践教学型"
-        }
-      ],
-      levelOptions: [
-        { value: 1, label: "一级" },
-        { value: 2, label: "二级" },
-        { value: 3, label: "三级" },
-        { value: 4, label: "四级" },
-        { value: 5, label: "五级" },
-        { value: 6, label: "六级" },
-        { value: 7, label: "七级" },
-        { value: 8, label: "八级" },
-        { value: 9, label: "九级" },
-        { value: 10, label: "十级" },
-        { value: 11, label: "十一级" },
-        { value: 12, label: "十二级" }
-      ]
+      posOptions: [],
+      sectionOptions: [],
+      stationOptions: [],
+      levelOptions: []
     };
   },
   computed: {},
   methods: {
+    async doGetLevel() {
+      let res = await getLevel();
+      if (res.success) {
+        this.levelOptions = res.data.levelRow;
+        this.posOptions = res.data.positionRow;
+        this.sectionOptions = res.data.sectionRow;
+        this.stationOptions = res.data.stationRow;
+      }
+    },
     handleSubmit() {
       let memberData = {};
       let {
@@ -192,7 +165,7 @@ export default {
         email,
         sectionId,
         stationId,
-        level
+        levelId
       } = this.personInfo;
       if (this.positionId === 1 || this.positionId === 2) {
         memberData = new DeanMember(
@@ -221,7 +194,7 @@ export default {
           phone,
           email,
           stationId,
-          level,
+          levelId,
           this.positionId
         );
       }

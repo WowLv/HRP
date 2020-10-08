@@ -23,9 +23,9 @@
             >
               <el-option
                 v-for="item in stationOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.stationId"
+                :label="item.stationName"
+                :value="item.stationId"
               >
               </el-option>
             </el-select>
@@ -43,9 +43,9 @@
             >
               <el-option
                 v-for="item in levelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.levelId"
+                :label="item.levelName"
+                :value="item.levelId"
               >
               </el-option>
             </el-select>
@@ -59,9 +59,9 @@
             <el-select v-model="applyForm.stationId" placeholder="请选择岗位">
               <el-option
                 v-for="item in stationOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.stationId"
+                :label="item.stationName"
+                :value="item.stationId"
               >
               </el-option>
             </el-select>
@@ -71,13 +71,13 @@
           <span class="iconfont icon-office-supplies"></span>
         </el-col>
         <el-col :span="10">
-          <el-form-item prop="level">
-            <el-select v-model="applyForm.level" placeholder="职位等级">
+          <el-form-item prop="levelId">
+            <el-select v-model="applyForm.levelId" placeholder="职位等级">
               <el-option
                 v-for="item in levelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.levelId"
+                :label="item.levelName"
+                :value="item.levelId"
               >
               </el-option>
             </el-select>
@@ -108,8 +108,11 @@
 let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
-import { getPersonFile } from "@/api/memberFile";
+import { getPersonFile, getLevel } from "@/api/memberFile";
 export default {
+  created() {
+    this.doGetLevel();
+  },
   data() {
     return {
       applyForm: {
@@ -117,49 +120,20 @@ export default {
         oldStationId: "",
         oldLevel: "",
         stationId: "",
-        level: "",
+        levelId: "",
         applicant: "",
         applyTime: "",
         reason: ""
       },
-      stationOptions: [
-        {
-          value: 1,
-          label: "教师主体型"
-        },
-        {
-          value: 2,
-          label: "科研主体性"
-        },
-        {
-          value: 3,
-          label: "教学建设综合性"
-        },
-        {
-          value: 4,
-          label: "实践教学型"
-        }
-      ],
-      levelOptions: [
-        { value: 2, label: "二级" },
-        { value: 3, label: "三级" },
-        { value: 4, label: "四级" },
-        { value: 5, label: "五级" },
-        { value: 6, label: "六级" },
-        { value: 7, label: "七级" },
-        { value: 8, label: "八级" },
-        { value: 9, label: "九级" },
-        { value: 10, label: "十级" },
-        { value: 11, label: "十一级" },
-        { value: 12, label: "十二级" }
-      ],
+      stationOptions: [],
+      levelOptions: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         stationId: [
           { required: true, message: "请选择岗位", trigger: "change" }
         ],
-        level: [
+        levelId: [
           { required: true, message: "请选择岗位等级", trigger: "change" }
         ],
         applyTime: [
@@ -172,6 +146,13 @@ export default {
     ...mapGetters(["uid"])
   },
   methods: {
+    async doGetLevel() {
+      let res = await getLevel();
+      if (res.success) {
+        this.stationOptions = res.data.stationRow;
+        this.levelOptions = res.data.levelRow;
+      }
+    },
     checkFid(e) {
       timer && clearTimeout(timer);
       timer = setTimeout(() => {
@@ -182,11 +163,11 @@ export default {
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);
       if (res.success) {
-        let { name, positionName, stationId, level } = res.data;
+        let { name, positionName, stationId, levelId } = res.data;
         this.applyForm.applicant = name;
         this.applyForm.positionName = positionName;
         this.applyForm.oldStationId = stationId;
-        this.applyForm.oldLevel = level;
+        this.applyForm.oldLevel = levelId;
       }
     },
     handleSubmit() {

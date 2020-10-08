@@ -34,10 +34,10 @@ export class Teacher extends User {
 }
 
 export class TeachMember extends Member {
-  constructor(name, sex, age, phone, email, stationId, level, positionId) {
+  constructor(name, sex, age, phone, email, stationId, levelId, positionId) {
     super(name, sex, age, phone, email, positionId);
     this.stationId = stationId;
-    this.level = level;
+    this.levelId = levelId;
   }
 }
 

@@ -4,20 +4,20 @@
       <el-tab-pane label="未审批" name="unfinish">
         <el-table :data="applyData" class="table">
           <el-table-column
-            prop="createTime"
+            prop="applyTime"
             label="申请时间"
             align="center"
             width="200"
           ></el-table-column>
           <el-table-column
             prop="fid"
-            label="负责人"
+            label="负责人职工号"
             align="center"
             width="170"
           ></el-table-column>
           <el-table-column
             prop="applicant"
-            label="姓名"
+            label="申请人"
             align="center"
             width="170"
           ></el-table-column>
@@ -75,11 +75,21 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="table-pagination">
+          <el-pagination
+            background
+            :pageSize="8"
+            layout="prev, pager, next, jumper"
+            @current-change="applyPageChange"
+            :total="applySum"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="已审批" name="finished">
         <el-table :data="finishedData" class="table">
           <el-table-column
-            prop="createTime"
+            prop="applyTime"
             label="审核时间"
             width="200"
           ></el-table-column>
@@ -146,16 +156,31 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="table-pagination">
+          <el-pagination
+            background
+            :pageSize="8"
+            layout="prev, pager, next, jumper"
+            @current-change="finishPageChange"
+            :total="finishSum"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import { getAllMenberApply, passMember, rejectMember } from "@/api/memberFile";
+import {
+  getAllMenberApply,
+  getAllMenberFinished,
+  auditMember
+} from "@/api/memberFile";
 export default {
   created() {
-    this.doGetAllMenberApply();
+    this.doGetAllMenberApply(this.applyCurrPage);
+    this.doGetAllMenberFinished(this.finishCurrPage);
   },
   data() {
     return {
@@ -163,6 +188,10 @@ export default {
       activeName: "unfinish",
       applyData: [],
       finishedData: [],
+      applySum: 0,
+      finishSum: 0,
+      applyCurrPage: 1,
+      finishCurrPage: 1,
       tagType: {
         1: "warning",
         2: "warning",
@@ -172,44 +201,35 @@ export default {
     };
   },
   methods: {
-    async doGetAllMenberApply() {
+    async doGetAllMenberApply(page) {
       this.applyData = [];
-      this.finishedData = [];
-      let res = await getAllMenberApply();
+      let res = await getAllMenberApply(page);
       if (res.success) {
-        //判断是否审批过
-        if (res.data.length) {
-          res.data.map(item => {
-            if (item.modeId === 0) {
-              this.applyData.push(item);
-            } else {
-              this.finishedData.push(item);
-            }
-          });
-        }
+        this.applyData = res.data.data;
+        this.applySum = res.data.sum;
         setTimeout(() => {
           this.isLoading = false;
         }, 500);
       }
     },
-    async handldPass(mid) {
-      let res = await passMember(mid);
-      this.doGetAllMenberApply();
+    async doGetAllMenberFinished(page) {
+      this.finishedData = [];
+      let res = await getAllMenberFinished(page);
       if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
+        this.finishedData = res.data.data;
+        this.finishSum = res.data.sum;
       }
     },
-    async handleReject(mid) {
-      let res = await rejectMember(mid);
-      this.doGetAllMenberApply();
+    applyPageChange(p) {
+      this.applyCurrPage = p;
+      this.doGetAllMenberApply(p);
+    },
+    finishPageChange(p) {
+      this.finishCurrPage = p;
+      this.doGetAllMenberFinished(p);
+    },
+    async handldPass(mid) {
+      let res = await auditMember(mid, 1);
       if (res.success) {
         this.$message({
           message: res.msg,
@@ -221,6 +241,24 @@ export default {
           type: "error"
         });
       }
+      this.doGetAllMenberApply(this.applyCurrPage);
+      this.doGetAllMenberFinished(this.finishCurrPage);
+    },
+    async handleReject(mid) {
+      let res = await auditMember(mid, 2);
+      if (res.success) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "error"
+        });
+      }
+      this.doGetAllMenberApply(this.applyCurrPage);
+      this.doGetAllMenberFinished(this.finishCurrPage);
     },
     handleDelete(mid) {
       this.$message({
@@ -235,11 +273,20 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1540px;
+  position: relative;
   margin: 0 20px;
   .table {
+    height: 720px;
     .tag {
       padding: 0 20px;
     }
+  }
+  .table-pagination {
+    width: 100%;
+    position: absolute;
+    top: 660px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

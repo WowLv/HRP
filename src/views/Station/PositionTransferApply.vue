@@ -22,9 +22,9 @@
         >
           <el-option
             v-for="item in posOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.positionId"
+            :label="item.positionName"
+            :value="item.positionId"
           >
           </el-option>
         </el-select>
@@ -43,9 +43,9 @@
         >
           <el-option
             v-for="item in posOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.positionId"
+            :label="item.positionName"
+            :value="item.positionId"
           >
           </el-option>
         </el-select>
@@ -74,7 +74,7 @@
 let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
-import { getPersonFile } from "@/api/memberFile";
+import { getPersonFile, getLevel } from "@/api/memberFile";
 export default {
   data() {
     return {
@@ -86,24 +86,7 @@ export default {
         applyTime: "",
         reason: ""
       },
-      posOptions: [
-        {
-          value: 1,
-          label: "院长"
-        },
-        {
-          value: 2,
-          label: "部门主管"
-        },
-        {
-          value: 3,
-          label: "教务员"
-        },
-        {
-          value: 4,
-          label: "教师"
-        }
-      ],
+      posOptions: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -120,6 +103,12 @@ export default {
     ...mapGetters(["uid"])
   },
   methods: {
+    async doGetLevel() {
+      let res = await getLevel();
+      if (res.success) {
+        this.posOptions = res.data.positionRow;
+      }
+    },
     checkFid(e) {
       timer && clearTimeout(timer);
       timer = setTimeout(() => {

@@ -24,7 +24,7 @@ export function getMemberFile(page) {
 export function searchMemberFile(user) {
   user = handleUser(user);
   return request({
-    url: "/searchFile",
+    url: "/searchMember",
     method: "post",
     data: {
       user
@@ -56,29 +56,40 @@ export function resignApply(data) {
   });
 }
 
-export function getAllMenberApply() {
+export function getAllMenberApply(page) {
   return request({
     url: "/allMemberApply",
+    method: "get",
+    params: {
+      page
+    }
+  });
+}
+
+export function getAllMenberFinished(page) {
+  return request({
+    url: "/allMemberFinished",
+    method: "get",
+    params: {
+      page
+    }
+  });
+}
+
+export function auditMember(mid, modeId) {
+  return request({
+    url: "/auditMember",
+    method: "post",
+    data: {
+      mid,
+      modeId
+    }
+  });
+}
+
+export function getLevel() {
+  return request({
+    url: "/positionList",
     method: "get"
-  });
-}
-
-export function passMember(mid) {
-  return request({
-    url: "/passMember",
-    method: "post",
-    data: {
-      mid
-    }
-  });
-}
-
-export function rejectMember(mid) {
-  return request({
-    url: "/rejectMember",
-    method: "post",
-    data: {
-      mid
-    }
   });
 }

@@ -3,10 +3,11 @@
     <el-row class="tac">
       <el-menu
         :default-active="nowCurrPath"
-        class="el-menu-vertical-demo"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#409EFF"
+        class="menu-main"
+        background-color="#9FC5E8"
+        text-color="#555"
+        active-text-color="#F7F2DE"
+        unique-opened
         router
       >
         <el-submenu index="1">
@@ -50,10 +51,10 @@
           </el-submenu>
           <el-submenu index="2-4">
             <template slot="title">工作量管理</template>
-            <el-menu-item index="teach_load">基础教学工作量</el-menu-item>
-            <el-menu-item index="scientific_load">教科研工作量</el-menu-item>
-            <el-menu-item index="public_load">公共工作量</el-menu-item>
-            <el-menu-item index="load_manage">工作量审核</el-menu-item>
+            <el-menu-item index="/teach_load">基础教学工作量</el-menu-item>
+            <el-menu-item index="/scientific_load">教科研工作量</el-menu-item>
+            <el-menu-item index="/public_load">公共工作量</el-menu-item>
+            <el-menu-item index="/load_manage">工作量审核</el-menu-item>
           </el-submenu>
         </el-submenu>
       </el-menu>
@@ -89,5 +90,9 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  padding-top: 6px;
+  .menu-main {
+    height: 850px;
+  }
 }
 </style>

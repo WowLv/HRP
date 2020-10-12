@@ -108,7 +108,7 @@
 let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
-import { getPersonFile, getLevel } from "@/api/memberFile";
+import { getPersonFile, positionList } from "@/api/memberFile";
 export default {
   created() {
     this.doGetLevel();
@@ -147,7 +147,7 @@ export default {
   },
   methods: {
     async doGetLevel() {
-      let res = await getLevel();
+      let res = await positionList();
       if (res.success) {
         this.stationOptions = res.data.stationRow;
         this.levelOptions = res.data.levelRow;

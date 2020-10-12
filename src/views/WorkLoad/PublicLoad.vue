@@ -68,7 +68,12 @@ export default {
     return {
       readyCount: 0,
       successCount: 0,
-      loadInfo: { workLoadType: "public", workLoadTypeId: 2, modeId: 0 },
+      loadInfo: {
+        workLoadType: "public",
+        workLoadTypeId: 2,
+        modeId: 0,
+        extra: 0
+      },
       workLoadOptions: [],
       fileList: [],
       rule: {

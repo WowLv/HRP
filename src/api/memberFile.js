@@ -11,6 +11,14 @@ export function getPersonFile(fid) {
   });
 }
 
+export function setPersonFile(data) {
+  return request({
+    url: "/personFile",
+    method: "post",
+    data: data
+  });
+}
+
 export function getMemberFile(page) {
   return request({
     url: "/memberFile",
@@ -87,7 +95,7 @@ export function auditMember(mid, modeId) {
   });
 }
 
-export function getLevel() {
+export function positionList() {
   return request({
     url: "/positionList",
     method: "get"

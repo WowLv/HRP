@@ -57,7 +57,7 @@
         label="岗位"
         class="form-item"
         prop="stationId"
-        v-if="mode === 'teacher'"
+        v-if="nowType === 'teacher'"
       >
         <el-col :span="10">
           <el-select
@@ -98,19 +98,29 @@
       <el-form-item
         label="部门"
         class="form-item"
-        prop="sectionName"
-        v-if="mode === 'section'"
+        prop="section"
+        v-if="nowType === 'section'"
       >
-        <el-input
-          v-model="personInfo.sectionName"
-          :disabled="disabled.sectionName"
-        ></el-input>
+        <el-select
+          v-model="personInfo.sectionId"
+          placeholder="部门"
+          class="option-item"
+          :disabled="disabled.section"
+        >
+          <el-option
+            v-for="item in sectionOptions"
+            :key="item.sectionId"
+            :label="item.sectionName"
+            :value="item.sectionId"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item
         label="基础教学课时"
         class="form-item"
         prop="classHour"
-        v-if="mode === 'teacher'"
+        v-if="nowType === 'teacher'"
       >
         <el-input
           v-model="personInfo.classHour"
@@ -121,7 +131,7 @@
         label="教科研/公共工作量"
         class="form-item"
         prop="publicWork"
-        v-if="mode === 'teacher'"
+        v-if="nowType === 'teacher'"
       >
         <el-button class="option-item" @click="openDrawer">点击查看</el-button>
       </el-form-item>
@@ -161,7 +171,7 @@
 </template>
 
 <script>
-import { getPersonFile, getLevel } from "@/api/memberFile";
+import { getPersonFile, setPersonFile, positionList } from "@/api/memberFile";
 import { mapGetters } from "vuex";
 var info_able = {
   fid: false,
@@ -170,10 +180,10 @@ var info_able = {
   age: false,
   phone: false,
   email: false,
-  station: false,
-  sectionName: false,
-  classHour: false,
-  position: false
+  station: true,
+  section: true,
+  classHour: true,
+  position: true
 };
 var info_disable = {
   fid: true,
@@ -183,7 +193,7 @@ var info_disable = {
   phone: true,
   email: true,
   station: true,
-  sectionName: true,
+  section: true,
   classHour: true,
   position: true
 };
@@ -192,7 +202,6 @@ export default {
     this.disabled = info_disable;
     this.doGetLevel();
     if (this.$route.params.mode && this.$route.params.mode === "admin") {
-      this.mode = this.$route.params.type;
       this.admin = true;
       this.doGetPersonFile(this.$route.params.fid);
       setTimeout(() => {
@@ -200,8 +209,6 @@ export default {
       }, 500);
     } else {
       this.doGetPersonFile(this.uid);
-      if (this.power === 5) this.mode = "teacher";
-      if (this.power === 4) this.mode = "section";
     }
   },
   data() {
@@ -214,6 +221,7 @@ export default {
       disabled: {},
       personInfo: {},
       posOptions: [],
+      sectionOptions: [],
       publicWork: [
         {
           date: "2020-05-02",
@@ -236,15 +244,45 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["power", "uid"])
+    ...mapGetters(["power", "uid"]),
+    nowType() {
+      if (this.personInfo.positionId === 4) {
+        delete this.personInfo.sectionId;
+        return "teacher";
+      } else if (this.personInfo.positionId === 3) {
+        delete this.personInfo.stationId;
+        delete this.personInfo.levelId;
+        return "section";
+      } else {
+        delete this.personInfo.sectionId;
+        delete this.personInfo.stationId;
+        delete this.personInfo.levelId;
+        return "";
+      }
+    }
   },
   methods: {
+    async doSetPersonFile(data) {
+      let res = await setPersonFile(data);
+      if (res.success) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "error"
+        });
+      }
+    },
     async doGetLevel() {
-      let res = await getLevel();
+      let res = await positionList();
       if (res.success) {
         this.levelOptions = res.data.levelRow;
         this.posOptions = res.data.positionRow;
         this.stationOptions = res.data.stationRow;
+        this.sectionOptions = res.data.sectionRow;
       }
     },
     async doGetPersonFile(uid) {
@@ -264,6 +302,7 @@ export default {
     saveInfo() {
       this.disabled = info_disable;
       this.editable = false;
+      this.doSetPersonFile(this.personInfo);
     },
     openDrawer() {
       this.drawer = true;

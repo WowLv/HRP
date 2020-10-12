@@ -140,7 +140,6 @@ export default {
         this.extraList = res.data.extraList;
         this.extraMeasureOptions = res.data.extraMeasureList;
         res.data.scientList.map(resItem => {
-          // var scientTypeId = ""
           for (let i = 0; i < workLoadList.length; i++) {
             if (workLoadList[i].scientTypeId === resItem.scientTypeId) {
               flag = true;

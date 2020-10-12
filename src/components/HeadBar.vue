@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <div class="title">绩效考核管理系统</div>
+      <div class="title" text="绩效考核管理系统">绩效考核管理系统</div>
       <div class="util">
         <div class="link-box">
           <span class="iconfont icon-account"></span><span>{{ username }}</span>
@@ -74,7 +74,14 @@ export default {
       line-height: 80px;
       text-align: center;
       font-size: 28px;
-      color: #333333;
+      color: #666;
+      &:before {
+        content: attr(text);
+        position: absolute;
+        z-index: 10;
+        color: #147dbe;
+        mask: linear-gradient(to left, #147dbe, transparent);
+      }
     }
     .util {
       float: right;
@@ -92,15 +99,17 @@ export default {
         height: 80px;
         box-sizing: border-box;
         &:hover {
-          background-color: #454a50;
           cursor: pointer;
+          span {
+            color: #f7f2de;
+          }
         }
         .iconfont {
           font-size: 28px;
         }
         span {
           text-align: center;
-          color: #ffffff;
+          color: #666;
         }
       }
     }

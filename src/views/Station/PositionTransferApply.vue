@@ -74,7 +74,7 @@
 let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
-import { getPersonFile, getLevel } from "@/api/memberFile";
+import { getPersonFile, positionList } from "@/api/memberFile";
 export default {
   data() {
     return {
@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async doGetLevel() {
-      let res = await getLevel();
+      let res = await positionList();
       if (res.success) {
         this.posOptions = res.data.positionRow;
       }

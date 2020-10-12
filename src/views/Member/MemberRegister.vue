@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { memberRegister, getLevel } from "@/api/memberFile";
+import { memberRegister, positionList } from "@/api/memberFile";
 import { TeachMember, SectionMember, DeanMember } from "@/lib/class";
 import {
   validatePhone,
@@ -147,7 +147,7 @@ export default {
   computed: {},
   methods: {
     async doGetLevel() {
-      let res = await getLevel();
+      let res = await positionList();
       if (res.success) {
         this.levelOptions = res.data.levelRow;
         this.posOptions = res.data.positionRow;

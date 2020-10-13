@@ -35,9 +35,9 @@
           <span class="iconfont icon-office-supplies"></span>
         </el-col>
         <el-col :span="10">
-          <el-form-item prop="oldLevel">
+          <el-form-item prop="oldLevelId">
             <el-select
-              v-model="applyForm.oldLevel"
+              v-model="applyForm.oldLevelId"
               placeholder="职位等级"
               disabled
             >
@@ -92,8 +92,13 @@
           style="width: 100%;"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="申请原因" class="form-item">
-        <el-input type="textarea" v-model="applyForm.reason"></el-input>
+      <el-form-item label="申请原因" class="form-item" prop="reason">
+        <el-input
+          type="textarea"
+          v-model="applyForm.reason"
+          maxlength="200"
+          show-word-limit
+        ></el-input>
       </el-form-item>
       <el-form-item class="form-item">
         <el-button type="primary" class="form-btn" @click="handleSubmit"
@@ -109,16 +114,17 @@ let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
 import { getPersonFile, positionList } from "@/api/memberFile";
+import { posTransferApply } from "@/api/station";
 export default {
   created() {
-    this.doGetLevel();
+    this.doPositionList();
   },
   data() {
     return {
       applyForm: {
         fid: "",
         oldStationId: "",
-        oldLevel: "",
+        oldLevelId: "",
         stationId: "",
         levelId: "",
         applicant: "",
@@ -146,7 +152,7 @@ export default {
     ...mapGetters(["uid"])
   },
   methods: {
-    async doGetLevel() {
+    async doPositionList() {
       let res = await positionList();
       if (res.success) {
         this.stationOptions = res.data.stationRow;
@@ -159,7 +165,20 @@ export default {
         this.doGetPersonFile(e);
       }, 2000);
     },
-    // async transferApply() {},
+    async doPosTransferApply(data) {
+      let res = await posTransferApply(data);
+      if (res.success) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "warning"
+        });
+      }
+    },
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);
       if (res.success) {
@@ -167,20 +186,26 @@ export default {
         this.applyForm.applicant = name;
         this.applyForm.positionName = positionName;
         this.applyForm.oldStationId = stationId;
-        this.applyForm.oldLevel = levelId;
+        this.applyForm.oldLevelId = levelId;
       }
     },
     handleSubmit() {
       this.$refs["form"].validate(valid => {
         if (!valid) {
           return false;
-        } else if (this.uid !== this.applyForm.fid) {
-          // this.transferApply();
+        } else if (this.uid !== parseInt(this.applyForm.fid)) {
           this.$message({
             message: "请使用本人职工号",
             type: "warning"
           });
         } else {
+          this.doPosTransferApply(
+            Object.assign(this.applyForm, {
+              transferTypeId: 2,
+              fid: parseInt(this.applyForm.fid),
+              modeId: 0
+            })
+          );
           this.$refs["form"].resetFields();
         }
       });

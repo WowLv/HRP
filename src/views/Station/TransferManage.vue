@@ -2,59 +2,86 @@
   <div class="container">
     <el-tabs v-model="activeName" v-loading="isLoading">
       <el-tab-pane label="未审批" name="unfinish">
-        <el-table :data="applyData" class="table">
-          <el-table-column
-            prop="createTime"
-            label="申请时间"
-            align="center"
-            width="200"
-          ></el-table-column>
-          <el-table-column
-            prop="fid"
-            label="负责人"
-            align="center"
-            width="170"
-          ></el-table-column>
-          <el-table-column
-            prop="applicant"
-            label="姓名"
-            align="center"
-            width="170"
-          ></el-table-column>
-          <el-table-column
-            prop="reason"
-            label="申请描述"
-            align="center"
-            width="280"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="power"
-            label="职位变动"
-            width="180"
-            align="center"
-          >
+        <el-table :data="applyData" class="table" ref="table">
+          <el-table-column type="expand">
             <template slot-scope="scope">
-              <el-tag
-                :type="tagType[scope.row.positionId]"
-                disable-transitions
-                class="tag"
-                >{{ scope.row.positionName }}</el-tag
-              >
+              <el-form label-position="left" inline class="table-expand">
+                <el-form-item label="申请描述：">
+                  <span class="expand-content">{{ scope.row.reason }}</span>
+                </el-form-item>
+              </el-form>
             </template>
           </el-table-column>
           <el-table-column
-            prop="applyType"
-            label="岗位变动"
+            prop="applyTime"
+            label="申请时间"
+            align="center"
+            width="170"
+          ></el-table-column>
+          <el-table-column
+            prop="fid"
+            label="职工号"
+            align="center"
+            width="160"
+          ></el-table-column>
+          <el-table-column
+            prop="name"
+            label="姓名"
+            align="center"
+            width="160"
+          ></el-table-column>
+          <el-table-column
+            prop="transferTypeName"
+            label="变动类型"
             width="180"
             align="center"
           >
             <template slot-scope="scope">
               <el-tag
-                :type="scope.row.aid === 1 ? 'primary' : 'warning'"
+                color="#e5f2ff"
                 disable-transitions
                 class="tag"
-                >{{ scope.row.applyType }}</el-tag
+                v-if="scope.row.transferTypeId === 2"
+                >{{ scope.row.transferTypeName }}</el-tag
+              >
+              <el-tag type="warning" disable-transitions class="tag" v-else>{{
+                scope.row.transferTypeName
+              }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="变动内容" width="340" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.transferTypeId === 1">
+                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                  scope.row.oldPositionName
+                }}</el-tag>
+                <i class="_icon el-icon-caret-right"></i>
+                <el-tag type="success" disable-transitions class="tag">{{
+                  scope.row.positionName
+                }}</el-tag>
+              </div>
+              <div v-if="scope.row.transferTypeId === 2">
+                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                  scope.row.oldStationName
+                }}</el-tag>
+                <i class="_icon el-icon-caret-right"></i>
+                <el-tag type="success" disable-transitions class="tag">{{
+                  scope.row.stationName
+                }}</el-tag>
+                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                  scope.row.oldLevelName
+                }}</el-tag>
+                <i class="_icon el-icon-caret-right"></i>
+                <el-tag type="success" disable-transitions class="tag">{{
+                  scope.row.levelName
+                }}</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="申请描述" align="center" width="200">
+            <template slot-scope="scope">
+              <el-button type="info" @click="handleExpand(scope.row)"
+                >点击查看</el-button
               >
             </template>
           </el-table-column>
@@ -84,36 +111,42 @@
       <el-tab-pane label="已审批" name="finished">
         <el-table :data="finishedData" class="table">
           <el-table-column
-            prop="createTime"
-            label="审核时间"
-            width="200"
+            prop="applyTime"
+            label="审批时间"
+            align="center"
+            width="160"
           ></el-table-column>
           <el-table-column
             prop="fid"
-            label="负责人"
+            label="职工号"
+            align="center"
             width="160"
           ></el-table-column>
           <el-table-column
-            prop="applicant"
+            prop="name"
             label="姓名"
+            align="center"
             width="160"
           ></el-table-column>
-          <el-table-column prop="reason" label="申请描述" width="240">
-          </el-table-column>
-          <el-table-column prop="power" label="职位" width="180" align="center">
+          <el-table-column
+            prop="transferTypeId"
+            label="变动类型"
+            width="160"
+            align="center"
+          >
             <template slot-scope="scope">
               <el-tag
-                :type="tagType[scope.row.positionId]"
+                :type="scope.row.transferTypeId === 1 ? 'primary' : 'warning'"
                 disable-transitions
                 class="tag"
-                >{{ scope.row.positionName }}</el-tag
+                >{{ scope.row.transferTypeName }}</el-tag
               >
             </template>
           </el-table-column>
           <el-table-column
             prop="applyType"
-            label="申请类型"
-            width="180"
+            label="变动内容"
+            width="280"
             align="center"
           >
             <template slot-scope="scope">
@@ -124,6 +157,13 @@
                 >{{ scope.row.applyType }}</el-tag
               >
             </template>
+          </el-table-column>
+          <el-table-column
+            prop="reason"
+            label="申请描述"
+            align="center"
+            width="280"
+          >
           </el-table-column>
           <el-table-column
             label="状态"
@@ -142,7 +182,7 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="200"
+            width="160"
             align="center"
             class="form-item"
           >
@@ -157,12 +197,12 @@
 </template>
 
 <script>
-import {} from "@/api/memberFile";
+import { positionList } from "@/api/memberFile";
+import { getPosTransferApply } from "@/api/station";
 export default {
   created() {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
+    this.doPositionList();
+    this.doGetPosTransferApply();
   },
   data() {
     return {
@@ -170,22 +210,43 @@ export default {
       activeName: "unfinish",
       applyData: [],
       finishedData: [],
+      positionEnum: [],
+      levelEnum: [],
+      stationEnum: [],
       tagType: {
-        1: "warning",
-        2: "warning",
-        3: "success",
-        4: "primary"
+        1: "success",
+        2: "primary"
       }
     };
   },
   methods: {
-    async handldPass() {
+    async doPositionList() {
+      let res = await positionList();
+      if (res.success) {
+        this.positionEnum = res.data.positionRow;
+        this.levelEnum = res.data.levelRow;
+        this.stationEnum = res.data.stationRow;
+      }
+    },
+    async doGetPosTransferApply() {
+      let res = await getPosTransferApply();
+      if (res.success) {
+        setTimeout(() => {
+          this.applyData = res.data;
+          this.isLoading = false;
+        }, 500);
+      }
+    },
+    handleExpand(row) {
+      this.$refs["table"].toggleRowExpansion(row);
+    },
+    handldPass() {
       this.$message({
         message: `假装通过成功`,
         type: "success"
       });
     },
-    async handleReject() {
+    handleReject() {
       this.$message({
         message: "假装驳回成功",
         type: "success"
@@ -206,8 +267,16 @@ export default {
   width: 1540px;
   margin: 0 20px;
   .table {
+    .table-expand {
+      width: 500px;
+    }
     .tag {
       padding: 0 20px;
+      margin: 0 5px;
+    }
+    ._icon {
+      font-size: 20px;
+      margin: 5px 10px;
     }
   }
 }

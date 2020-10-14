@@ -94,10 +94,11 @@
 import { getWorkLoadList } from "@/api/workLoad";
 export default {
   created() {
-    this.doGetWorkLoadList();
+    this.doGetWorkLoadList(this.currentPage);
   },
   data() {
     return {
+      currentPage: 1,
       sum: 0,
       isLoading: true,
       allInfo: [],
@@ -124,24 +125,29 @@ export default {
     }
   },
   methods: {
-    async doGetWorkLoadList() {
-      let res = await getWorkLoadList();
+    async doGetWorkLoadList(page) {
+      let res = await getWorkLoadList(page);
       if (res.success) {
-        this.allInfo = res.data;
+        this.allInfo = res.data.data;
+        this.sum = res.data.sum;
         setTimeout(() => {
           this.isLoading = false;
         }, 500);
       }
     },
-    handlePageChange() {},
+    handlePageChange() {
+      this.currentPage++;
+      this.doGetWorkLoadList(this.currentPage);
+    },
     filterTag(value, row) {
       return row.power === value;
     },
     getProof(destination, filename, originalname) {
       window.open(
-        `http://localhost:3000/download_load?destination=${destination}&filename=${filename}&originalname=${originalname}`
+        `http://api/download_load?destination=${destination}&filename=${filename}&originalname=${originalname}`
       );
     },
+    handlePass() {},
     async handleSearch() {},
     handleBack() {}
   }

@@ -64,7 +64,12 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item label="申请原因" class="form-item" prop="reason">
-        <el-input type="textarea" v-model="applyForm.reason"></el-input>
+        <el-input
+          type="textarea"
+          v-model="applyForm.reason"
+          maxlength="200"
+          show-word-limit
+        ></el-input>
       </el-form-item>
       <el-form-item class="form-item">
         <el-button type="primary" class="form-btn" @click="handleSubmit"

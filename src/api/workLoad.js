@@ -14,9 +14,12 @@ export function getScientLoadSum() {
   });
 }
 
-export function getWorkLoadList() {
+export function getWorkLoadList(page) {
   return request({
     url: "/load_manage",
-    method: "get"
+    method: "get",
+    params: {
+      page
+    }
   });
 }

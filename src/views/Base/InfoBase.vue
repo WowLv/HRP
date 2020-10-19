@@ -23,6 +23,7 @@
       :data="allInfo"
       style="width: 100%"
       class="table"
+      max-height="700"
     >
       <el-table-column
         prop="uid"
@@ -191,7 +192,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1540px;
-  height: 770px;
+  height: 794px; // 与其他分页样式相同
   position: relative;
   margin: 0 20px;
   .header {
@@ -209,7 +210,7 @@ export default {
   .table-pagination {
     width: 100%;
     position: absolute;
-    top: 720px;
+    top: 758px;
     display: flex;
     justify-content: center;
   }

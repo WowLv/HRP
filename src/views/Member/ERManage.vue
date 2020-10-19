@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <el-tabs v-model="activeName" v-loading="isLoading">
-      <el-tab-pane label="未审批" name="unfinish">
-        <el-table :data="applyData" class="table">
+      <el-tab-pane label="未审批" name="unfinish" class="tab-pane">
+        <el-table :data="applyData" class="table" max-height="690">
           <el-table-column
             prop="applyTime"
             label="申请时间"
@@ -86,8 +86,8 @@
           </el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="已审批" name="finished">
-        <el-table :data="finishedData" class="table">
+      <el-tab-pane label="已审批" name="finished" class="tab-pane">
+        <el-table :data="finishedData" class="table" max-height="690">
           <el-table-column
             prop="applyTime"
             label="审核时间"
@@ -273,20 +273,22 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1540px;
-  position: relative;
   margin: 0 20px;
-  .table {
-    height: 720px;
-    .tag {
-      padding: 0 20px;
+  position: relative;
+  .tab-pane {
+    height: 740px;
+    .table {
+      .tag {
+        padding: 0 20px;
+      }
     }
-  }
-  .table-pagination {
-    width: 100%;
-    position: absolute;
-    top: 660px;
-    display: flex;
-    justify-content: center;
+    .table-pagination {
+      width: 100%;
+      position: absolute;
+      top: 705px;
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 </style>

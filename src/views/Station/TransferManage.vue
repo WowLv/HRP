@@ -1,8 +1,13 @@
 <template>
   <div class="container">
     <el-tabs v-model="activeName" v-loading="isLoading">
-      <el-tab-pane label="未审批" name="unfinish">
-        <el-table :data="applyData" class="table" ref="table">
+      <el-tab-pane label="未审批" name="unfinish" class="tab-pane">
+        <el-table
+          :data="applyData"
+          class="table"
+          ref="applyTable"
+          max-height="690"
+        >
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="table-expand">
@@ -80,7 +85,7 @@
           </el-table-column>
           <el-table-column label="申请描述" align="center" width="200">
             <template slot-scope="scope">
-              <el-button type="info" @click="handleExpand(scope.row)"
+              <el-button type="info" @click="handleApplyExpand(scope.row)"
                 >点击查看</el-button
               >
             </template>
@@ -101,7 +106,7 @@
               <el-button
                 type="danger"
                 class="form-btn"
-                @click="handleReject(scope.row)"
+                @click="handldReject(scope.row)"
                 >驳回</el-button
               >
             </template>
@@ -110,7 +115,7 @@
         <div class="table-pagination">
           <el-pagination
             background
-            :pageSize="8"
+            :pageSize="10"
             layout="prev, pager, next, jumper"
             @current-change="applyPageChange"
             :total="applySum"
@@ -118,8 +123,13 @@
           </el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="已审批" name="finished">
-        <el-table :data="finishedData" class="table">
+      <el-tab-pane label="已审批" name="finished" class="tab-pane">
+        <el-table
+          :data="finishData"
+          class="table"
+          ref="finishTable"
+          max-height="690"
+        >
           <el-table-column type="expand">
             <template slot-scope="scope">
               <el-form label-position="left" inline class="table-expand">
@@ -145,12 +155,12 @@
             prop="name"
             label="姓名"
             align="center"
-            width="160"
+            width="150"
           ></el-table-column>
           <el-table-column
             prop="transferTypeName"
             label="变动类型"
-            width="180"
+            width="150"
             align="center"
           >
             <template slot-scope="scope">
@@ -197,14 +207,14 @@
           </el-table-column>
           <el-table-column label="申请描述" align="center" width="200">
             <template slot-scope="scope">
-              <el-button type="info" @click="handleExpand(scope.row)"
+              <el-button type="info" @click="handleFinishExpand(scope.row)"
                 >点击查看</el-button
               >
             </template>
           </el-table-column>
           <el-table-column
             label="状态"
-            width="180"
+            width="160"
             align="center"
             class="form-item"
           >
@@ -228,6 +238,16 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="table-pagination">
+          <el-pagination
+            background
+            :pageSize="10"
+            layout="prev, pager, next, jumper"
+            @current-change="finishPageChange"
+            :total="finishSum"
+          >
+          </el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -235,11 +255,12 @@
 
 <script>
 import { positionList } from "@/api/memberFile";
-import { getPosTransferApply, auditStationTransferApply } from "@/api/station";
+import { getPosTransferApply, auditPosTransferApply } from "@/api/station";
 export default {
   created() {
     this.doPositionList();
-    this.doGetPosTransferApply();
+    this.doGetPosTransferApply(1);
+    this.doGetPosTransferFinish(1);
   },
   data() {
     return {
@@ -248,7 +269,7 @@ export default {
       isLoading: true,
       activeName: "unfinish",
       applyData: [],
-      finishedData: [],
+      finishData: [],
       positionEnum: [],
       levelEnum: [],
       stationEnum: [],
@@ -259,8 +280,37 @@ export default {
     };
   },
   methods: {
-    async doAuditStationTransferApply(transferId, modeId) {
-      let res = await auditStationTransferApply({ transferId, modeId });
+    async doAuditPosTransferApply(data) {
+      let res = await auditPosTransferApply(data);
+      this.handleMsg(res);
+    },
+    async doPositionList() {
+      let res = await positionList();
+      if (res.success) {
+        this.positionEnum = res.data.positionRow;
+        this.levelEnum = res.data.levelRow;
+        this.stationEnum = res.data.stationRow;
+      }
+    },
+    async doGetPosTransferFinish(page) {
+      let res = await getPosTransferApply({ mode: "finished", page });
+      if (res.success) {
+        setTimeout(() => {
+          this.finishData = res.data.data;
+          this.finishSum = res.data.sum;
+          this.isLoading = false;
+        }, 500);
+      }
+    },
+    async doGetPosTransferApply(page) {
+      let res = await getPosTransferApply({ mode: "apply", page });
+      if (res.success) {
+        this.applyData = res.data.data;
+        this.applySum = res.data.sum;
+        this.isLoading = false;
+      }
+    },
+    handleMsg(res) {
       if (res.success) {
         this.$message({
           message: res.msg,
@@ -273,35 +323,29 @@ export default {
         });
       }
     },
-    async doPositionList() {
-      let res = await positionList();
-      if (res.success) {
-        this.positionEnum = res.data.positionRow;
-        this.levelEnum = res.data.levelRow;
-        this.stationEnum = res.data.stationRow;
-      }
-    },
-    async doGetPosTransferApply() {
-      let res = await getPosTransferApply();
-      if (res.success) {
-        setTimeout(() => {
-          this.applyData = res.data.data;
-          this.applySum = res.data.sum;
-          this.isLoading = false;
-        }, 500);
-      }
-    },
     applyPageChange(page) {
-      console.log(page);
+      this.doGetPosTransferApply(page);
     },
-    handleExpand(row) {
-      this.$refs["table"].toggleRowExpansion(row);
+    finishPageChange(page) {
+      this.doGetPosTransferFinish(page);
+    },
+    handleApplyExpand(row) {
+      this.$refs["applyTable"].toggleRowExpansion(row);
+    },
+    handleFinishExpand(row) {
+      this.$refs["finishTable"].toggleRowExpansion(row);
     },
     handldPass(row) {
-      this.doAuditStationTransferApply(row.transferId, 1);
+      this.doAuditPosTransferApply({ ...row, modeId: 1 }).then(() => {
+        this.doGetPosTransferFinish(1);
+        this.doGetPosTransferApply(1);
+      });
     },
-    handleReject(row) {
-      this.doAuditStationTransferApply(row.transferId, 2);
+    handldReject(row) {
+      this.doAuditPosTransferApply({ ...row, modeId: 2 }).then(() => {
+        this.doGetPosTransferFinish(1);
+        this.doGetPosTransferApply(1);
+      });
     },
     handleDelete() {
       this.$message({
@@ -317,26 +361,29 @@ export default {
 .container {
   width: 1540px;
   margin: 0 20px;
-  .table {
-    height: 720px;
-    .table-expand {
-      width: 500px;
+  position: relative;
+  .tab-pane {
+    height: 740px;
+    .table {
+      .table-expand {
+        width: 500px;
+      }
+      .tag {
+        padding: 0 20px;
+        margin: 0 5px;
+      }
+      ._icon {
+        font-size: 20px;
+        margin: 5px 10px;
+      }
     }
-    .tag {
-      padding: 0 20px;
-      margin: 0 5px;
+    .table-pagination {
+      width: 100%;
+      position: absolute;
+      top: 705px;
+      display: flex;
+      justify-content: center;
     }
-    ._icon {
-      font-size: 20px;
-      margin: 5px 10px;
-    }
-  }
-  .table-pagination {
-    width: 100%;
-    position: absolute;
-    top: 660px;
-    display: flex;
-    justify-content: center;
   }
 }
 </style>

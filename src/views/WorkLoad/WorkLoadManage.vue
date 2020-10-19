@@ -20,6 +20,7 @@
       :data="nowAllInfo"
       style="width: 100%"
       class="table"
+      max-height="700"
     >
       <el-table-column
         prop="uploadTime"
@@ -144,7 +145,7 @@ export default {
     },
     getProof(destination, filename, originalname) {
       window.open(
-        `http://api/download_load?destination=${destination}&filename=${filename}&originalname=${originalname}`
+        `api/download_load?destination=${destination}&filename=${filename}&originalname=${originalname}`
       );
     },
     handlePass() {},
@@ -157,9 +158,9 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1540px;
-  height: 770px;
-  position: relative;
   margin: 0 20px;
+  height: 794px; // 与其他分页样式相同
+  position: relative;
   .header {
     .input-with-select {
       margin-left: 40px;
@@ -178,7 +179,7 @@ export default {
   .table-pagination {
     width: 100%;
     position: absolute;
-    top: 720px;
+    top: 758px;
     display: flex;
     justify-content: center;
   }

@@ -163,7 +163,7 @@ export default {
         } else {
           this.doPosTransferApply(
             Object.assign(this.applyForm, {
-              transferTypeId: 2,
+              transferTypeId: 1,
               fid: parseInt(this.applyForm.fid),
               modeId: 0
             })

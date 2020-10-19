@@ -8,16 +8,17 @@ export function posTransferApply(data) {
   });
 }
 
-export function getPosTransferApply() {
+export function getPosTransferApply(data) {
   return request({
     url: "/pos_transferApply",
-    method: "get"
+    method: "get",
+    params: data
   });
 }
 
-export function auditStationTransferApply(data) {
+export function auditPosTransferApply(data) {
   return request({
-    url: "/audit_sTransfer",
+    url: "/audit_posTransfer",
     method: "post",
     data: data
   });

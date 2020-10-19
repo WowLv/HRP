@@ -62,7 +62,7 @@
         <el-col :span="10">
           <el-select
             v-model="personInfo.stationId"
-            placeholder="请选择岗位"
+            placeholder="未分配岗位"
             class="power-item"
             :disabled="disabled.station"
           >
@@ -81,7 +81,7 @@
         <el-col :span="10">
           <el-select
             v-model="personInfo.levelId"
-            placeholder="岗位等级"
+            placeholder="未分配岗位等级"
             class="power-item"
             :disabled="disabled.station"
           >
@@ -103,7 +103,7 @@
       >
         <el-select
           v-model="personInfo.sectionId"
-          placeholder="部门"
+          placeholder="未分配部门"
           class="option-item"
           :disabled="disabled.section"
         >
@@ -119,12 +119,12 @@
       <el-form-item
         label="基础教学课时"
         class="form-item"
-        prop="classHour"
+        prop="teachLoad"
         v-if="nowType === 'teacher'"
       >
         <el-input
-          v-model="personInfo.classHour"
-          :disabled="disabled.classHour"
+          v-model="personInfo.teachLoad"
+          :disabled="disabled.teachLoad"
         ></el-input>
       </el-form-item>
       <el-form-item
@@ -182,7 +182,7 @@ var info_able = {
   email: false,
   station: true,
   section: true,
-  classHour: true,
+  teachLoad: true,
   position: true
 };
 var info_disable = {
@@ -194,7 +194,7 @@ var info_disable = {
   email: true,
   station: true,
   section: true,
-  classHour: true,
+  teachLoad: true,
   position: true
 };
 export default {

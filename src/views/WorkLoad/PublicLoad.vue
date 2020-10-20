@@ -18,6 +18,7 @@
           v-model="loadInfo.workLoadId"
           placeholder="请选择工作量项"
           class="option-item"
+          @change="handleLoadChange"
         >
           <el-option
             v-for="item in workLoadOptions"
@@ -27,6 +28,29 @@
           >
           </el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="计量" class="form-item">
+        <el-col :span="11">
+          <el-form-item prop="calc">
+            <el-input
+              type="number"
+              placeholder="请输入数量"
+              v-model="loadInfo.calc"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"
+          ><i class="icon-item el-icon-collection-tag"></i
+        ></el-col>
+        <el-col :span="11">
+          <el-form-item>
+            <el-input
+              disabled
+              placeholder="单位"
+              v-model="loadInfo.measure"
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-form-item>
       <el-upload
         class="upload-item"
@@ -58,7 +82,7 @@
 
 <script>
 import { validateUid, validateName } from "@/lib/validate";
-import { getPublicLoadSum } from "@/api/workLoad";
+import { getPublicLoadSum, getMeasure } from "@/api/workLoad";
 import { mapGetters } from "vuex";
 export default {
   created() {
@@ -72,7 +96,9 @@ export default {
         workLoadType: "public",
         workLoadTypeId: 2,
         modeId: 0,
-        extra: 0
+        extra: 0,
+        calc: 0,
+        measure: ""
       },
       workLoadOptions: [],
       fileList: [],
@@ -89,11 +115,21 @@ export default {
     ...mapGetters(["uid"])
   },
   methods: {
+    async doGetMeasure(workLoadTypeId, workLoadId) {
+      let res = await getMeasure(workLoadTypeId, workLoadId);
+      let { measure } = res.data;
+      if (res.success) {
+        this.loadInfo.measure = measure || "";
+      }
+    },
     async doGetPublicLoadSum() {
       let res = await getPublicLoadSum();
       if (res.success) {
         this.workLoadOptions = res.data;
       }
+    },
+    handleLoadChange() {
+      this.doGetMeasure(this.loadInfo.workLoadTypeId, this.loadInfo.workLoadId);
     },
     handleChange(file, fileList) {
       this.fileList = fileList;
@@ -157,6 +193,14 @@ export default {
     margin-top: 50px;
     .form-item {
       margin-bottom: 20px;
+      .icon-item {
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        line-height: 40px;
+        font-size: 22px;
+        color: #666666;
+      }
       .option-item {
         width: 450px;
         @media screen and (max-width: 1600px) {

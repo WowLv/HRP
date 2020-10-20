@@ -90,9 +90,9 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding-top: 6px;
+  padding-top: 5px;
   .menu-main {
-    height: 850px;
+    height: 870px;
   }
 }
 </style>

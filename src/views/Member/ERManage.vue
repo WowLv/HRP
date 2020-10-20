@@ -6,6 +6,7 @@
           <el-table-column
             prop="applyTime"
             label="申请时间"
+            sortable
             align="center"
             width="200"
           ></el-table-column>

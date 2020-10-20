@@ -20,6 +20,7 @@
           <el-table-column
             prop="applyTime"
             label="申请时间"
+            sortable
             align="center"
             width="170"
           ></el-table-column>
@@ -66,20 +67,24 @@
                 }}</el-tag>
               </div>
               <div v-if="scope.row.transferTypeId === 2">
-                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
-                  scope.row.oldStationName
-                }}</el-tag>
-                <i class="_icon el-icon-caret-right"></i>
-                <el-tag type="success" disable-transitions class="tag">{{
-                  scope.row.stationName
-                }}</el-tag>
-                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
-                  scope.row.oldLevelName
-                }}</el-tag>
-                <i class="_icon el-icon-caret-right"></i>
-                <el-tag type="success" disable-transitions class="tag">{{
-                  scope.row.levelName
-                }}</el-tag>
+                <div class="tag-row">
+                  <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                    scope.row.oldStationName || "未分配"
+                  }}</el-tag>
+                  <i class="_icon el-icon-caret-right"></i>
+                  <el-tag type="success" disable-transitions class="tag">{{
+                    scope.row.stationName
+                  }}</el-tag>
+                </div>
+                <div class="tag-row">
+                  <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                    scope.row.oldLevelName || "未分配"
+                  }}</el-tag>
+                  <i class="_icon el-icon-caret-right"></i>
+                  <el-tag type="success" disable-transitions class="tag">{{
+                    scope.row.levelName
+                  }}</el-tag>
+                </div>
               </div>
             </template>
           </el-table-column>
@@ -142,6 +147,7 @@
           <el-table-column
             prop="updateTime"
             label="审批时间"
+            sortable
             align="center"
             width="160"
           ></el-table-column>
@@ -188,20 +194,24 @@
                 }}</el-tag>
               </div>
               <div v-if="scope.row.transferTypeId === 2">
-                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
-                  scope.row.oldStationName
-                }}</el-tag>
-                <i class="_icon el-icon-caret-right"></i>
-                <el-tag type="success" disable-transitions class="tag">{{
-                  scope.row.stationName
-                }}</el-tag>
-                <el-tag color="#e5f2ff" disable-transitions class="tag">{{
-                  scope.row.oldLevelName
-                }}</el-tag>
-                <i class="_icon el-icon-caret-right"></i>
-                <el-tag type="success" disable-transitions class="tag">{{
-                  scope.row.levelName
-                }}</el-tag>
+                <div class="tag-row">
+                  <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                    scope.row.oldStationName || "未分配"
+                  }}</el-tag>
+                  <i class="_icon el-icon-caret-right"></i>
+                  <el-tag type="success" disable-transitions class="tag">{{
+                    scope.row.stationName
+                  }}</el-tag>
+                </div>
+                <div class="tag-row">
+                  <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                    scope.row.oldLevelName || "未分配"
+                  }}</el-tag>
+                  <i class="_icon el-icon-caret-right"></i>
+                  <el-tag type="success" disable-transitions class="tag">{{
+                    scope.row.levelName
+                  }}</el-tag>
+                </div>
               </div>
             </template>
           </el-table-column>

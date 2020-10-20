@@ -5,8 +5,8 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://192.168.1.103:3000",
-        // target: "http://127.0.0.1:3000",
+        // target: "http://192.168.1.103:3000",
+        target: "http://127.0.0.1:3000",
         // target: "http://192.168.1.102:8080/hrp",
         changeOrigin: true,
         pathRewrite: {

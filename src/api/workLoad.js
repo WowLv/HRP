@@ -14,12 +14,32 @@ export function getScientLoadSum() {
   });
 }
 
-export function getWorkLoadList(page) {
+export function getWorkLoadList(mode, page) {
   return request({
     url: "/load_manage",
     method: "get",
     params: {
+      mode,
       page
     }
+  });
+}
+
+export function getMeasure(workLoadTypeId, workLoadId) {
+  return request({
+    url: "/measure",
+    method: "get",
+    params: {
+      workLoadTypeId,
+      workLoadId
+    }
+  });
+}
+
+export function auditWorkLoad(data) {
+  return request({
+    url: "/audit_workLoad",
+    method: "post",
+    data
   });
 }

@@ -18,6 +18,7 @@
           v-model="loadInfo.workLoadId"
           placeholder="请选择工作量项"
           class="option-item"
+          @change="handleLoadChange"
         >
           <el-option-group
             v-for="group in workLoadOptions"
@@ -33,6 +34,29 @@
             </el-option>
           </el-option-group>
         </el-select>
+      </el-form-item>
+      <el-form-item label="计量" class="form-item">
+        <el-col :span="11">
+          <el-form-item prop="calc">
+            <el-input
+              type="number"
+              placeholder="请输入数量"
+              v-model="loadInfo.calc"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"
+          ><i class="icon-item el-icon-collection-tag"></i
+        ></el-col>
+        <el-col :span="11">
+          <el-form-item>
+            <el-input
+              disabled
+              placeholder="单位"
+              v-model="loadInfo.measure"
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-form-item>
       <el-form-item
         label="附加项"
@@ -53,18 +77,11 @@
         ></el-col>
         <el-col :span="11">
           <el-form-item>
-            <el-select
-              placeholder="请选择附加项类型"
-              v-model="loadInfo.extraMeasureId"
-            >
-              <el-option
-                v-for="item in extraMeasureOptions"
-                :key="item.extraMeasureId"
-                :label="item.extraMeasureName"
-                :value="item.extraMeasureId"
-              >
-              </el-option>
-            </el-select>
+            <el-input
+              disabled
+              placeholder="单位"
+              v-model="loadInfo.extraMeasure"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -97,7 +114,7 @@
 </template>
 
 <script>
-import { getScientLoadSum } from "@/api/workLoad";
+import { getScientLoadSum, getMeasure } from "@/api/workLoad";
 import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
 import { mapGetters } from "vuex";
 export default {
@@ -112,12 +129,14 @@ export default {
         workLoadType: "scientific",
         workLoadTypeId: 1,
         modeId: 0,
-        extra: 0
+        calc: 0,
+        extra: 0,
+        measure: "",
+        extraMeasure: ""
       },
       workLoadOptions: [],
       fileList: [],
       extraList: [],
-      extraMeasureOptions: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         name: [{ required: true, validator: validateName, trigger: "blur" }],
@@ -132,13 +151,20 @@ export default {
     ...mapGetters(["uid"])
   },
   methods: {
+    async doGetMeasure(workLoadTypeId, workLoadId) {
+      let res = await getMeasure(workLoadTypeId, workLoadId);
+      let { measure, extraMeasure } = res.data;
+      if (res.success) {
+        this.loadInfo.measure = measure || "";
+        this.loadInfo.extraMeasure = extraMeasure || "";
+      }
+    },
     async doGetScientLoadSum() {
       let res = await getScientLoadSum();
       let workLoadList = [];
       let flag = false;
       if (res.success) {
         this.extraList = res.data.extraList;
-        this.extraMeasureOptions = res.data.extraMeasureList;
         res.data.scientList.map(resItem => {
           for (let i = 0; i < workLoadList.length; i++) {
             if (workLoadList[i].scientTypeId === resItem.scientTypeId) {
@@ -160,6 +186,9 @@ export default {
         });
         this.workLoadOptions = workLoadList;
       }
+    },
+    handleLoadChange() {
+      this.doGetMeasure(this.loadInfo.workLoadTypeId, this.loadInfo.workLoadId);
     },
     handleChange(file, fileList) {
       this.fileList = fileList;

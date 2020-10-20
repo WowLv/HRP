@@ -153,18 +153,30 @@
       </el-form-item>
     </el-form>
     <el-drawer
-      title="我是标题"
+      title="工作量"
       :visible.sync="drawer"
       :with-header="false"
       size="40%"
       class="drawer"
     >
-      <el-table :data="publicWork" class="table">
-        <el-table-column prop="date" label="日期" width="180">
+      <p class="drawer-title">工作量列表</p>
+      <el-table :data="personInfo.workLoadList" class="table" height="900">
+        <el-table-column
+          prop="uploadTime"
+          align="center"
+          label="日期"
+          width="150"
+        >
         </el-table-column>
-        <el-table-column prop="workType" label="工作量类型" width="180">
+        <el-table-column
+          prop="workLoadType"
+          align="center"
+          label="工作量类型"
+          width="150"
+        >
         </el-table-column>
-        <el-table-column prop="workName" label="工作量项"> </el-table-column>
+        <el-table-column prop="workLoad" align="center" label="工作量项">
+        </el-table-column>
       </el-table>
     </el-drawer>
   </div>
@@ -222,23 +234,6 @@ export default {
       personInfo: {},
       posOptions: [],
       sectionOptions: [],
-      publicWork: [
-        {
-          date: "2020-05-02",
-          workType: "公共工作量",
-          workName: "受学校邀约作讲座、报告"
-        },
-        {
-          date: "2019-07-04",
-          workType: "公共工作量",
-          workName: "专家参加赛事评审"
-        },
-        {
-          date: "2019-05-01",
-          workType: "教科研",
-          workName: "省级教学成果一等奖"
-        }
-      ],
       stationOptions: [],
       levelOptions: []
     };
@@ -347,6 +342,14 @@ export default {
   }
   .table {
     padding: 20px;
+  }
+  .drawer-title {
+    height: 60px;
+    line-height: 60px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    color: #666;
   }
 }
 </style>

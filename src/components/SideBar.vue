@@ -17,8 +17,6 @@
           <el-submenu index="1-1">
             <template slot="title">基础设置</template>
             <el-menu-item index="/info_base">用户信息</el-menu-item>
-            <el-menu-item index="/map_base">数据字典档案</el-menu-item>
-            <el-menu-item index="/form_base">单据格式设置</el-menu-item>
             <el-menu-item index="/time_base">考核年度</el-menu-item>
           </el-submenu>
           <el-submenu index="1-2">
@@ -47,7 +45,9 @@
           </el-submenu>
           <el-submenu index="2-3">
             <template slot="title">部门管理</template>
-            <el-menu-item index="2-3-1">部门档案</el-menu-item>
+            <el-menu-item index="/section_apply">部门申请</el-menu-item>
+            <el-menu-item index="/section_manage">部门审核</el-menu-item>
+            <el-menu-item index="/section_file">部门档案</el-menu-item>
           </el-submenu>
           <el-submenu index="2-4">
             <template slot="title">工作量管理</template>

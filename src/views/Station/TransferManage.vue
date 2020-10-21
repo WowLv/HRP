@@ -90,7 +90,7 @@
           </el-table-column>
           <el-table-column label="申请描述" align="center" width="200">
             <template slot-scope="scope">
-              <el-button type="info" @click="handleApplyExpand(scope.row)"
+              <el-button @click="handleApplyExpand(scope.row)"
                 >点击查看</el-button
               >
             </template>
@@ -217,7 +217,7 @@
           </el-table-column>
           <el-table-column label="申请描述" align="center" width="200">
             <template slot-scope="scope">
-              <el-button type="info" @click="handleFinishExpand(scope.row)"
+              <el-button @click="handleFinishExpand(scope.row)"
                 >点击查看</el-button
               >
             </template>
@@ -244,7 +244,9 @@
             class="form-item"
           >
             <template slot-scope="scope">
-              <el-button @click="handleDelete(scope.row.mid)">删除</el-button>
+              <el-button type="danger" @click="handleDelete(scope.row.mid)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -264,11 +266,9 @@
 </template>
 
 <script>
-import { positionList } from "@/api/memberFile";
 import { getPosTransferApply, auditPosTransferApply } from "@/api/station";
 export default {
   created() {
-    this.doPositionList();
     this.doGetPosTransferApply(1);
     this.doGetPosTransferFinish(1);
   },
@@ -280,9 +280,6 @@ export default {
       activeName: "unfinish",
       applyData: [],
       finishData: [],
-      positionEnum: [],
-      levelEnum: [],
-      stationEnum: [],
       tagType: {
         1: "success",
         2: "primary"
@@ -294,20 +291,12 @@ export default {
       let res = await auditPosTransferApply(data);
       this.handleMsg(res);
     },
-    async doPositionList() {
-      let res = await positionList();
-      if (res.success) {
-        this.positionEnum = res.data.positionRow;
-        this.levelEnum = res.data.levelRow;
-        this.stationEnum = res.data.stationRow;
-      }
-    },
     async doGetPosTransferFinish(page) {
       let res = await getPosTransferApply({ mode: "finished", page });
+      this.finishData = res.data.data;
+      this.finishSum = res.data.sum;
       if (res.success) {
         setTimeout(() => {
-          this.finishData = res.data.data;
-          this.finishSum = res.data.sum;
           this.isLoading = false;
         }, 500);
       }

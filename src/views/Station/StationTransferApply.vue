@@ -18,7 +18,7 @@
           <el-form-item prop="oldStationId">
             <el-select
               v-model="applyForm.oldStationId"
-              placeholder="请选择岗位"
+              placeholder="未分配岗位"
               disabled
             >
               <el-option
@@ -38,7 +38,7 @@
           <el-form-item prop="oldLevelId">
             <el-select
               v-model="applyForm.oldLevelId"
-              placeholder="职位等级"
+              placeholder="未分配等级"
               disabled
             >
               <el-option
@@ -72,7 +72,7 @@
         </el-col>
         <el-col :span="10">
           <el-form-item prop="levelId">
-            <el-select v-model="applyForm.levelId" placeholder="职位等级">
+            <el-select v-model="applyForm.levelId" placeholder="岗位等级">
               <el-option
                 v-for="item in levelOptions"
                 :key="item.levelId"

@@ -5,8 +5,8 @@
         <el-table
           :data="applyData"
           class="table"
-          max-height="690"
           ref="applyTable"
+          max-height="690"
         >
           <el-table-column type="expand">
             <template slot-scope="scope">
@@ -22,55 +22,41 @@
             label="申请时间"
             sortable
             align="center"
-            width="200"
+            width="180"
           ></el-table-column>
           <el-table-column
             prop="fid"
-            label="负责人职工号"
+            label="职工号"
             align="center"
-            width="170"
+            width="180"
           ></el-table-column>
           <el-table-column
-            prop="applicant"
-            label="申请人"
+            prop="name"
+            label="姓名"
             align="center"
-            width="170"
+            width="180"
           ></el-table-column>
-          <el-table-column label="申请描述" align="center" width="280">
+          <el-table-column label="变动内容" width="340" align="center">
+            <template slot-scope="scope">
+              <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                scope.row.oldSectionName || "未分配"
+              }}</el-tag>
+              <i class="_icon el-icon-caret-right"></i>
+              <el-tag type="success" disable-transitions class="tag">{{
+                scope.row.sectionName
+              }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="申请描述" align="center" width="250">
             <template slot-scope="scope">
               <el-button @click="handleApplyExpand(scope.row)"
                 >点击查看</el-button
               >
             </template>
           </el-table-column>
-          <el-table-column prop="power" label="职位" width="180" align="center">
-            <template slot-scope="scope">
-              <el-tag
-                :type="tagType[scope.row.positionId]"
-                disable-transitions
-                class="tag"
-                >{{ scope.row.positionName }}</el-tag
-              >
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="applyType"
-            label="申请类型"
-            width="180"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <el-tag
-                :type="scope.row.applyTypeId === 1 ? 'primary' : 'warning'"
-                disable-transitions
-                class="tag"
-                >{{ scope.row.applyType }}</el-tag
-              >
-            </template>
-          </el-table-column>
           <el-table-column
             label="操作"
-            width="300"
+            width="320"
             align="center"
             class="form-item"
           >
@@ -78,13 +64,13 @@
               <el-button
                 type="primary"
                 class="form-btn"
-                @click="handldPass(scope.row.mid)"
+                @click="handldPass(scope.row)"
                 >通过</el-button
               >
               <el-button
                 type="danger"
                 class="form-btn"
-                @click="handleReject(scope.row.mid)"
+                @click="handldReject(scope.row)"
                 >驳回</el-button
               >
             </template>
@@ -93,7 +79,7 @@
         <div class="table-pagination">
           <el-pagination
             background
-            :pageSize="8"
+            :pageSize="10"
             layout="prev, pager, next, jumper"
             @current-change="applyPageChange"
             :total="applySum"
@@ -102,57 +88,61 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="已审批" name="finished" class="tab-pane">
-        <el-table :data="finishedData" class="table" max-height="690">
+        <el-table
+          :data="finishData"
+          class="table"
+          ref="finishTable"
+          max-height="690"
+        >
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <el-form label-position="left" inline class="table-expand">
+                <el-form-item label="申请描述：">
+                  <span class="expand-content">{{ scope.row.reason }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="applyTime"
-            label="审核时间"
-            width="200"
+            prop="updateTime"
+            label="审批时间"
+            sortable
+            align="center"
+            width="160"
           ></el-table-column>
           <el-table-column
             prop="fid"
-            label="负责人"
-            width="160"
-          ></el-table-column>
-          <el-table-column
-            prop="applicant"
-            label="姓名"
-            width="160"
-          ></el-table-column>
-          <el-table-column label="申请描述" align="center" width="280">
-            <template slot-scope="scope">
-              <el-button @click="handleApplyExpand(scope.row)"
-                >点击查看</el-button
-              >
-            </template>
-          </el-table-column>
-          <el-table-column prop="power" label="职位" width="180" align="center">
-            <template slot-scope="scope">
-              <el-tag
-                :type="tagType[scope.row.positionId]"
-                disable-transitions
-                class="tag"
-                >{{ scope.row.positionName }}</el-tag
-              >
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="applyType"
-            label="申请类型"
-            width="180"
+            label="职工号"
             align="center"
-          >
+            width="160"
+          ></el-table-column>
+          <el-table-column
+            prop="name"
+            label="姓名"
+            align="center"
+            width="160"
+          ></el-table-column>
+          <el-table-column label="变动内容" width="340" align="center">
             <template slot-scope="scope">
-              <el-tag
-                :type="scope.row.applyTypeId === 1 ? 'primary' : 'warning'"
-                disable-transitions
-                class="tag"
-                >{{ scope.row.applyType }}</el-tag
+              <el-tag color="#e5f2ff" disable-transitions class="tag">{{
+                scope.row.oldSectionName || "未分配"
+              }}</el-tag>
+              <i class="_icon el-icon-caret-right"></i>
+              <el-tag type="success" disable-transitions class="tag">{{
+                scope.row.sectionName
+              }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="申请描述" align="center" width="220">
+            <template slot-scope="scope">
+              <el-button @click="handleFinishExpand(scope.row)"
+                >点击查看</el-button
               >
             </template>
           </el-table-column>
           <el-table-column
             label="状态"
-            width="180"
+            width="200"
             align="center"
             class="form-item"
           >
@@ -172,14 +162,16 @@
             class="form-item"
           >
             <template slot-scope="scope">
-              <el-button @click="handleDelete(scope.row.mid)">删除</el-button>
+              <el-button type="danger" @click="handleDelete(scope.row.mid)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
         <div class="table-pagination">
           <el-pagination
             background
-            :pageSize="8"
+            :pageSize="10"
             layout="prev, pager, next, jumper"
             @current-change="finishPageChange"
             :total="finishSum"
@@ -192,64 +184,46 @@
 </template>
 
 <script>
-import {
-  getAllMenberApply,
-  getAllMenberFinished,
-  auditMember
-} from "@/api/memberFile";
+import { getAllSectionApply } from "@/api/section";
 export default {
   created() {
-    this.doGetAllMenberApply(this.applyCurrPage);
-    this.doGetAllMenberFinished(this.finishCurrPage);
+    this.doGetSectionTransferApply(1);
+    this.doGetSectionTransferFinish(1);
   },
   data() {
     return {
+      applySum: 0,
+      finishSum: 0,
       isLoading: true,
       activeName: "unfinish",
       applyData: [],
-      finishedData: [],
-      applySum: 0,
-      finishSum: 0,
-      applyCurrPage: 1,
-      finishCurrPage: 1,
+      finishData: [],
       tagType: {
-        1: "warning",
-        2: "warning",
-        3: "success",
-        4: "primary"
+        1: "success",
+        2: "primary"
       }
     };
   },
   methods: {
-    async doGetAllMenberApply(page) {
-      this.applyData = [];
-      let res = await getAllMenberApply(page);
+    async doGetSectionTransferFinish(page) {
+      let res = await getAllSectionApply({ mode: "finished", page });
       if (res.success) {
-        this.applyData = res.data.data;
-        this.applySum = res.data.sum;
+        this.finishData = res.data.data;
+        this.finishSum = res.data.sum;
         setTimeout(() => {
           this.isLoading = false;
         }, 500);
       }
     },
-    async doGetAllMenberFinished(page) {
-      this.finishedData = [];
-      let res = await getAllMenberFinished(page);
+    async doGetSectionTransferApply(page) {
+      let res = await getAllSectionApply({ mode: "apply", page });
       if (res.success) {
-        this.finishedData = res.data.data;
-        this.finishSum = res.data.sum;
+        this.applyData = res.data.data;
+        this.applySum = res.data.sum;
+        this.isLoading = false;
       }
     },
-    applyPageChange(p) {
-      this.applyCurrPage = p;
-      this.doGetAllMenberApply(p);
-    },
-    finishPageChange(p) {
-      this.finishCurrPage = p;
-      this.doGetAllMenberFinished(p);
-    },
-    async handldPass(mid) {
-      let res = await auditMember(mid, 1);
+    handleMsg(res) {
       if (res.success) {
         this.$message({
           message: res.msg,
@@ -258,34 +232,40 @@ export default {
       } else {
         this.$message({
           message: res.msg,
-          type: "error"
+          type: "warning"
         });
       }
-      this.doGetAllMenberApply(this.applyCurrPage);
-      this.doGetAllMenberFinished(this.finishCurrPage);
     },
-    async handleReject(mid) {
-      let res = await auditMember(mid, 2);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
-      this.doGetAllMenberApply(this.applyCurrPage);
-      this.doGetAllMenberFinished(this.finishCurrPage);
+
+    applyPageChange(page) {
+      this.doGetSectionTransferApply(page);
+    },
+    finishPageChange(page) {
+      this.doGetSectionTransferFinish(page);
     },
     handleApplyExpand(row) {
       this.$refs["applyTable"].toggleRowExpansion(row);
     },
-    handleDelete(mid) {
+    handleFinishExpand(row) {
+      this.$refs["finishTable"].toggleRowExpansion(row);
+    },
+    handldPass(row) {
+      //   this.doAuditPosTransferApply({ ...row, modeId: 1 }).then(() => {
+      //     this.doGetPosTransferFinish(1);
+      //     this.doGetPosTransferApply(1);
+      //   });
+      console.log(row);
+    },
+    handldReject(row) {
+      //   this.doAuditPosTransferApply({ ...row, modeId: 2 }).then(() => {
+      //     this.doGetPosTransferFinish(1);
+      //     this.doGetPosTransferApply(1);
+      //   });
+      console.log(row);
+    },
+    handleDelete() {
       this.$message({
-        message: `假装删除成功${mid}`,
+        message: `假装删除成功`,
         type: "success"
       });
     }
@@ -301,8 +281,16 @@ export default {
   .tab-pane {
     height: 740px;
     .table {
+      .table-expand {
+        width: 500px;
+      }
       .tag {
         padding: 0 20px;
+        margin: 0 5px;
+      }
+      ._icon {
+        font-size: 20px;
+        margin: 5px 10px;
       }
     }
     .table-pagination {

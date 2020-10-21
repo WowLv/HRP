@@ -1,8 +1,6 @@
 var pagesEnum = {
   home: "控制台",
   info_base: "用户信息",
-  map_base: "数据字典档案",
-  form_base: "单据格式档案",
   time_base: "考核年度",
   info_modify: "个人信息",
   pw_modify: "密码修改",
@@ -16,6 +14,9 @@ var pagesEnum = {
   resign_apply: "离职申请",
   e_r_manage: "入/离职审核",
   transfer_manage: "调职审核",
+  section_apply: "部门申请",
+  section_file: "部门档案",
+  section_manage: "部门审核",
   teach_load: "基础教学工作量",
   scientific_load: "教科研工作量",
   public_load: "公共工作量",

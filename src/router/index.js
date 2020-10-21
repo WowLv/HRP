@@ -19,16 +19,6 @@ const routes = [
         component: () => import("../views/Base/InfoBase.vue")
       },
       {
-        path: "map_base",
-        name: "MapBase",
-        component: () => import("../views/Base/MapBase.vue")
-      },
-      {
-        path: "form_base",
-        name: "FormBase",
-        component: () => import("../views/Base/FormBase.vue")
-      },
-      {
         path: "time_base",
         name: "TimeBase",
         component: () => import("../views/Base/TimeBase.vue")
@@ -92,6 +82,21 @@ const routes = [
         path: "transfer_manage",
         name: "TransferManage",
         component: () => import("../views/Station/TransferManage.vue")
+      },
+      {
+        path: "section_file",
+        name: "SectionFile",
+        component: () => import("../views/Section/SectionFile.vue")
+      },
+      {
+        path: "section_apply",
+        name: "SectionApply",
+        component: () => import("../views/Section/SectionApply.vue")
+      },
+      {
+        path: "section_manage",
+        name: "SectionManage",
+        component: () => import("../views/Section/SectionManage.vue")
       },
       {
         path: "teach_load",

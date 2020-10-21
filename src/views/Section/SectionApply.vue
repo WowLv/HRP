@@ -14,43 +14,43 @@
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
       <el-form-item
-        label="原职位"
+        label="原部门"
         class="form-item"
-        prop="oldPositionId"
+        prop="oldSectionId"
         required
       >
         <el-select
           class="option-item"
-          v-model="applyForm.oldPositionId"
-          placeholder="未分配职位"
+          v-model="applyForm.oldSectionId"
+          placeholder="未分配部门"
           disabled
         >
           <el-option
-            v-for="item in posOptions"
-            :key="item.positionId"
-            :label="item.positionName"
-            :value="item.positionId"
+            v-for="item in sectionOptions"
+            :key="item.sectionId"
+            :label="item.sectionName"
+            :value="item.sectionId"
           >
           </el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item
-        label="目标职位"
+        label="目标部门"
         class="form-item"
-        prop="positionId"
+        prop="sectionId"
         required
       >
         <el-select
           class="option-item"
-          v-model="applyForm.positionId"
-          placeholder="请选择职位"
+          v-model="applyForm.sectionId"
+          placeholder="请选择部门"
         >
           <el-option
-            v-for="item in posOptions"
-            :key="item.positionId"
-            :label="item.positionName"
-            :value="item.positionId"
+            v-for="item in sectionOptions"
+            :key="item.sectionId"
+            :label="item.sectionName"
+            :value="item.sectionId"
           >
           </el-option>
         </el-select>
@@ -85,7 +85,7 @@ let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
 import { getPersonFile, positionList } from "@/api/memberFile";
-import { posTransferApply } from "@/api/station";
+import { applySection } from "@/api/section";
 export default {
   created() {
     this.doPositionList();
@@ -95,17 +95,18 @@ export default {
       applyForm: {
         fid: "",
         applicant: "",
-        oldPositionId: "",
-        positionId: "",
+        oldSectionId: "",
+        sectionId: "",
         applyTime: "",
-        reason: ""
+        reason: "",
+        modeId: 0
       },
-      posOptions: [],
+      sectionOptions: [],
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        positionId: [
-          { required: true, message: "请选择职位", trigger: "change" }
+        sectionId: [
+          { required: true, message: "请选择部门", trigger: "change" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }
@@ -117,20 +118,8 @@ export default {
     ...mapGetters(["uid"])
   },
   methods: {
-    async doPositionList() {
-      let res = await positionList();
-      if (res.success) {
-        this.posOptions = res.data.positionRow;
-      }
-    },
-    checkFid(e) {
-      timer && clearTimeout(timer);
-      timer = setTimeout(() => {
-        this.doGetPersonFile(e);
-      }, 2000);
-    },
-    async doPosTransferApply(data) {
-      let res = await posTransferApply(data);
+    async doApplySection(data) {
+      let res = await applySection(data);
       if (res.success) {
         this.$message({
           message: res.msg,
@@ -143,12 +132,24 @@ export default {
         });
       }
     },
+    async doPositionList() {
+      let res = await positionList();
+      if (res.success) {
+        this.sectionOptions = res.data.sectionRow;
+      }
+    },
+    checkFid(e) {
+      timer && clearTimeout(timer);
+      timer = setTimeout(() => {
+        this.doGetPersonFile(e);
+      }, 2000);
+    },
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);
       if (res.success) {
-        let { name, positionId } = res.data;
+        let { name, sectionId } = res.data;
         this.applyForm.applicant = name;
-        this.applyForm.oldPositionId = positionId;
+        this.applyForm.oldSectionId = sectionId;
       }
     },
     handleSubmit() {
@@ -161,11 +162,12 @@ export default {
             type: "warning"
           });
         } else {
-          this.doPosTransferApply(
+          let { fid, oldSectionId, sectionId } = this.applyForm;
+          this.doApplySection(
             Object.assign(this.applyForm, {
-              transferTypeId: 1,
-              fid: parseInt(this.applyForm.fid),
-              modeId: 0
+              fid: parseInt(fid),
+              oldSectionId: oldSectionId ? parseInt(oldSectionId) : null,
+              sectionId: parseInt(sectionId)
             })
           );
           this.$refs["form"].resetFields();

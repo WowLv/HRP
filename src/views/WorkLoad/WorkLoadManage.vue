@@ -59,7 +59,7 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                type="sunccess"
+                type="success"
                 @click="handlePass(scope.row)"
                 >通过</el-button
               >
@@ -173,7 +173,7 @@ import { getWorkLoadList, auditWorkLoad } from "@/api/workLoad";
 export default {
   created() {
     this.doGetWorkLoadList("apply", 1);
-    this.doGetWorkLoadList("finish", 1);
+    this.doGetWorkLoadList("finished", 1);
   },
   data() {
     return {
@@ -270,7 +270,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 1540px;
+  width: 1500px;
   margin: 0 20px;
   height: 794px; // 与其他分页样式相同
   position: relative;
@@ -285,6 +285,7 @@ export default {
   }
   .tab-pane {
     height: 740px;
+    width: 100%;
     .table {
       .icon-item {
         font-size: 24px;

@@ -155,7 +155,7 @@
             prop="fid"
             label="职工号"
             align="center"
-            width="160"
+            width="150"
           ></el-table-column>
           <el-table-column
             prop="name"
@@ -224,7 +224,7 @@
           </el-table-column>
           <el-table-column
             label="状态"
-            width="160"
+            width="150"
             align="center"
             class="form-item"
           >
@@ -239,7 +239,7 @@
           </el-table-column>
           <el-table-column
             label="操作"
-            width="160"
+            width="150"
             align="center"
             class="form-item"
           >
@@ -358,7 +358,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 1540px;
+  width: 1500px;
   margin: 0 20px;
   position: relative;
   .tab-pane {

@@ -1,5 +1,5 @@
 <template>
-  <div class="conatiner">
+  <div class="container">
     <div class="step" v-if="isResign">
       <el-steps :active="resignStep" finish-status="success" class="step-item">
         <el-step title="申请"></el-step>
@@ -174,6 +174,8 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  height: 100%;
+  width: 1540px;
   .step {
     margin-top: 60px;
     width: 100%;
@@ -191,7 +193,7 @@ export default {
       margin-left: 70px;
       .option-item {
         width: 450px;
-        @media screen and (max-width: 1600px) {
+        @media screen and (max-width: $screenChangeSize) {
           width: 320px;
         }
       }

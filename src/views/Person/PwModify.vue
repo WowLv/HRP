@@ -118,6 +118,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
+  height: 100%;
+  width: 1540px;
   display: flex;
   justify-content: flex-start;
   .rule-form {

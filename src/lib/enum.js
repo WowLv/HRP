@@ -1,5 +1,5 @@
 var pagesEnum = {
-  home: "控制台",
+  center: "控制台",
   info_base: "用户信息",
   time_base: "考核年度",
   info_modify: "个人信息",

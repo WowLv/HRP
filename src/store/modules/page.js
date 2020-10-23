@@ -5,7 +5,7 @@ const pages = {
     pageTabs: [],
     pageTabsValue: "0",
     tabIndex: 0,
-    currPath: "/"
+    currPath: "/center"
   },
   getters: {
     pageTabs: state => state.pageTabs,
@@ -24,7 +24,7 @@ const pages = {
       state.currPath = nowRouter;
       let isExist = false;
       //首页一直显示
-      if (nowRouter === "/") nowRouter = "/home";
+      if (nowRouter === "/") nowRouter = "/center";
       state.pageTabs.map(item => {
         if (item.title === nowRouter.replace("/", "")) {
           isExist = true;
@@ -67,7 +67,7 @@ const pages = {
             let nextTab = tabs[index + 1] || tabs[index - 1];
             if (nextTab) {
               activeName = nextTab.name;
-              if (nextTab.title === "home") {
+              if (nextTab.title === "center") {
                 router.push(`/`);
               } else {
                 router.push(`/${nextTab.title}`);

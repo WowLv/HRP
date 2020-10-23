@@ -23,3 +23,11 @@ export function getAllSectionApply(params) {
     params
   });
 }
+
+export function auditSectionApply(data) {
+  return request({
+    url: "/audit_sectionApply",
+    method: "post",
+    data
+  });
+}

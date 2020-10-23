@@ -18,7 +18,7 @@
             v-for="item in pageTabs"
             :label="item.show"
             :name="item.name"
-            :closable="item.title !== 'home'"
+            :closable="item.title !== 'center'"
           >
           </el-tab-pane>
           <router-view />
@@ -124,10 +124,10 @@ export default {
         }
       });
       if (this.$route.path !== currPath) {
-        if (currPath !== "/home") {
+        if (currPath !== "/center") {
           this.$router.push(currPath);
         } else {
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: "Center" });
         }
       }
     }
@@ -138,14 +138,25 @@ export default {
 <style lang="scss" scoped>
 .container {
   margin: 0 auto;
-  width: 1920px;
+  // width: 1920px;
+  width: 100%;
   .main {
     display: flex;
+    justify-content: center;
     .side {
-      flex: 2;
+      flex: 1;
+    }
+    @media screen and (max-width: 1780px) {
+      .side {
+        flex: 0.5;
+      }
+      .contain-box {
+        flex: 9.5;
+      }
     }
     .contain-box {
-      flex: 8;
+      // flex: 8;
+      width: 1540;
       overflow: hidden;
       padding: 10px;
       // max-width: 1350px;

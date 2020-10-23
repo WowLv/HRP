@@ -12,7 +12,13 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    redirect: "/center",
     children: [
+      {
+        path: "center",
+        name: "Center",
+        component: () => import("../views/Center.vue")
+      },
       {
         path: "info_base",
         name: "InfoBase",

@@ -8,10 +8,10 @@
       :rules="rule"
     >
       <el-form-item label="职工号" class="form-item" prop="fid">
-        <el-input v-model="loadInfo.fid"></el-input>
+        <el-input v-model="loadInfo.fid" disabled></el-input>
       </el-form-item>
       <el-form-item label="姓名" class="form-item" prop="name">
-        <el-input v-model="loadInfo.name"></el-input>
+        <el-input v-model="loadInfo.name" disabled></el-input>
       </el-form-item>
       <el-form-item label="工作量项" class="form-item" prop="workLoadId">
         <el-select
@@ -119,6 +119,8 @@ import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
 import { mapGetters } from "vuex";
 export default {
   created() {
+    this.loadInfo.fid = this.uid;
+    this.loadInfo.name = this.username;
     this.doGetScientLoadSum();
   },
   data() {
@@ -148,7 +150,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["uid"])
+    ...mapGetters(["uid", "username"])
   },
   methods: {
     async doGetMeasure(workLoadTypeId, workLoadId) {
@@ -242,7 +244,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   height: 100%;
-  width: 100%;
+  width: 1540px;
   display: flex;
   .form {
     width: 600px;
@@ -259,7 +261,7 @@ export default {
       }
       .option-item {
         width: 450px;
-        @media screen and (max-width: 1600px) {
+        @media screen and (max-width: $screenChangeSize) {
           width: 300px;
         }
       }

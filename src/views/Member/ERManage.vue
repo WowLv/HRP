@@ -36,7 +36,7 @@
             align="center"
             width="170"
           ></el-table-column>
-          <el-table-column label="申请描述" align="center" width="280">
+          <el-table-column label="申请描述" align="center" width="250">
             <template slot-scope="scope">
               <el-button @click="handleApplyExpand(scope.row)"
                 >点击查看</el-button
@@ -118,7 +118,7 @@
             label="姓名"
             width="160"
           ></el-table-column>
-          <el-table-column label="申请描述" align="center" width="280">
+          <el-table-column label="申请描述" align="center" width="250">
             <template slot-scope="scope">
               <el-button @click="handleApplyExpand(scope.row)"
                 >点击查看</el-button
@@ -138,7 +138,7 @@
           <el-table-column
             prop="applyType"
             label="申请类型"
-            width="180"
+            width="175"
             align="center"
           >
             <template slot-scope="scope">
@@ -152,7 +152,7 @@
           </el-table-column>
           <el-table-column
             label="状态"
-            width="180"
+            width="175"
             align="center"
             class="form-item"
           >
@@ -295,7 +295,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 1540px;
+  width: 1500px;
   margin: 0 20px;
   position: relative;
   .tab-pane {

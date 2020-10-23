@@ -225,7 +225,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   height: 100%;
-  width: 100%;
+  width: 1540px;
   .form {
     width: 600px;
     margin-top: 50px;
@@ -244,7 +244,7 @@ export default {
       }
       .option-item {
         width: 450px;
-        @media screen and (max-width: 1600px) {
+        @media screen and (max-width: $screenChangeSize) {
           width: 300px;
         }
       }

@@ -191,7 +191,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 1540px;
+  width: 1500px;
   margin: 0 20px;
   position: relative;
   .tab-pane {

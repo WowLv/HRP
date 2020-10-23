@@ -10,10 +10,10 @@ export default {};
 
 <style lang="scss">
 html {
-  @media screen and (max-width: 1600px) {
+  @media screen and (max-width: 1440px) {
     font-size: 12px;
   }
-  @media screen and (min-width: 1600px) and (max-width: 1920px) {
+  @media screen and (min-width: 1440px) and (max-width: 1920px) {
     font-size: 16px;
   }
   // @media screen and (min-width: 2560px) {

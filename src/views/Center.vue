@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>考核年度</h1>
+    <h1>控制台</h1>
   </div>
 </template>
 

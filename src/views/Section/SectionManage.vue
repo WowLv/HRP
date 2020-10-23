@@ -184,7 +184,7 @@
 </template>
 
 <script>
-import { getAllSectionApply } from "@/api/section";
+import { getAllSectionApply, auditSectionApply } from "@/api/section";
 export default {
   created() {
     this.doGetSectionTransferApply(1);
@@ -205,6 +205,10 @@ export default {
     };
   },
   methods: {
+    async doAuditSectionApply(data) {
+      let res = await auditSectionApply(data);
+      this.handleMsg(res);
+    },
     async doGetSectionTransferFinish(page) {
       let res = await getAllSectionApply({ mode: "finished", page });
       if (res.success) {
@@ -250,17 +254,17 @@ export default {
       this.$refs["finishTable"].toggleRowExpansion(row);
     },
     handldPass(row) {
-      //   this.doAuditPosTransferApply({ ...row, modeId: 1 }).then(() => {
-      //     this.doGetPosTransferFinish(1);
-      //     this.doGetPosTransferApply(1);
-      //   });
+      this.doAuditSectionApply({ ...row, modeId: 1 }).then(() => {
+        this.doGetSectionTransferFinish(1);
+        this.doGetSectionTransferApply(1);
+      });
       console.log(row);
     },
     handldReject(row) {
-      //   this.doAuditPosTransferApply({ ...row, modeId: 2 }).then(() => {
-      //     this.doGetPosTransferFinish(1);
-      //     this.doGetPosTransferApply(1);
-      //   });
+      this.doAuditSectionApply({ ...row, modeId: 2 }).then(() => {
+        this.doGetSectionTransferFinish(1);
+        this.doGetSectionTransferApply(1);
+      });
       console.log(row);
     },
     handleDelete() {
@@ -275,7 +279,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 1540px;
+  width: 1500px;
   margin: 0 20px;
   position: relative;
   .tab-pane {

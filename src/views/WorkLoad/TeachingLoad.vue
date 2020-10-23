@@ -52,7 +52,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   height: 100%;
-  width: 100%;
+  width: 1540px;
   display: flex;
   .form {
     width: 600px;
@@ -61,7 +61,7 @@ export default {
       margin-bottom: 20px;
       .option-item {
         width: 450px;
-        @media screen and (max-width: 1600px) {
+        @media screen and (max-width: $screenChangeSize) {
           width: 300px;
         }
       }

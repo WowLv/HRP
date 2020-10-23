@@ -60,6 +60,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   width: 1920px;
+  min-width: 1125px;
+  width: 100%;
   height: 80px;
   background-color: $theme-color;
   .header {

@@ -179,7 +179,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 1540px;
+  width: 1500px;
   margin: 0 20px;
   height: 794px; // 与其他分页样式相同
   position: relative;

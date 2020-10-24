@@ -123,6 +123,16 @@ const routes = [
         path: "load_manage",
         name: "WorkLoadManage",
         component: () => import("../views/WorkLoad/WorkLoadManage.vue")
+      },
+      {
+        path: "teach_add",
+        name: "TeachAdd",
+        component: () => import("../views/Teach/TeachAdd.vue")
+      },
+      {
+        path: "teach_minus",
+        name: "TeachMinus",
+        component: () => import("../views/Teach/TeachMinus.vue")
       }
     ]
   },

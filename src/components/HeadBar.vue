@@ -63,7 +63,7 @@ export default {
   min-width: 1125px;
   width: 100%;
   height: 80px;
-  background-color: $theme-color;
+  background-color: $theme-back-color;
   .header {
     width: 100%;
     height: 100%;
@@ -76,7 +76,7 @@ export default {
       line-height: 80px;
       text-align: center;
       font-size: 28px;
-      color: #666;
+      color: #888;
       &:before {
         content: attr(text);
         position: absolute;
@@ -101,9 +101,10 @@ export default {
         height: 80px;
         box-sizing: border-box;
         &:hover {
+          background-color: $theme-activeBack-color;
           cursor: pointer;
           span {
-            color: #f7f2de;
+            color: $theme-active-color;
           }
         }
         .iconfont {
@@ -111,7 +112,7 @@ export default {
         }
         span {
           text-align: center;
-          color: #666;
+          color: $theme-text-color;
         }
       }
     }

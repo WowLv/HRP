@@ -1,3 +1,34 @@
 
-$theme-color: #9FC5E8;
+// $theme-color: #9FC5E8;
+$theme-back-color: #2F4050;
+$theme-activeBack-color: #263340;
+$theme-text-color: #b8b8b8;
+$theme-active-color: #bbae7a;
 $screenChangeSize: 1440px;
+
+@keyframes popup {
+    0% {
+      top: -100%;
+      opacity: 0;
+    }
+    25% {
+      top: 10%;
+      opacity: 1;
+      transform: rotate(5deg);
+    }
+    50% {
+      top: -2%;
+      opacity: 1;
+      transform: rotate(-3deg);
+    }
+    75% {
+      top: 2%;
+      opacity: 1;
+      transform: rotate(3deg);
+    }
+    100% {
+      top: 0;
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+  }

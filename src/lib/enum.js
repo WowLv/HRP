@@ -20,7 +20,9 @@ var pagesEnum = {
   teach_load: "基础教学工作量",
   scientific_load: "教科研工作量",
   public_load: "公共工作量",
-  load_manage: "工作量审核"
+  load_manage: "工作量审核",
+  teach_add: "加课报备",
+  teach_minus: "请假报备"
 };
 
 var powerEnum = {

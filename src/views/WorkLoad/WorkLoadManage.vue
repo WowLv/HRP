@@ -41,6 +41,12 @@
             width="350"
           >
           </el-table-column>
+          <!-- <el-table-column align="center" label="工作量项" width="350">
+            <template slot-scope="scope">
+              <p v-if="scope.row.pubWorkLoad">{{ scope.row.pubWorkLoad }}</p>
+              <p v-if="scope.row.sciWorkLoad">{{ scope.row.sciWorkLoad }}</p>
+            </template>
+          </el-table-column> -->
           <el-table-column prop="proof" align="center" label="佐证" width="150">
             <template slot-scope="scope">
               <i
@@ -116,6 +122,7 @@
             width="180"
           >
           </el-table-column>
+          <!-- nodejs api -->
           <el-table-column
             prop="workLoad"
             align="center"
@@ -123,6 +130,13 @@
             width="350"
           >
           </el-table-column>
+          <!-- java api -->
+          <!-- <el-table-column align="center" label="工作量项" width="350">
+            <template slot-scope="scope">
+              <p v-if="scope.row.pubWorkLoad">{{ scope.row.pubWorkLoad }}</p>
+              <p v-if="scope.row.sciWorkLoad">{{ scope.row.sciWorkLoad }}</p>
+            </template>
+          </el-table-column> -->
           <el-table-column prop="proof" align="center" label="佐证" width="150">
             <template slot-scope="scope">
               <i

@@ -4,47 +4,47 @@
       <h1>绩效考核系统</h1>
     </div>
 
-    <transition appear>
-      <div class="login">
-        <section class="login_window">
-          <p class="login_header">登录</p>
-          <div class="login_body">
-            <el-form
-              :model="ruleForm"
-              class="demo-form-inline"
-              :rules="rule"
-              ref="ruleForm"
-            >
-              <el-form-item prop="user" class="form-item">
-                <el-input
-                  prefix-icon="el-icon-user-solid"
-                  v-model="ruleForm.user"
-                  placeholder="请输入用户名或职工号"
-                ></el-input>
-              </el-form-item>
-              <el-form-item prop="pw" ref="pw" class="form-item">
-                <el-input
-                  prefix-icon="el-icon-lock"
-                  v-model="ruleForm.pw"
-                  placeholder="请输入密码"
-                  show-password
-                >
-                </el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button
-                  class="login_btn"
-                  type="primary"
-                  style="width:100%"
-                  @click="onSubmit"
-                  >登录</el-button
-                >
-              </el-form-item>
-            </el-form>
-          </div>
-        </section>
-      </div>
-    </transition>
+    <!-- <transition appear> -->
+    <div class="login">
+      <section class="login_window">
+        <p class="login_header">登录</p>
+        <div class="login_body">
+          <el-form
+            :model="ruleForm"
+            class="demo-form-inline"
+            :rules="rule"
+            ref="ruleForm"
+          >
+            <el-form-item prop="user" class="form-item">
+              <el-input
+                prefix-icon="el-icon-user-solid"
+                v-model="ruleForm.user"
+                placeholder="请输入用户名或职工号"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="pw" ref="pw" class="form-item">
+              <el-input
+                prefix-icon="el-icon-lock"
+                v-model="ruleForm.pw"
+                placeholder="请输入密码"
+                show-password
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                class="login_btn"
+                type="primary"
+                style="width:100%"
+                @click="onSubmit"
+                >登录</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </div>
+      </section>
+    </div>
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -114,15 +114,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-enter,
-.v-leave-to {
-  opacity: 0;
-  transform: translateY(80px);
-}
-.v-enter-active,
-.v-leave-active {
-  transition: all 0.6s ease;
-}
 .container {
   width: 100vw;
   height: 100vh;
@@ -133,10 +124,13 @@ export default {
   position: relative;
   .title {
     top: 150px;
-    color: $theme-color;
+    color: $theme-back-color;
     position: absolute;
   }
   .login {
+    opacity: 0;
+    animation: popup 0.8s cubic-bezier(0.21, 0.85, 1, 1) 0.5s 1 forwards;
+    position: absolute;
     background-color: white;
     width: 550px;
     // margin: 0 auto;
@@ -152,7 +146,7 @@ export default {
         font-size: 32px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         padding-bottom: 40px;
-        color: $theme-color;
+        color: $theme-back-color;
       }
       .login_body {
         width: 100%;

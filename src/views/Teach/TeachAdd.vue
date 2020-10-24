@@ -11,31 +11,21 @@
         <el-input v-model="loadInfo.fid"></el-input>
       </el-form-item>
       <el-form-item label="姓名" class="form-item" prop="name">
-        <el-input v-model="loadInfo.name" disabled></el-input>
+        <el-input v-model="loadInfo.name"></el-input>
       </el-form-item>
-      <el-form-item label="课时量" class="form-item" prop="teachLoad">
-        <el-input
-          v-model="loadInfo.teachLoad"
-          type="number"
-          disabled
-        ></el-input>
+      <el-form-item label="加课课时量" class="form-item" prop="classHour">
+        <el-input v-model="loadInfo.classHour" type="number"></el-input>
       </el-form-item>
-      <el-form-item label="操作时间" class="form-item" prop="updateTime">
+      <el-form-item label="申请时间" class="form-item" prop="recordTime">
         <el-date-picker
           type="datetime"
           placeholder="选择日期"
-          v-model="loadInfo.updateTime"
+          v-model="loadInfo.recordTime"
           style="width: 100%;"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item class="btn-group form-item" v-if="mode === 'check'">
-        <el-button type="primary" class="form-btn" @click="handleCheck"
-          >查询</el-button
-        >
-      </el-form-item>
-      <el-form-item class="btn-group form-item" v-else>
-        <el-button class="form-btn" @click="handleCancel">取消</el-button>
-        <el-button type="success" class="form-btn" @click="handleSubmit"
+      <el-form-item class="form-item">
+        <el-button type="primary" class="form-btn" @click="handleSubmit"
           >确认</el-button
         >
       </el-form-item>
@@ -45,39 +35,26 @@
 
 <script>
 import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
-import { setTeachLoad } from "@/api/teach";
+import { setTeachRecord } from "@/api/teach";
 export default {
   data() {
     return {
-      mode: "check",
       loadInfo: {
-        name: "",
-        teachLoad: "",
-        updateTime: ""
+        recordTypeId: 1
       },
       rule: {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         name: [{ required: true, validator: validateName, trigger: "blur" }],
-        updateTime: [
+        classHour: [
           { required: true, validator: validateTeachLoad, trigger: "blur" }
         ]
       }
     };
   },
   methods: {
-    async doSetTeachLoad(data) {
-      let res = await setTeachLoad(data);
-      console.log(res);
-      if (data.mode === "check") {
-        this.loadInfo.name = res.data.name;
-        this.loadInfo.teachLoad = res.data.teachLoad;
-        this.handleMsg(res);
-        this.mode = "update";
-      } else if (res.success && data.mode === "update") {
-        this.handleMsg(res);
-        this.mode = "check";
-        this.$refs["forms"].resetFields();
-      }
+    async doSetTeachRecord(data) {
+      let res = await setTeachRecord(data);
+      this.handleMsg(res);
     },
     handleMsg(res) {
       if (res.success) {
@@ -92,15 +69,20 @@ export default {
         });
       }
     },
-    handleCheck() {
-      this.doSetTeachLoad({ mode: this.mode, fid: this.loadInfo.fid });
-    },
-    handleCancel() {
-      this.mode = "check";
-      this.$refs["forms"].resetFields();
-    },
     handleSubmit() {
-      this.doSetTeachLoad(Object.assign(this.loadInfo, { mode: this.mode }));
+      this.$refs["forms"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else {
+          this.doSetTeachRecord(
+            Object.assign(this.loadInfo, {
+              fid: parseInt(this.loadInfo.fid),
+              classHour: this.loadInfo.classHour
+            })
+          );
+          this.$refs["forms"].resetFields();
+        }
+      });
     }
   }
 };
@@ -114,10 +96,6 @@ export default {
   .form {
     width: 600px;
     margin-top: 50px;
-    .btn-group {
-      display: flex;
-      justify-content: center;
-    }
     .form-item {
       margin-bottom: 20px;
       .option-item {
@@ -128,7 +106,7 @@ export default {
       }
       .form-btn {
         width: 100px;
-        // margin-left: 150px;
+        margin-left: 150px;
         margin-top: 30px;
       }
     }

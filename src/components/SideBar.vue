@@ -4,9 +4,9 @@
       <el-menu
         :default-active="nowCurrPath"
         class="menu-main"
-        background-color="#9FC5E8"
-        text-color="#555"
-        active-text-color="#F7F2DE"
+        background-color="#2F4050"
+        text-color="#b8b8b8"
+        active-text-color="#BBAE7A"
         collapse
         unique-opened
         router
@@ -53,6 +53,11 @@
             <el-menu-item index="/section_file">部门档案</el-menu-item>
           </el-submenu>
           <el-submenu index="2-4">
+            <template slot="title">教务管理</template>
+            <el-menu-item index="/teach_add">加课报备</el-menu-item>
+            <el-menu-item index="/teach_minus">请假报备</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-5">
             <template slot="title">工作量管理</template>
             <el-menu-item index="/teach_load">基础教学工作量</el-menu-item>
             <el-menu-item index="/scientific_load">教科研工作量</el-menu-item>
@@ -66,9 +71,9 @@
       <el-menu
         :default-active="nowCurrPath"
         class="menu-main"
-        background-color="#9FC5E8"
-        text-color="#555"
-        active-text-color="#F7F2DE"
+        background-color="#2F4050"
+        text-color="#b8b8b8"
+        active-text-color="#BBAE7A"
         unique-opened
         router
       >
@@ -114,6 +119,11 @@
             <el-menu-item index="/section_file">部门档案</el-menu-item>
           </el-submenu>
           <el-submenu index="2-4">
+            <template slot="title">教务管理</template>
+            <el-menu-item index="/teach_add">加课报备</el-menu-item>
+            <el-menu-item index="/teach_minus">请假报备</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-5">
             <template slot="title">工作量管理</template>
             <el-menu-item index="/teach_load">基础教学工作量</el-menu-item>
             <el-menu-item index="/scientific_load">教科研工作量</el-menu-item>

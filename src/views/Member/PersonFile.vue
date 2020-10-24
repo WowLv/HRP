@@ -123,6 +123,7 @@
         v-if="nowType === 'teacher'"
       >
         <el-input
+          placeholder="未录入"
           v-model="personInfo.teachLoad"
           :disabled="disabled.teachLoad"
         ></el-input>

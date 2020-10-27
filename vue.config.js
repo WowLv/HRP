@@ -1,4 +1,6 @@
 const path = require("path");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "./" : "./",
@@ -7,7 +9,7 @@ module.exports = {
       "/api": {
         // target: "http://192.168.1.103:3000",
         target: "http://127.0.0.1:3000",
-        // target: "http://192.168.43.132:8080/hrp",
+        // target: "http://192.168.43.126:8080/hrp",
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
@@ -31,5 +33,9 @@ module.exports = {
         })
         .end();
     });
+    //打包体积分析
+    if (process.env.NODE_ENV === "production") {
+      config.plugin("BundleAnalyzerPlugin").use(BundleAnalyzerPlugin);
+    }
   }
 };

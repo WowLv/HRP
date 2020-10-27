@@ -11,6 +11,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-feeds:before {
+  content: "\e751";
+}
+
+.icon-upload:before {
+  content: "\e76b";
+}
+
+.icon-shenqingjilu:before {
+  content: "\e7c4";
+}
+
 .icon-arrow-right:before {
   content: "\e743";
 }

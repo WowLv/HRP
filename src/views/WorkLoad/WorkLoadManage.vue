@@ -34,19 +34,21 @@
             width="180"
           >
           </el-table-column>
-          <el-table-column
+          <!-- nodejs api -->
+          <!-- <el-table-column
             prop="workLoad"
             align="center"
             label="工作量项"
             width="350"
           >
-          </el-table-column>
-          <!-- <el-table-column align="center" label="工作量项" width="350">
+          </el-table-column> -->
+          <!-- java api -->
+          <el-table-column align="center" label="工作量项" width="350">
             <template slot-scope="scope">
               <p v-if="scope.row.pubWorkLoad">{{ scope.row.pubWorkLoad }}</p>
               <p v-if="scope.row.sciWorkLoad">{{ scope.row.sciWorkLoad }}</p>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column prop="proof" align="center" label="佐证" width="150">
             <template slot-scope="scope">
               <i
@@ -123,20 +125,20 @@
           >
           </el-table-column>
           <!-- nodejs api -->
-          <el-table-column
+          <!-- <el-table-column
             prop="workLoad"
             align="center"
             label="工作量项"
             width="350"
           >
-          </el-table-column>
+          </el-table-column> -->
           <!-- java api -->
-          <!-- <el-table-column align="center" label="工作量项" width="350">
+          <el-table-column align="center" label="工作量项" width="350">
             <template slot-scope="scope">
               <p v-if="scope.row.pubWorkLoad">{{ scope.row.pubWorkLoad }}</p>
               <p v-if="scope.row.sciWorkLoad">{{ scope.row.sciWorkLoad }}</p>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column prop="proof" align="center" label="佐证" width="150">
             <template slot-scope="scope">
               <i
@@ -255,9 +257,13 @@ export default {
       );
     },
     handlePass(row) {
+      console.log(row);
       this.doAuditWorkLoad({
         workLoadTypeId: row.workLoadTypeId,
         storageId: row.storageId,
+        workLoadId: row.workLoadId,
+        extra: row.extra,
+        calc: row.calc,
         modeId: 1,
         fid: row.fid
       }).then(() => {

@@ -34,7 +34,9 @@ import {
   Upload,
   Notification,
   Steps,
-  Step
+  Step,
+  Progress,
+  Card
 } from "element-ui";
 Vue.use(Row);
 Vue.use(Col);
@@ -61,6 +63,8 @@ Vue.use(Pagination);
 Vue.use(Upload);
 Vue.use(Step);
 Vue.use(Steps);
+Vue.use(Progress);
+Vue.use(Card);
 Vue.use(Loading.directive);
 Vue.component(Message); //基于组件使用，不用use避免报错
 

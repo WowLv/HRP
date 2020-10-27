@@ -39,3 +39,10 @@ export function register(userData) {
     data: userData
   });
 }
+
+export function getPercent() {
+  return request({
+    url: "/percent",
+    method: "get"
+  });
+}

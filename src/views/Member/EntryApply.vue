@@ -55,6 +55,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { handleMsg } from "@/lib/util";
 import { entryApply } from "@/api/memberFile";
 export default {
   data() {
@@ -94,17 +95,7 @@ export default {
           modeId: 0
         })
       );
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
     },
     handleSubmit() {
       this.$refs["form"].validate(valid => {

@@ -13,12 +13,7 @@
       <el-form-item label="申请人" class="form-item" prop="applicant">
         <el-input v-model="applyForm.applicant"></el-input>
       </el-form-item>
-      <el-form-item
-        label="原部门"
-        class="form-item"
-        prop="oldSectionId"
-        required
-      >
+      <el-form-item label="原部门" class="form-item" prop="oldSectionId">
         <el-select
           class="option-item"
           v-model="applyForm.oldSectionId"
@@ -83,6 +78,7 @@
 <script>
 let timer = null;
 import { mapGetters } from "vuex";
+import { handleMsg } from "@/lib/util";
 import { validateUid } from "@/lib/validate";
 import { getPersonFile, positionList } from "@/api/memberFile";
 import { applySection } from "@/api/section";
@@ -120,17 +116,7 @@ export default {
   methods: {
     async doApplySection(data) {
       let res = await applySection(data);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
-      }
+      handleMsg(res);
     },
     async doPositionList() {
       let res = await positionList();

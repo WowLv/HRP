@@ -7,6 +7,7 @@
       <side-bar class="side" :currentPath="currPath"></side-bar>
       <div class="contain-box">
         <el-tabs
+          class="tabs"
           type="card"
           @tab-remove="removeTab"
           @tab-click="handleSelect"
@@ -155,13 +156,12 @@ export default {
       }
     }
     .contain-box {
-      // flex: 8;
       width: 1540;
       overflow: hidden;
       padding: 10px;
-      // max-width: 1350px;
-      // height: 800px;
-      // background-color: yellowgreen;
+      .tabs {
+        width: 1540px;
+      }
     }
   }
 }

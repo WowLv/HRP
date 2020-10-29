@@ -45,6 +45,7 @@
 
 <script>
 import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
+import { handleMsg } from "@/lib/util";
 import { setTeachLoad } from "@/api/teach";
 export default {
   data() {
@@ -71,25 +72,12 @@ export default {
       if (data.mode === "check") {
         this.loadInfo.name = res.data.name;
         this.loadInfo.teachLoad = res.data.teachLoad;
-        this.handleMsg(res);
+        handleMsg(res);
         this.mode = "update";
       } else if (res.success && data.mode === "update") {
-        this.handleMsg(res);
+        handleMsg(res);
         this.mode = "check";
         this.$refs["forms"].resetFields();
-      }
-    },
-    handleMsg(res) {
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
       }
     },
     handleCheck() {

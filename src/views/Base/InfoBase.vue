@@ -94,8 +94,10 @@
 </template>
 
 <script>
-import { powerEnum } from "@/lib/enum.js";
-import { getAllInfo, searchInfo } from "@/api/allInfo.js";
+import { handleMsg } from "@/lib/util";
+import { powerEnum } from "@/lib/enum";
+import { getAllInfo, searchInfo } from "@/api/allInfo";
+import { deleteUser } from "@/api/login";
 export default {
   created() {
     this.powerEnum = powerEnum;
@@ -119,8 +121,12 @@ export default {
     };
   },
   methods: {
-    handlePageChange(e) {
-      this.doGetAllInfo(e);
+    async doDeleteUser(uid) {
+      const res = await deleteUser(uid);
+      handleMsg(res);
+    },
+    handlePageChange(page) {
+      this.doGetAllInfo(page);
     },
     toRegister() {
       this.$router.push({ name: "UserRegister" });
@@ -150,11 +156,9 @@ export default {
       this.$confirm("确认删除此用户？")
         .then(res => {
           if (res === "confirm") {
-            this.$message({
-              message: "假装删除成功了",
-              type: "success"
+            this.doDeleteUser(row.uid).then(() => {
+              this.doGetAllInfo(1);
             });
-            console.log(row);
           } else {
             return;
           }
@@ -170,16 +174,8 @@ export default {
         this.allInfo = res.data.data;
         this.sum = res.data.sum;
         this.search = "";
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
       }
+      handleMsg(res);
     },
     handleBack() {
       this.searched = false;

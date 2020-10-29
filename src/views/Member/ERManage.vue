@@ -102,11 +102,25 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="已审批" name="finished" class="tab-pane">
-        <el-table :data="finishedData" class="table" max-height="690">
+        <el-table
+          :data="finishedData"
+          ref="finishTable"
+          class="table"
+          max-height="690"
+        >
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <el-form label-position="left" inline class="table-expand">
+                <el-form-item label="申请描述：">
+                  <span class="expand-content">{{ scope.row.reason }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="applyTime"
             label="审核时间"
-            width="200"
+            width="180"
           ></el-table-column>
           <el-table-column
             prop="fid"
@@ -118,9 +132,9 @@
             label="姓名"
             width="160"
           ></el-table-column>
-          <el-table-column label="申请描述" align="center" width="250">
+          <el-table-column label="申请描述" align="center" width="220">
             <template slot-scope="scope">
-              <el-button @click="handleApplyExpand(scope.row)"
+              <el-button @click="handleFinishExpand(scope.row)"
                 >点击查看</el-button
               >
             </template>
@@ -192,6 +206,7 @@
 </template>
 
 <script>
+import { handleMsg } from "@/lib/util";
 import {
   getAllMenberApply,
   getAllMenberFinished,
@@ -250,38 +265,21 @@ export default {
     },
     async handldPass(mid) {
       let res = await auditMember(mid, 1);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
       this.doGetAllMenberApply(this.applyCurrPage);
       this.doGetAllMenberFinished(this.finishCurrPage);
     },
     async handleReject(mid) {
       let res = await auditMember(mid, 2);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
       this.doGetAllMenberApply(this.applyCurrPage);
       this.doGetAllMenberFinished(this.finishCurrPage);
     },
     handleApplyExpand(row) {
       this.$refs["applyTable"].toggleRowExpansion(row);
+    },
+    handleFinishExpand(row) {
+      this.$refs["finishTable"].toggleRowExpansion(row);
     },
     handleDelete(mid) {
       this.$message({

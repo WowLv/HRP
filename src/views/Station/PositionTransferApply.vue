@@ -83,6 +83,7 @@
 <script>
 let timer = null;
 import { mapGetters } from "vuex";
+import { handleMsg } from "@/lib/util";
 import { validateUid } from "@/lib/validate";
 import { getPersonFile, positionList } from "@/api/memberFile";
 import { posTransferApply } from "@/api/station";
@@ -131,17 +132,7 @@ export default {
     },
     async doPosTransferApply(data) {
       let res = await posTransferApply(data);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
-      }
+      handleMsg(res);
     },
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);

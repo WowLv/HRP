@@ -110,6 +110,7 @@ var info_disable = {
   powerId: true
 };
 import { getInfo, setInfo } from "@/api/personInfo";
+import { handleMsg } from "@/lib/util";
 import {
   validatePhone,
   validateEmail,
@@ -238,17 +239,7 @@ export default {
           username: personInfo.username.trim()
         })
       );
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
     }
   }
 };

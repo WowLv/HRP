@@ -15,7 +15,9 @@
         </el-card>
       </div>
       <div class="right">
-        <h3 class="title">消息通知<i class="icon-item el-icon-s-data"></i></h3>
+        <h3 class="title">
+          消息通知<i class="icon-item el-icon-chat-line-round"></i>
+        </h3>
         <el-card class="msg-box box-card">敬请期待</el-card>
       </div>
     </div>
@@ -25,9 +27,9 @@
       <div class="left">
         <div class="card-item" v-for="item in memberList" :key="item.name">
           <el-progress
-            stroke-width="12"
+            :stroke-width="12"
             type="circle"
-            :percentage="item.percent.toFixed(2)"
+            :percentage="Number(item.percent.toFixed(2))"
           ></el-progress>
           <el-tag color="#e5f2ff" class="tag-item">{{ item.name }}</el-tag>
         </div>
@@ -35,10 +37,10 @@
       <div class="right">
         <div class="card-item" v-for="item in sectionList" :key="item.name">
           <el-progress
-            stroke-width="12"
+            :stroke-width="12"
             type="circle"
             color="#009999"
-            :percentage="item.percent.toFixed(2)"
+            :percentage="Number(item.percent.toFixed(2))"
           ></el-progress>
           <el-tag type="success" class="tag-item">{{ item.name }}</el-tag>
         </div>

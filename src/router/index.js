@@ -30,6 +30,11 @@ const routes = [
         component: () => import("../views/Base/TimeBase.vue")
       },
       {
+        path: "workLoad_base",
+        name: "workLoadBase",
+        component: () => import("../views/Base/workLoadBase.vue")
+      },
+      {
         path: "info_modify",
         name: "InfoModify",
         component: () => import("../views/Person/InfoModify.vue")
@@ -151,7 +156,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (from.name !== "Login" && to.name !== "Login") {
-    console.log("check");
+    // console.log("check");
     check()
       .then(res => {
         if (!res.success) {

@@ -185,6 +185,7 @@
 
 <script>
 import { getAllSectionApply, auditSectionApply } from "@/api/section";
+import { handleMsg } from "@/lib/util";
 export default {
   created() {
     this.doGetSectionTransferApply(1);
@@ -207,7 +208,7 @@ export default {
   methods: {
     async doAuditSectionApply(data) {
       let res = await auditSectionApply(data);
-      this.handleMsg(res);
+      handleMsg(res);
     },
     async doGetSectionTransferFinish(page) {
       let res = await getAllSectionApply({ mode: "finished", page });
@@ -227,20 +228,6 @@ export default {
         this.isLoading = false;
       }
     },
-    handleMsg(res) {
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
-      }
-    },
-
     applyPageChange(page) {
       this.doGetSectionTransferApply(page);
     },

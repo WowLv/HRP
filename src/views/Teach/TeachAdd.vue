@@ -35,6 +35,7 @@
 
 <script>
 import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
+import { handleMsg } from "@/lib/util";
 import { setTeachRecord } from "@/api/teach";
 export default {
   data() {
@@ -54,20 +55,7 @@ export default {
   methods: {
     async doSetTeachRecord(data) {
       let res = await setTeachRecord(data);
-      this.handleMsg(res);
-    },
-    handleMsg(res) {
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
-      }
+      handleMsg(res);
     },
     handleSubmit() {
       this.$refs["forms"].validate(valid => {

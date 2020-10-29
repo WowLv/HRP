@@ -60,6 +60,7 @@
 let timer = null;
 import { mapGetters } from "vuex";
 import { validateUid } from "@/lib/validate";
+import { handleMsg } from "@/lib/util";
 import { getPersonFile, resignApply } from "@/api/memberFile";
 import { checkResign } from "@/api/notification";
 export default {
@@ -132,17 +133,7 @@ export default {
           modeId: 0
         })
       );
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
     },
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);

@@ -244,7 +244,9 @@
             class="form-item"
           >
             <template slot-scope="scope">
-              <el-button type="danger" @click="handleDelete(scope.row.mid)"
+              <el-button
+                type="danger"
+                @click="handleDelete(scope.row.transferId)"
                 >删除</el-button
               >
             </template>
@@ -266,7 +268,12 @@
 </template>
 
 <script>
-import { getPosTransferApply, auditPosTransferApply } from "@/api/station";
+import { handleMsg } from "@/lib/util";
+import {
+  getPosTransferApply,
+  auditPosTransferApply,
+  deleteTransferRecord
+} from "@/api/station";
 export default {
   created() {
     this.doGetPosTransferApply(1);
@@ -287,9 +294,13 @@ export default {
     };
   },
   methods: {
+    async doDeleteTransferRecord(transferTypeId) {
+      const res = await deleteTransferRecord(transferTypeId);
+      handleMsg(res);
+    },
     async doAuditPosTransferApply(data) {
       let res = await auditPosTransferApply(data);
-      this.handleMsg(res);
+      handleMsg(res);
     },
     async doGetPosTransferFinish(page) {
       let res = await getPosTransferApply({ mode: "finished", page });
@@ -307,19 +318,6 @@ export default {
         this.applyData = res.data.data;
         this.applySum = res.data.sum;
         this.isLoading = false;
-      }
-    },
-    handleMsg(res) {
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
       }
     },
     applyPageChange(page) {
@@ -346,11 +344,20 @@ export default {
         this.doGetPosTransferApply(1);
       });
     },
-    handleDelete() {
-      this.$message({
-        message: `假装删除成功`,
-        type: "success"
-      });
+    handleDelete(transferId) {
+      this.$confirm("确认删除此记录？")
+        .then(res => {
+          if (res === "confirm") {
+            this.doDeleteTransferRecord(transferId).then(() => {
+              this.doGetPosTransferFinish(1);
+            });
+          } else {
+            return;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

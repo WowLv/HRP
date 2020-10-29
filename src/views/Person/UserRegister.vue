@@ -70,6 +70,7 @@
 var timer = null;
 
 import { register } from "@/api/login";
+import { handleMsg } from "@/lib/util";
 import { getPersonFile } from "@/api/memberFile";
 import {
   validatePhone,
@@ -174,17 +175,9 @@ export default {
         )
       );
       if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
         this.$refs["forms"].resetFields();
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
       }
+      handleMsg(res);
     },
     handleSubmit() {
       this.$refs["forms"].validate(valid => {

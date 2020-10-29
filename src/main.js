@@ -36,7 +36,8 @@ import {
   Steps,
   Step,
   Progress,
-  Card
+  Card,
+  Switch
 } from "element-ui";
 Vue.use(Row);
 Vue.use(Col);
@@ -65,6 +66,7 @@ Vue.use(Step);
 Vue.use(Steps);
 Vue.use(Progress);
 Vue.use(Card);
+Vue.use(Switch);
 Vue.use(Loading.directive);
 Vue.component(Message); //基于组件使用，不用use避免报错
 

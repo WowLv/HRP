@@ -108,6 +108,7 @@
 <script>
 import { memberRegister, positionList } from "@/api/memberFile";
 import { TeachMember, SectionMember, DeanMember } from "@/lib/class";
+import { handleMsg } from "@/lib/util";
 import {
   validatePhone,
   validateEmail,
@@ -204,17 +205,9 @@ export default {
         } else {
           let res = await memberRegister(memberData);
           if (res.success) {
-            this.$message({
-              message: res.msg,
-              type: "success"
-            });
             this.$refs["forms"].resetFields();
-          } else {
-            this.$message({
-              message: res.msg,
-              type: "error"
-            });
           }
+          handleMsg(res);
         }
       });
     }

@@ -46,3 +46,13 @@ export function getPercent() {
     method: "get"
   });
 }
+
+export function deleteUser(uid) {
+  return request({
+    url: "/u_delete",
+    method: "post",
+    data: {
+      uid
+    }
+  });
+}

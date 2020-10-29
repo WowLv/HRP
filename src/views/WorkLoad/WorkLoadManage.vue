@@ -35,20 +35,20 @@
           >
           </el-table-column>
           <!-- nodejs api -->
-          <!-- <el-table-column
+          <el-table-column
             prop="workLoad"
             align="center"
             label="工作量项"
             width="350"
           >
-          </el-table-column> -->
+          </el-table-column>
           <!-- java api -->
-          <el-table-column align="center" label="工作量项" width="350">
+          <!-- <el-table-column align="center" label="工作量项" width="350">
             <template slot-scope="scope">
               <p v-if="scope.row.pubWorkLoad">{{ scope.row.pubWorkLoad }}</p>
               <p v-if="scope.row.sciWorkLoad">{{ scope.row.sciWorkLoad }}</p>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="proof" align="center" label="佐证" width="150">
             <template slot-scope="scope">
               <i
@@ -125,20 +125,20 @@
           >
           </el-table-column>
           <!-- nodejs api -->
-          <!-- <el-table-column
+          <el-table-column
             prop="workLoad"
             align="center"
             label="工作量项"
             width="350"
           >
-          </el-table-column> -->
+          </el-table-column>
           <!-- java api -->
-          <el-table-column align="center" label="工作量项" width="350">
+          <!-- <el-table-column align="center" label="工作量项" width="350">
             <template slot-scope="scope">
               <p v-if="scope.row.pubWorkLoad">{{ scope.row.pubWorkLoad }}</p>
               <p v-if="scope.row.sciWorkLoad">{{ scope.row.sciWorkLoad }}</p>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="proof" align="center" label="佐证" width="150">
             <template slot-scope="scope">
               <i
@@ -186,6 +186,7 @@
 
 <script>
 import { getWorkLoadList, auditWorkLoad } from "@/api/workLoad";
+import { handleMsg } from "@/lib/util";
 export default {
   created() {
     this.doGetWorkLoadList("apply", 1);
@@ -212,17 +213,7 @@ export default {
   methods: {
     async doAuditWorkLoad(data) {
       let res = await auditWorkLoad(data);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
     },
     async doGetWorkLoadList(mode, page) {
       let res = await getWorkLoadList(mode, page);

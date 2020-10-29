@@ -13,7 +13,6 @@ const login = {
   },
   mutations: {
     SET_LOGIN: (state, data) => {
-      console.log(data);
       localStorage.setItem("token", JSON.stringify(data.token));
       state.user.uid = data.uid;
       state.user.power = data.powerId;
@@ -30,14 +29,12 @@ const login = {
   },
   actions: {
     setLogin({ commit }, data) {
-      console.log(data);
       commit("SET_LOGIN", data);
     },
     setLogout({ commit }) {
       commit("SET_LOGOUT");
     },
     setUser({ commit }, user) {
-      console.log(user);
       commit("SET_USER", user);
     }
   }

@@ -40,6 +40,7 @@
 
 <script>
 import { modifyPw } from "@/api/login.js";
+import { handleMsg } from "@/lib/util";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -95,18 +96,11 @@ export default {
             this.ruleForm.pass
           );
           if (!res.success) {
-            this.$message({
-              message: res.msg,
-              type: "error"
-            });
             this.$refs["passForm"].resetFields();
           } else {
-            this.$message({
-              message: res.msg,
-              type: "success"
-            });
             this.$router.push({ name: "Home" });
           }
+          handleMsg(res);
         }
       });
     },

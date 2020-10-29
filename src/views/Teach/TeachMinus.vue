@@ -36,6 +36,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { setTeachRecord } from "@/api/teach";
+import { handleMsg } from "@/lib/util";
 import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
 export default {
   created() {
@@ -64,20 +65,7 @@ export default {
   methods: {
     async doSetTeachRecord(data) {
       let res = await setTeachRecord(data);
-      this.handleMsg(res);
-    },
-    handleMsg(res) {
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
-      }
+      handleMsg(res);
     },
     handleSubmit() {
       this.$refs["forms"].validate(valid => {

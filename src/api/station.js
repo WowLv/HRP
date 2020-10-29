@@ -23,3 +23,13 @@ export function auditPosTransferApply(data) {
     data: data
   });
 }
+
+export function deleteTransferRecord(transferId) {
+  return request({
+    url: "/delete_posTransfer",
+    method: "post",
+    data: {
+      transferId
+    }
+  });
+}

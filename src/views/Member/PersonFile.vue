@@ -184,6 +184,7 @@
 </template>
 
 <script>
+import { handleMsg } from "@/lib/util";
 import { getPersonFile, setPersonFile, positionList } from "@/api/memberFile";
 import { mapGetters } from "vuex";
 var info_able = {
@@ -260,17 +261,7 @@ export default {
   methods: {
     async doSetPersonFile(data) {
       let res = await setPersonFile(data);
-      if (res.success) {
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "error"
-        });
-      }
+      handleMsg(res);
     },
     async doGetLevel() {
       let res = await positionList();

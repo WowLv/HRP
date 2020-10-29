@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { handleMsg } from "@/lib/util";
 import { getMemberFile, searchMemberFile } from "@/api/memberFile";
 export default {
   created() {
@@ -158,16 +159,8 @@ export default {
         this.allInfo = res.data.data;
         this.sum = res.data.sum;
         this.search = "";
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-      } else {
-        this.$message({
-          message: res.msg,
-          type: "warning"
-        });
       }
+      handleMsg(res);
     },
     handleBack() {
       this.searched = false;

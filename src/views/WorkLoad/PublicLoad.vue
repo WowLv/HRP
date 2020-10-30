@@ -29,7 +29,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="计量" class="form-item">
+      <el-form-item label="计量" class="form-item" required>
         <el-col :span="11">
           <el-form-item prop="calc">
             <el-input
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { validateUid, validateName } from "@/lib/validate";
+import { validateUid, validateName, validateCalc } from "@/lib/validate";
 import { getPublicLoadSum, getMeasure } from "@/api/workLoad";
 import { mapGetters } from "vuex";
 export default {
@@ -98,7 +98,6 @@ export default {
         workLoadType: "public",
         workLoadTypeId: 2,
         modeId: 0,
-        extra: 0,
         calc: 0,
         measure: ""
       },
@@ -109,7 +108,8 @@ export default {
         name: [{ required: true, validator: validateName, trigger: "blur" }],
         workLoadId: [
           { required: true, message: "请选择工作量项", trigger: "change" }
-        ]
+        ],
+        calc: [{ required: true, validator: validateCalc, trigger: "blur" }]
       }
     };
   },

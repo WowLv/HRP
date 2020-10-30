@@ -58,9 +58,9 @@ export function validateName(rule, value, callback) {
   }
 }
 
-export function validateTeachLoad(rule, value, callback) {
-  if (value < 0) {
-    callback(new Error("课时量不能小于0"));
+export function validateCalc(rule, value, callback) {
+  if (value <= 0) {
+    callback(new Error("请确保该值为正数"));
   } else {
     callback();
   }

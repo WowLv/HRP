@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
+import { validateUid, validateName, validateCalc } from "@/lib/validate";
 import { handleMsg } from "@/lib/util";
 import { setTeachRecord } from "@/api/teach";
 export default {
@@ -47,7 +47,7 @@ export default {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         name: [{ required: true, validator: validateName, trigger: "blur" }],
         classHour: [
-          { required: true, validator: validateTeachLoad, trigger: "blur" }
+          { required: true, validator: validateCalc, trigger: "blur" }
         ]
       }
     };

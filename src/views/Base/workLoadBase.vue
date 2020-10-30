@@ -7,14 +7,79 @@
       ref="forms"
       :rules="rule"
     >
-      <el-form-item label="工作量类型" class="form-item" prop="fid">
-        <el-input v-model="loadInfo.workLoadType"></el-input>
+      <!-- 通用 -->
+      <el-form-item label="工作量类型" class="form-item" prop="workLoadTypeId">
+        <el-select
+          v-model="loadInfo.workLoadTypeId"
+          placeholder="请选择工作量类型"
+          class="option-item"
+          @change="handleTypeChange"
+        >
+          <el-option
+            v-for="item in workLoadTypeOptions"
+            :key="item.workLoadTypeId"
+            :label="item.workLoadType"
+            :value="item.workLoadTypeId"
+            :disabled="item.workLoadTypeId === 3"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="工作量项" class="form-item" prop="workLoadId">
+      <!-- 新增教科研工作量时显示 -->
+      <el-form-item
+        label="教科研工作量类型"
+        class="form-item"
+        v-if="mode === 'add' && loadInfo.workLoadTypeId === 1"
+        prop="scientTypeId"
+      >
+        <el-select
+          v-model="loadInfo.scientTypeId"
+          placeholder="请选择类型"
+          class="option-item"
+        >
+          <el-option
+            v-for="item in scientTypeOptions"
+            :key="item.scientTypeId"
+            :label="item.scientLoadType"
+            :value="item.scientTypeId"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 修改公共工作量时显示 -->
+      <el-form-item
+        label="工作量项"
+        class="form-item"
+        prop="workLoadId"
+        v-if="mode === 'modify' && loadInfo.workLoadTypeId === 2"
+      >
         <el-select
           v-model="loadInfo.workLoadId"
           placeholder="请选择工作量项"
           class="option-item"
+          @change="handleLoadChange"
+        >
+          <el-option
+            v-for="item in workLoadOptions"
+            :key="item.workLoadId"
+            :label="item.workLoad"
+            :value="item.workLoadId"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 修改教科研工作量时显示 -->
+      <el-form-item
+        label="工作量项"
+        class="form-item"
+        prop="workLoadId"
+        v-if="mode === 'modify' && loadInfo.workLoadTypeId === 1"
+      >
+        <el-select
+          v-model="loadInfo.workLoadId"
+          placeholder="请选择工作量项"
+          class="option-item"
+          @change="handleLoadChange"
         >
           <el-option-group
             v-for="group in workLoadOptions"
@@ -31,11 +96,74 @@
           </el-option-group>
         </el-select>
       </el-form-item>
-      <el-form-item label="绩点" class="form-item" prop="classHour">
-        <el-input v-model="loadInfo.gpa" type="number"></el-input>
+      <!-- 新增工作量时显示 -->
+      <el-form-item
+        label="工作量项"
+        class="form-item"
+        prop="workLoad"
+        v-if="mode === 'add'"
+      >
+        <el-input
+          v-model="loadInfo.workLoad"
+          placeholder="请填写工作量项"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="附加绩点" class="form-item" prop="recordTime">
-        <el-input v-model="loadInfo.extraGpa" type="number"></el-input>
+      <!-- 通用 -->
+      <el-form-item label="绩点" class="form-item" required>
+        <el-col :span="11">
+          <el-form-item prop="gpa">
+            <el-input
+              type="number"
+              placeholder="请输入绩点"
+              v-model="loadInfo.gpa"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"
+          ><i class="icon-item el-icon-document-add"></i
+        ></el-col>
+        <el-col :span="11">
+          <!-- 新增时可编辑 -->
+          <el-form-item prop="measure">
+            <el-input
+              :disabled="mode !== 'add'"
+              placeholder="单位"
+              v-model="loadInfo.measure"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
+      <!-- 教科研工作量通用 -->
+      <el-form-item
+        label="附加绩点"
+        class="form-item"
+        v-if="
+          extraList.includes(loadInfo.workLoadId) ||
+            (mode === 'add' && loadInfo.workLoadTypeId === 1)
+        "
+      >
+        <el-col :span="11">
+          <el-form-item prop="extraGpa">
+            <el-input
+              type="number"
+              placeholder="请输入绩点"
+              v-model="loadInfo.extraGpa"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2"
+          ><i class="icon-item el-icon-document-add"></i
+        ></el-col>
+        <el-col :span="11">
+          <el-form-item prop="extraMeasure">
+            <!-- 新增时可编辑 -->
+            <el-input
+              :disabled="mode !== 'add'"
+              placeholder="附加项单位"
+              v-model="loadInfo.extraMeasure"
+            ></el-input>
+          </el-form-item>
+        </el-col>
       </el-form-item>
       <el-form-item class="btn-group form-item">
         <el-switch
@@ -45,35 +173,164 @@
           inactive-value="modify"
           active-text="新增"
           inactive-text="修改"
-          width="50"
+          @change="handleSwitch"
+          :width="50"
         >
         </el-switch>
-        <el-button type="primary" class="form-btn">确认</el-button>
+        <el-button type="primary" class="form-btn" @click="handleSubmit"
+          >确认</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-// import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
+import { validateCalc } from "@/lib/validate";
 // import { handleMsg } from "@/lib/util";
-// import { setTeachRecord } from "@/api/teach";
+import { getWorkLoadType, getGpa } from "@/api/base";
+import { getPublicLoadSum, getScientLoadSum, getMeasure } from "@/api/workLoad";
 export default {
+  created() {
+    this.doGetWorkLoadType();
+  },
   data() {
     return {
       loadInfo: {
         recordTypeId: 1,
-        workLoadType: "",
+        workLoadTypeId: "",
         workLoadId: "",
+        workLoad: "",
+        scientTypeId: "",
+        scientLoadType: "",
         gpa: "",
-        extraGpa: ""
+        extraGpa: "",
+        measure: "",
+        extraMeasure: ""
       },
       mode: "modify",
       workLoadOptions: [],
-      rule: {}
+      scientTypeOptions: [],
+      workLoadTypeOptions: [],
+      extraList: [],
+      rule: {
+        gpa: [{ required: true, validator: validateCalc, trigger: "blur" }],
+        scientTypeId: [
+          {
+            required: true,
+            message: "请选择教科研工作量类别",
+            trigger: "change"
+          }
+        ],
+        workLoad: [
+          { required: true, message: "请填写工作量项", trigger: "blur" }
+        ],
+        measure: [{ required: true, message: "请填写单位", trigger: "blur" }],
+        workLoadId: [
+          { required: true, message: "请选择工作量项", trigger: "change" }
+        ],
+        extraGpa: [
+          { required: true, validator: this.validateExtraGpa, trigger: "blur" }
+        ],
+        extraMeasure: [
+          {
+            required: true,
+            validator: this.validateExtraMeasure,
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
-  methods: {}
+  methods: {
+    async doGetGpa(workLoadTypeId, workLoadId) {
+      const res = await getGpa(workLoadTypeId, workLoadId),
+        { gpa, extraGpa } = res.data;
+      if (res.success) {
+        this.loadInfo.gpa = gpa;
+        this.loadInfo.extraGpa = extraGpa || 0;
+      }
+    },
+    async doGetMeasure(workLoadTypeId, workLoadId) {
+      const res = await getMeasure(workLoadTypeId, workLoadId),
+        { measure, extraMeasure } = res.data;
+      if (res.success) {
+        this.loadInfo.measure = measure || "";
+        this.loadInfo.extraMeasure = extraMeasure || "";
+      }
+    },
+    async doGetWorkLoadType() {
+      const res = await getWorkLoadType(),
+        { workLoadTypeRow, scientTypeRow } = res.data;
+      this.workLoadTypeOptions = workLoadTypeRow;
+      this.scientTypeOptions = scientTypeRow;
+    },
+    async doGetPublicLoadSum() {
+      const { data } = await getPublicLoadSum();
+      this.workLoadOptions = data;
+    },
+    async doGetScientLoadSum() {
+      const res = await getScientLoadSum();
+      let workLoadList = [];
+      let flag = false;
+      if (res.success) {
+        this.extraList = res.data.extraList;
+        res.data.scientList.map(resItem => {
+          for (let i = 0; i < workLoadList.length; i++) {
+            if (workLoadList[i].scientTypeId === resItem.scientTypeId) {
+              flag = true;
+              workLoadList[i].options.push(resItem);
+              break;
+            }
+          }
+
+          if (flag) {
+            flag = false;
+          } else {
+            workLoadList.push({
+              scientTypeId: resItem.scientTypeId,
+              scientLoadType: resItem.scientLoadType,
+              options: [resItem]
+            });
+          }
+        });
+        this.workLoadOptions = workLoadList;
+      }
+    },
+
+    validateExtraGpa(rule, value, callback) {
+      if (value < 0) {
+        callback(new Error("额外加分绩点不能为负数"));
+      }
+    },
+    validateExtraMeasure(rule, value, callback) {
+      if (this.loadInfo.extraGpa > 0 && !value.trim()) {
+        callback(new Error("加分项单位不能为空"));
+      }
+    },
+    handleLoadChange() {
+      this.doGetMeasure(this.loadInfo.workLoadTypeId, this.loadInfo.workLoadId);
+      this.doGetGpa(this.loadInfo.workLoadTypeId, this.loadInfo.workLoadId);
+    },
+    handleTypeChange() {
+      this.loadInfo.workLoadTypeId === 1
+        ? this.doGetScientLoadSum()
+        : this.doGetPublicLoadSum();
+    },
+    handleSwitch() {
+      this.$refs["forms"].resetFields();
+    },
+    handleSubmit() {
+      console.log(this.loadInfo);
+      this.$refs["forms"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else {
+          this.$refs["forms"].resetFields();
+        }
+      });
+    }
+  }
 };
 </script>
 
@@ -92,6 +349,14 @@ export default {
     }
     .form-item {
       margin-bottom: 20px;
+      .icon-item {
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        line-height: 40px;
+        font-size: 22px;
+        color: #666666;
+      }
       .option-item {
         width: 450px;
         @media screen and (max-width: $screenChangeSize) {

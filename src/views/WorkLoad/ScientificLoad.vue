@@ -35,7 +35,7 @@
           </el-option-group>
         </el-select>
       </el-form-item>
-      <el-form-item label="计量" class="form-item">
+      <el-form-item label="计量" class="form-item" required>
         <el-col :span="11">
           <el-form-item prop="calc">
             <el-input
@@ -115,7 +115,7 @@
 
 <script>
 import { getScientLoadSum, getMeasure } from "@/api/workLoad";
-import { validateUid, validateName, validateTeachLoad } from "@/lib/validate";
+import { validateUid, validateName, validateCalc } from "@/lib/validate";
 import { mapGetters } from "vuex";
 export default {
   created() {
@@ -145,7 +145,8 @@ export default {
         workLoadId: [
           { required: true, message: "请选择工作量项", trigger: "change" }
         ],
-        extra: [{ validator: validateTeachLoad, trigger: "blur" }]
+        calc: [{ required: true, validator: validateCalc, trigger: "blur" }],
+        extra: [{ validator: validateCalc, trigger: "blur" }]
       }
     };
   },

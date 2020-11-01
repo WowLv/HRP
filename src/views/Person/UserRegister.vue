@@ -149,7 +149,7 @@ export default {
     async doGetPersonFile(uid) {
       let res = await getPersonFile(uid);
       if (res.success) {
-        console.log(res);
+        // console.log(res);
         this.personInfo = Object.assign(res.data, {
           username: res.data.name,
           uid: this.personInfo.uid

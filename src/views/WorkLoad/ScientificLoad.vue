@@ -226,7 +226,7 @@ export default {
               type: "warning"
             });
           } else if (this.uid !== parseInt(this.loadInfo.fid)) {
-            console.log(this.uid);
+            // console.log(this.uid);
             this.$message({
               message: "请输入本人职工号",
               type: "warning"

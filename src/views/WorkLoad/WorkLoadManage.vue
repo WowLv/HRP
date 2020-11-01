@@ -248,7 +248,7 @@ export default {
       );
     },
     handlePass(row) {
-      console.log(row);
+      // console.log(row);
       this.doAuditWorkLoad({
         workLoadTypeId: row.workLoadTypeId,
         storageId: row.storageId,

@@ -143,10 +143,12 @@ export default {
             this.isLoading = false;
           }, 500);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          throw err;
+        });
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
       this.$router.push({
         name: "InfoModify",
         params: { mode: "admin", userObj: row }
@@ -164,7 +166,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          throw err;
         });
     },
     async handleSearch() {

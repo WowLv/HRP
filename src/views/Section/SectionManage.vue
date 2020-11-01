@@ -245,14 +245,14 @@ export default {
         this.doGetSectionTransferFinish(1);
         this.doGetSectionTransferApply(1);
       });
-      console.log(row);
+      // console.log(row);
     },
     handldReject(row) {
       this.doAuditSectionApply({ ...row, modeId: 2 }).then(() => {
         this.doGetSectionTransferFinish(1);
         this.doGetSectionTransferApply(1);
       });
-      console.log(row);
+      // console.log(row);
     },
     handleDelete() {
       this.$message({

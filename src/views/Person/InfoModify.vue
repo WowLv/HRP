@@ -196,7 +196,7 @@ export default {
   methods: {
     async doGetInfo(Uid) {
       let res = await getInfo(Uid);
-      console.log(res.data);
+      // console.log(res.data);
       let { uid, username, sex, age, phone, email, powerId } = res.data;
       if (res.success) {
         this.personInfo = new Teacher(
@@ -230,7 +230,7 @@ export default {
       let personInfo = this.personInfo;
       if (!personInfo.pwd || !personInfo.pwd.trim()) {
         delete personInfo.pwd;
-        console.log("no password");
+        // console.log("no password");
       }
       //将个人用户信息对象调整后上传
       let res = await setInfo(

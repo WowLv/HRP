@@ -274,7 +274,7 @@ export default {
     },
     async doGetPersonFile(uid) {
       let res = await getPersonFile(uid);
-      console.log(res.data);
+      // console.log(res.data);
       if (res.success) {
         this.personInfo = res.data;
         setTimeout(() => {

@@ -148,7 +148,7 @@ export default {
   methods: {
     async doGetSectionFile(page, sectionId) {
       let res = await getSectionFile({ page, sectionId });
-      console.log(res);
+      // console.log(res);
       if (res.success) {
         let data = res.data.data,
           sum = res.data.sum;

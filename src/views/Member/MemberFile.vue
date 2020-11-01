@@ -107,7 +107,7 @@ export default {
       if (res.success) {
         this.allInfo = res.data.data;
         this.sum = res.data.sum;
-        console.log(res.data);
+        // console.log(res.data);
         setTimeout(() => {
           this.isLoading = false;
         }, 500);
@@ -149,7 +149,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          throw err;
         });
     },
     async handleSearch() {

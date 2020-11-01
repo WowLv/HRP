@@ -71,7 +71,7 @@ export default {
     async doGetNotice(fid) {
       let res = await getNotice(fid);
       if (res.success) {
-        console.log(res.data);
+        // console.log(res.data);
         // let finishNum = res.data.filter(item => {
         //   return item.noticeModeId === 3;
         // }).length;

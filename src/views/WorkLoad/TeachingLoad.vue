@@ -68,7 +68,7 @@ export default {
   methods: {
     async doSetTeachLoad(data) {
       let res = await setTeachLoad(data);
-      console.log(res);
+      // console.log(res);
       if (data.mode === "check") {
         this.loadInfo.name = res.data.name;
         this.loadInfo.teachLoad = res.data.teachLoad;

@@ -43,3 +43,19 @@ export function auditWorkLoad(data) {
     data
   });
 }
+
+export function modWorkLoad(data) {
+  return request({
+    url: "/mod_workLoad",
+    method: "post",
+    data
+  });
+}
+
+export function addWorkLoad(data) {
+  return request({
+    url: "/add_workLoad",
+    method: "post",
+    data
+  });
+}

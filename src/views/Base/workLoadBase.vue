@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="isLoading">
     <el-form
       label-width="150px"
       :model="loadInfo"
@@ -8,7 +8,7 @@
       :rules="rule"
     >
       <!-- 通用 -->
-      <el-form-item label="工作量类型" class="form-item" prop="workLoadTypeId">
+      <el-form-item label="工作量类型" class="form-item">
         <el-select
           v-model="loadInfo.workLoadTypeId"
           placeholder="请选择工作量类型"
@@ -29,8 +29,10 @@
       <el-form-item
         label="教科研工作量类型"
         class="form-item"
-        v-if="mode === 'add' && loadInfo.workLoadTypeId === 1"
-        prop="scientTypeId"
+        v-show="mode === 'add' && loadInfo.workLoadTypeId === 1"
+        :prop="
+          mode === 'add' && loadInfo.workLoadTypeId === 1 ? 'scientTypeId' : ''
+        "
       >
         <el-select
           v-model="loadInfo.scientTypeId"
@@ -51,7 +53,7 @@
         label="工作量项"
         class="form-item"
         prop="workLoadId"
-        v-if="mode === 'modify' && loadInfo.workLoadTypeId === 2"
+        v-show="mode === 'modify' && loadInfo.workLoadTypeId === 2"
       >
         <el-select
           v-model="loadInfo.workLoadId"
@@ -73,7 +75,7 @@
         label="工作量项"
         class="form-item"
         prop="workLoadId"
-        v-if="mode === 'modify' && loadInfo.workLoadTypeId === 1"
+        v-show="mode === 'modify' && loadInfo.workLoadTypeId === 1"
       >
         <el-select
           v-model="loadInfo.workLoadId"
@@ -100,8 +102,8 @@
       <el-form-item
         label="工作量项"
         class="form-item"
-        prop="workLoad"
-        v-if="mode === 'add'"
+        :prop="mode === 'add' ? 'workLoad' : ''"
+        v-show="mode === 'add'"
       >
         <el-input
           v-model="loadInfo.workLoad"
@@ -109,7 +111,7 @@
         ></el-input>
       </el-form-item>
       <!-- 通用 -->
-      <el-form-item label="绩点" class="form-item" required>
+      <el-form-item label="绩点" class="form-item">
         <el-col :span="11">
           <el-form-item prop="gpa">
             <el-input
@@ -137,13 +139,20 @@
       <el-form-item
         label="附加绩点"
         class="form-item"
-        v-if="
+        v-show="
           extraList.includes(loadInfo.workLoadId) ||
             (mode === 'add' && loadInfo.workLoadTypeId === 1)
         "
       >
         <el-col :span="11">
-          <el-form-item prop="extraGpa">
+          <el-form-item
+            :prop="
+              extraList.includes(loadInfo.workLoadId) ||
+              (mode === 'add' && loadInfo.workLoadTypeId === 1)
+                ? 'extraGpa'
+                : ''
+            "
+          >
             <el-input
               type="number"
               placeholder="请输入绩点"
@@ -155,7 +164,14 @@
           ><i class="icon-item el-icon-document-add"></i
         ></el-col>
         <el-col :span="11">
-          <el-form-item prop="extraMeasure">
+          <el-form-item
+            :prop="
+              extraList.includes(loadInfo.workLoadId) ||
+              (mode === 'add' && loadInfo.workLoadTypeId === 1)
+                ? 'extraMeasure'
+                : ''
+            "
+          >
             <!-- 新增时可编辑 -->
             <el-input
               :disabled="mode !== 'add'"
@@ -177,8 +193,15 @@
           :width="50"
         >
         </el-switch>
-        <el-button type="primary" class="form-btn" @click="handleSubmit"
-          >确认</el-button
+        <el-button
+          v-if="mode === 'add'"
+          type="primary"
+          class="form-btn"
+          @click="handleAdd"
+          >确认新增</el-button
+        >
+        <el-button v-else type="primary" class="form-btn" @click="handleModify"
+          >确认修改</el-button
         >
       </el-form-item>
     </el-form>
@@ -187,28 +210,38 @@
 
 <script>
 import { validateCalc } from "@/lib/validate";
-// import { handleMsg } from "@/lib/util";
+import { handleMsg } from "@/lib/util";
 import { getWorkLoadType, getGpa } from "@/api/base";
-import { getPublicLoadSum, getScientLoadSum, getMeasure } from "@/api/workLoad";
+import {
+  getPublicLoadSum,
+  getScientLoadSum,
+  getMeasure,
+  modWorkLoad,
+  addWorkLoad
+} from "@/api/workLoad";
 export default {
   created() {
+    setTimeout(() => {
+      this.mode = "add";
+      this.loadInfo.workLoadTypeId = 1;
+      this.isLoading = false;
+    }, 500);
     this.doGetWorkLoadType();
   },
   data() {
     return {
+      isLoading: true,
       loadInfo: {
-        recordTypeId: 1,
         workLoadTypeId: "",
         workLoadId: "",
         workLoad: "",
         scientTypeId: "",
-        scientLoadType: "",
         gpa: "",
         extraGpa: "",
         measure: "",
         extraMeasure: ""
       },
-      mode: "modify",
+      mode: "",
       workLoadOptions: [],
       scientTypeOptions: [],
       workLoadTypeOptions: [],
@@ -226,9 +259,9 @@ export default {
           { required: true, message: "请填写工作量项", trigger: "blur" }
         ],
         measure: [{ required: true, message: "请填写单位", trigger: "blur" }],
-        workLoadId: [
-          { required: true, message: "请选择工作量项", trigger: "change" }
-        ],
+        // workLoadId: [
+        //   { required: true, message: "请选择工作量项", trigger: "change" }
+        // ],
         extraGpa: [
           { required: true, validator: this.validateExtraGpa, trigger: "blur" }
         ],
@@ -243,6 +276,14 @@ export default {
     };
   },
   methods: {
+    async doAddWorkLoad(data) {
+      let res = await addWorkLoad(data);
+      handleMsg(res);
+    },
+    async doModWorkLoad(data) {
+      let res = await modWorkLoad(data);
+      handleMsg(res);
+    },
     async doGetGpa(workLoadTypeId, workLoadId) {
       const res = await getGpa(workLoadTypeId, workLoadId),
         { gpa, extraGpa } = res.data;
@@ -271,6 +312,7 @@ export default {
     },
     async doGetScientLoadSum() {
       const res = await getScientLoadSum();
+      console.log(res);
       let workLoadList = [];
       let flag = false;
       if (res.success) {
@@ -313,19 +355,40 @@ export default {
       this.doGetGpa(this.loadInfo.workLoadTypeId, this.loadInfo.workLoadId);
     },
     handleTypeChange() {
+      this.$refs["forms"].resetFields();
       this.loadInfo.workLoadTypeId === 1
         ? this.doGetScientLoadSum()
         : this.doGetPublicLoadSum();
     },
     handleSwitch() {
       this.$refs["forms"].resetFields();
+      if (this.mode === "modify") {
+        this.loadInfo.workLoadTypeId === 1
+          ? this.doGetScientLoadSum()
+          : this.doGetPublicLoadSum();
+      }
     },
-    handleSubmit() {
-      console.log(this.loadInfo);
+    handleAdd() {
       this.$refs["forms"].validate(valid => {
         if (!valid) {
           return false;
         } else {
+          this.doAddWorkLoad(this.loadInfo);
+          this.$refs["forms"].resetFields();
+          this.loadInfo.workLoad = "";
+          this.loadInfo.scientTypeId = "";
+        }
+      });
+    },
+    handleModify() {
+      this.$refs["forms"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else {
+          this.doModWorkLoad(this.loadInfo).then(() => {
+            this.doGetScientLoadSum();
+            this.doGetPublicLoadSum();
+          });
           this.$refs["forms"].resetFields();
         }
       });

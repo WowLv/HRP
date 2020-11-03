@@ -35,7 +35,7 @@ export default {
     ...mapGetters(["username"])
   },
   methods: {
-    ...mapActions(["setLogout"]),
+    ...mapActions(["setLogout", "clearNoticeList"]),
     handleClick(currIndex) {
       switch (currIndex) {
         case 0:
@@ -44,6 +44,7 @@ export default {
           }
           break;
         case 1:
+          this.clearNoticeList();
           this.setLogout();
           this.$router.push({ name: "Login" });
           this.$message({

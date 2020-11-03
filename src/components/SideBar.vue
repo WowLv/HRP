@@ -20,6 +20,10 @@
             <template slot="title">基础设置</template>
             <el-menu-item index="/info_base">用户信息</el-menu-item>
             <el-menu-item index="/time_base">考核年度</el-menu-item>
+            <el-menu-item index="/section_base">部门基础</el-menu-item>
+            <el-menu-item index="/station_base">岗位基础</el-menu-item>
+            <el-menu-item index="/position_base">职位基础</el-menu-item>
+            <el-menu-item index="/workLoad_base">工作量基础</el-menu-item>
           </el-submenu>
           <el-submenu index="1-2">
             <template slot="title">个人中心</template>

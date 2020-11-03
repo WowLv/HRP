@@ -10,12 +10,13 @@ export function checkResign(fid) {
   });
 }
 
-export function getNotice(fid) {
+export function getNotice(fid, positionId) {
   return request({
     url: "/notice",
     method: "get",
     params: {
-      fid
+      fid,
+      positionId
     }
   });
 }

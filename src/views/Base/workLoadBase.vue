@@ -427,7 +427,7 @@ export default {
         }
       }
       .form-btn {
-        width: 200px;
+        width: 160px;
         margin-left: 80px;
         margin-top: 30px;
       }

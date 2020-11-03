@@ -43,15 +43,7 @@ export default {
       this.initTabs(pageObj);
     }
     this.addTab(this.$route.path);
-    this.doGetNotice(this.uid);
-    // this.$notify({
-    //   title: "您有一条新通知",
-    //   message: this.$createElement(
-    //     "div",
-    //     { style: "color: teal" },
-    //     "我是你爹！我是你爹！我是你爹！我是你爹！我是你爹！"
-    //   )
-    // });
+    this.doGetNotice(this.uid, this.power - 1);
   },
   data() {
     return {};
@@ -61,56 +53,52 @@ export default {
     SideBar
   },
   computed: {
-    ...mapGetters(["pageTabs", "pageTabsValue", "tabIndex", "currPath", "uid"])
+    ...mapGetters([
+      "pageTabs",
+      "pageTabsValue",
+      "tabIndex",
+      "currPath",
+      "uid",
+      "power"
+    ])
   },
   watch: {
     $route: "fetchRouter"
   },
   methods: {
-    ...mapActions(["addTab", "removeTab", "initTabs", "selectTab"]),
-    async doGetNotice(fid) {
-      let res = await getNotice(fid);
+    ...mapActions([
+      "addTab",
+      "removeTab",
+      "initTabs",
+      "selectTab",
+      "setNoticeList"
+    ]),
+    async doGetNotice(fid, positionId) {
+      let res = await getNotice(fid, positionId);
       if (res.success) {
-        // console.log(res.data);
-        // let finishNum = res.data.filter(item => {
-        //   return item.noticeModeId === 3;
-        // }).length;
-        let uncheckNum = res.data.filter(item => {
-          return item.noticeModeId === 1;
-        }).length;
-        let checkNum = res.data.filter(item => {
-          return item.noticeModeId === 2;
-        }).length;
-
-        if (uncheckNum) {
-          //待审核消息
-          setTimeout(() => {
-            this.$notify({
-              title: "新通知",
-              duration: 10000,
-              message: this.$createElement(
-                "div",
-                { style: "color: #00CD66" },
-                `您有${uncheckNum}条待审核信息`
-              )
-            });
-          }, 0);
-        }
-        if (checkNum) {
-          //已审核消息
-          setTimeout(() => {
-            this.$notify({
-              title: "新通知",
-              duration: 10000,
-              message: this.$createElement(
-                "div",
-                { style: "color: #00CED1" },
-                `您有${checkNum}条审核完成的信息`
-              )
-            });
-          }, 0);
-        }
+        res.data.map(item => {
+          this.notice(item);
+        });
       }
+    },
+    notice(data) {
+      let { noticeType, noticeSource, noticeTypeId, noticeId } = data,
+        color = ["#3399ff", "#00cc00", "#ff6600"];
+      setTimeout(() => {
+        this.setNoticeList({
+          id: noticeId,
+          msg: `您有一条${noticeType}的${noticeSource}申请信息`
+        });
+        this.$notify({
+          title: "新通知",
+          duration: 10000,
+          message: this.$createElement(
+            "div",
+            { style: `color: ${color[noticeTypeId - 1]}; font-size: 16px` },
+            `您有一条${noticeType}的${noticeSource}申请信息`
+          )
+        });
+      }, 0);
     },
     fetchRouter() {
       let nowRouter = this.$route.path;

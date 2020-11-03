@@ -31,3 +31,11 @@ export function auditSectionApply(data) {
     data
   });
 }
+
+export function setSection(data) {
+  return request({
+    url: "/set_section",
+    method: "post",
+    data
+  });
+}

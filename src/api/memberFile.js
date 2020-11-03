@@ -84,13 +84,14 @@ export function getAllMenberFinished(page) {
   });
 }
 
-export function auditMember(mid, modeId) {
+export function auditMember(mid, modeId, positionId) {
   return request({
     url: "/auditMember",
     method: "post",
     data: {
       mid,
-      modeId
+      modeId,
+      positionId
     }
   });
 }
@@ -99,5 +100,15 @@ export function positionList() {
   return request({
     url: "/positionList",
     method: "get"
+  });
+}
+
+export function delMemberRecord(mid) {
+  return request({
+    url: "/del_memTransfer",
+    method: "post",
+    data: {
+      mid
+    }
   });
 }

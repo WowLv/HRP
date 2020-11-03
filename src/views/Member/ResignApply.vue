@@ -115,15 +115,6 @@ export default {
       } else if (res.success && res.data.modeId === 1) {
         this.isResign = true;
         this.resignStep = 2;
-      } else if (res.success && res.data.modeId === 2) {
-        this.$notify({
-          title: "新通知",
-          message: this.$createElement(
-            "div",
-            { style: "color: #CD5C5C" },
-            "您的离职申请被驳回！"
-          )
-        });
       }
     },
     async resignApply() {

@@ -78,13 +78,13 @@
               <el-button
                 type="primary"
                 class="form-btn"
-                @click="handldPass(scope.row.mid)"
+                @click="handldPass(scope.row)"
                 >通过</el-button
               >
               <el-button
                 type="danger"
                 class="form-btn"
-                @click="handleReject(scope.row.mid)"
+                @click="handleReject(scope.row)"
                 >驳回</el-button
               >
             </template>
@@ -210,7 +210,8 @@ import { handleMsg } from "@/lib/util";
 import {
   getAllMenberApply,
   getAllMenberFinished,
-  auditMember
+  auditMember,
+  delMemberRecord
 } from "@/api/memberFile";
 export default {
   created() {
@@ -236,6 +237,10 @@ export default {
     };
   },
   methods: {
+    async doDelMemberRecord(mid) {
+      let res = await delMemberRecord(mid);
+      handleMsg(res);
+    },
     async doGetAllMenberApply(page) {
       this.applyData = [];
       let res = await getAllMenberApply(page);
@@ -263,14 +268,15 @@ export default {
       this.finishCurrPage = p;
       this.doGetAllMenberFinished(p);
     },
-    async handldPass(mid) {
-      let res = await auditMember(mid, 1);
+    async handldPass(row) {
+      let res = await auditMember(row.mid, 1, row.positionId);
       handleMsg(res);
       this.doGetAllMenberApply(this.applyCurrPage);
       this.doGetAllMenberFinished(this.finishCurrPage);
     },
-    async handleReject(mid) {
-      let res = await auditMember(mid, 2);
+    async handleReject(row) {
+      console.log(row);
+      let res = await auditMember(row.mid, 2, row.positionId);
       handleMsg(res);
       this.doGetAllMenberApply(this.applyCurrPage);
       this.doGetAllMenberFinished(this.finishCurrPage);
@@ -282,10 +288,19 @@ export default {
       this.$refs["finishTable"].toggleRowExpansion(row);
     },
     handleDelete(mid) {
-      this.$message({
-        message: `假装删除成功${mid}`,
-        type: "success"
-      });
+      this.$confirm("确认删除此记录？")
+        .then(res => {
+          if (res === "confirm") {
+            this.doDelMemberRecord(mid).then(() => {
+              this.doGetAllMenberFinished(1);
+            });
+          } else {
+            return;
+          }
+        })
+        .catch(err => {
+          throw err;
+        });
     }
   }
 };

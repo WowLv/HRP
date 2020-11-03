@@ -18,7 +18,18 @@
         <h3 class="title">
           消息通知<i class="icon-item el-icon-chat-line-round"></i>
         </h3>
-        <el-card class="msg-box box-card">敬请期待</el-card>
+        <el-card class="msg-box box-card">
+          <div class="none-msg" v-if="!noticeList.length">暂无消息</div>
+          <div
+            class="msg-item"
+            v-for="item in noticeList"
+            :key="item.id"
+            v-else
+          >
+            <i class="el-icon-chat-dot-square"></i>
+            {{ item.msg }}
+          </div>
+        </el-card>
       </div>
     </div>
 
@@ -51,7 +62,11 @@
 
 <script>
 import { getPercent } from "@/api/login";
+import { mapGetters } from "vuex";
 export default {
+  created() {
+    this.doGetPercent();
+  },
   data() {
     return {
       appList: [
@@ -104,8 +119,8 @@ export default {
       ]
     };
   },
-  created() {
-    this.doGetPercent();
+  computed: {
+    ...mapGetters(["noticeList"])
   },
   methods: {
     async doGetPercent() {
@@ -207,11 +222,46 @@ export default {
   }
   .msg-box {
     height: 400px;
-    color: #666;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: auto;
+    .none-msg {
+      color: #666;
+      width: 100%;
+      text-align: center;
+      font-size: 24px;
+      margin-top: 100px;
+    }
+    .msg-item {
+      font-weight: bold;
+      color: $theme-back-color;
+      width: 100%;
+      padding-left: 1em;
+      font-size: 20px;
+      opacity: 0;
+      margin: 15px 0;
+      animation: showMsg 0.8s 1 forwards;
+    }
+    @keyframes showMsg {
+      0% {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      25% {
+        opacity: 1;
+        transform: translateY(-50px);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      75% {
+        opacity: 1;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   }
 }
 </style>

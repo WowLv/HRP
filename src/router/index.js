@@ -30,8 +30,23 @@ const routes = [
         component: () => import("../views/Base/TimeBase.vue")
       },
       {
+        path: "position_base",
+        name: "PositionBase",
+        component: () => import("../views/Base/PositionBase.vue")
+      },
+      {
+        path: "station_base",
+        name: "StationBase",
+        component: () => import("../views/Base/StationBase.vue")
+      },
+      {
+        path: "section_base",
+        name: "SectionBase",
+        component: () => import("../views/Base/SectionBase.vue")
+      },
+      {
         path: "workLoad_base",
-        name: "workLoadBase",
+        name: "WorkLoadBase",
         component: () => import("../views/Base/workLoadBase.vue")
       },
       {

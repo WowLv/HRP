@@ -33,3 +33,19 @@ export function deleteTransferRecord(transferId) {
     }
   });
 }
+
+export function setStation(data) {
+  return request({
+    url: "/set_station",
+    method: "post",
+    data: data
+  });
+}
+
+export function setPosition(data) {
+  return request({
+    url: "/set_position",
+    method: "post",
+    data: data
+  });
+}

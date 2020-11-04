@@ -19,7 +19,6 @@
           <el-submenu index="1-1">
             <template slot="title">基础设置</template>
             <el-menu-item index="/info_base">用户信息</el-menu-item>
-            <el-menu-item index="/time_base">考核年度</el-menu-item>
             <el-menu-item index="/section_base">部门基础</el-menu-item>
             <el-menu-item index="/station_base">岗位基础</el-menu-item>
             <el-menu-item index="/position_base">职位基础</el-menu-item>
@@ -68,6 +67,11 @@
             <el-menu-item index="/public_load">公共工作量</el-menu-item>
             <el-menu-item index="/load_manage">工作量审核</el-menu-item>
           </el-submenu>
+          <el-submenu index="2-6">
+            <template slot="title">绩效考核管理</template>
+            <el-menu-item index="/evaluate">绩效考核</el-menu-item>
+            <el-menu-item index="/person_evaluation">个人绩效</el-menu-item>
+          </el-submenu>
         </el-submenu>
       </el-menu>
     </el-row>
@@ -89,7 +93,6 @@
           <el-submenu index="1-1">
             <template slot="title">基础设置</template>
             <el-menu-item index="/info_base">用户信息</el-menu-item>
-            <el-menu-item index="/time_base">考核年度</el-menu-item>
             <el-menu-item index="/section_base">部门基础</el-menu-item>
             <el-menu-item index="/station_base">岗位基础</el-menu-item>
             <el-menu-item index="/position_base">职位基础</el-menu-item>
@@ -137,6 +140,11 @@
             <el-menu-item index="/scientific_load">教科研工作量</el-menu-item>
             <el-menu-item index="/public_load">公共工作量</el-menu-item>
             <el-menu-item index="/load_manage">工作量审核</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-6">
+            <template slot="title">绩效考核管理</template>
+            <el-menu-item index="/evaluate">绩效考核</el-menu-item>
+            <el-menu-item index="/person_evaluation">个人绩效</el-menu-item>
           </el-submenu>
         </el-submenu>
       </el-menu>

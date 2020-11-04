@@ -1,7 +1,6 @@
 var pagesEnum = {
   center: "控制台",
   info_base: "用户信息",
-  time_base: "考核年度",
   section_base: "部门基础",
   station_base: "岗位基础",
   position_base: "职位基础",
@@ -26,7 +25,9 @@ var pagesEnum = {
   public_load: "公共工作量",
   load_manage: "工作量审核",
   teach_add: "加课报备",
-  teach_minus: "请假报备"
+  teach_minus: "请假报备",
+  evaluate: "绩效考核",
+  person_evaluation: "个人绩效"
 };
 
 var powerEnum = {

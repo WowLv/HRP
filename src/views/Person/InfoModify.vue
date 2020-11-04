@@ -62,7 +62,7 @@
           <el-option
             v-for="item in powerOptions"
             :key="item.value"
-            :label="item.label"
+            :label="item.text"
             :value="item.value"
           >
           </el-option>
@@ -110,6 +110,7 @@ var info_disable = {
   powerId: true
 };
 import { getInfo, setInfo } from "@/api/personInfo";
+import { positionList } from "@/api/memberFile";
 import { handleMsg } from "@/lib/util";
 import {
   validatePhone,
@@ -121,6 +122,7 @@ import { Teacher, Admin } from "@/lib/class";
 import { mapGetters } from "vuex";
 export default {
   created() {
+    this.doPositionList();
     if (this.$route.params.mode) {
       this.mode = this.$route.params.mode;
       let {
@@ -151,28 +153,7 @@ export default {
   },
   data() {
     return {
-      powerOptions: [
-        {
-          value: 1,
-          label: "管理员"
-        },
-        {
-          value: 2,
-          label: "院长"
-        },
-        {
-          value: 3,
-          label: "部门主管"
-        },
-        {
-          value: 4,
-          label: "教务员"
-        },
-        {
-          value: 5,
-          label: "教师"
-        }
-      ],
+      powerOptions: [],
       mode: "",
       disabled: {},
       Editable: false,
@@ -194,6 +175,10 @@ export default {
     ...mapGetters(["power", "uid"])
   },
   methods: {
+    async doPositionList() {
+      const res = await positionList();
+      this.powerOptions = res.data.powerRow;
+    },
     async doGetInfo(Uid) {
       let res = await getInfo(Uid);
       // console.log(res.data);

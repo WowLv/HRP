@@ -102,7 +102,7 @@ export default {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         sectionId: [
-          { required: true, message: "请选择部门", trigger: "change" }
+          { required: true, validator: this.validateSectionId, trigger: "change" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }
@@ -129,6 +129,13 @@ export default {
       timer = setTimeout(() => {
         this.doGetPersonFile(e);
       }, 2000);
+    },
+    validateSectionId(rule, value, callback) {
+      if (this.sectionId === this.oldSectionId) {
+        callback(new Error("与原部门相同"));
+      } else {
+        callback();
+      }
     },
     async doGetPersonFile(fid) {
       let res = await getPersonFile(fid);

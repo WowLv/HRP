@@ -47,13 +47,7 @@
         label="权限"
         width="200"
         align="center"
-        :filters="[
-          { text: '管理员', value: 1 },
-          { text: '院长', value: 2 },
-          { text: '部门主管', value: 3 },
-          { text: '教务员', value: 4 },
-          { text: '教师', value: 5 }
-        ]"
+        :filters="powerOptions"
         :filter-method="filterTag"
         filter-placement="bottom-end"
       >
@@ -62,7 +56,7 @@
             :type="tagType[scope.row.powerId]"
             disable-transitions
             class="tag"
-            >{{ powerEnum[scope.row.powerId] }}</el-tag
+            >{{ scope.row.powerName }}</el-tag
           >
         </template>
       </el-table-column>
@@ -95,25 +89,27 @@
 
 <script>
 import { handleMsg } from "@/lib/util";
-import { powerEnum } from "@/lib/enum";
 import { getAllInfo, searchInfo } from "@/api/allInfo";
+import { positionList } from "@/api/memberFile";
 import { deleteUser } from "@/api/login";
 export default {
   created() {
-    this.powerEnum = powerEnum;
+    this.doPositionList();
     this.doGetAllInfo(1);
   },
   data() {
     return {
       isLoading: true,
       sum: 0,
-      powerEnum: {},
+      powerOptions:[],
       tagType: {
-        1: "warning",
-        2: "success",
-        3: "success",
+        1: "danger",
+        2: "warning",
+        3: "warning",
         4: "success",
-        5: "primary"
+        5: "success",
+        6: "success",
+        7: "primary"
       },
       allInfo: [],
       search: "",
@@ -121,6 +117,10 @@ export default {
     };
   },
   methods: {
+    async doPositionList() {
+      const res = await positionList();
+      this.powerOptions = res.data.powerRow;
+    },
     async doDeleteUser(uid) {
       const res = await deleteUser(uid);
       handleMsg(res);

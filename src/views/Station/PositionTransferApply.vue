@@ -106,7 +106,7 @@ export default {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         positionId: [
-          { required: true, message: "请选择职位", trigger: "change" }
+          { required: true, validator: this.validatePosId, trigger: "change" }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }
@@ -129,6 +129,13 @@ export default {
       timer = setTimeout(() => {
         this.doGetPersonFile(e);
       }, 2000);
+    },
+    validatePosId(rule, value, callback) {
+      if (this.positionId === this.oldPositionId) {
+        callback(new Error("与原职位相同"));
+      } else {
+        callback();
+      }
     },
     async doPosTransferApply(data) {
       let res = await posTransferApply(data);

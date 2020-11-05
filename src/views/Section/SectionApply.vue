@@ -102,7 +102,11 @@ export default {
         fid: [{ required: true, validator: validateUid, trigger: "blur" }],
         applicant: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         sectionId: [
-          { required: true, validator: this.validateSectionId, trigger: "change" }
+          {
+            required: true,
+            validator: this.validateSectionId,
+            trigger: "change"
+          }
         ],
         applyTime: [
           { required: true, message: "请选择时间", trigger: "change" }

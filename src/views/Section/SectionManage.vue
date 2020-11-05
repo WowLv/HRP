@@ -162,7 +162,7 @@
             class="form-item"
           >
             <template slot-scope="scope">
-              <el-button type="danger" @click="handleDelete(scope.row.mid)"
+              <el-button type="danger" @click="handleDelete(scope.row)"
                 >删除</el-button
               >
             </template>
@@ -184,7 +184,11 @@
 </template>
 
 <script>
-import { getAllSectionApply, auditSectionApply } from "@/api/section";
+import {
+  getAllSectionApply,
+  auditSectionApply,
+  delSectionRecord
+} from "@/api/section";
 import { handleMsg } from "@/lib/util";
 export default {
   created() {
@@ -206,9 +210,16 @@ export default {
     };
   },
   methods: {
-    async doAuditSectionApply(data) {
-      let res = await auditSectionApply(data);
+    async doDelSectionRecord(transferId) {
+      const res = await delSectionRecord(transferId);
       handleMsg(res);
+      this.doGetSectionTransferFinish(1);
+    },
+    async doAuditSectionApply(data) {
+      const res = await auditSectionApply(data);
+      handleMsg(res);
+      this.doGetSectionTransferFinish(1);
+      this.doGetSectionTransferApply(1);
     },
     async doGetSectionTransferFinish(page) {
       let res = await getAllSectionApply({ mode: "finished", page });
@@ -241,24 +252,22 @@ export default {
       this.$refs["finishTable"].toggleRowExpansion(row);
     },
     handldPass(row) {
-      this.doAuditSectionApply({ ...row, modeId: 1 }).then(() => {
-        this.doGetSectionTransferFinish(1);
-        this.doGetSectionTransferApply(1);
-      });
-      // console.log(row);
+      this.doAuditSectionApply({ ...row, modeId: 1 });
     },
     handldReject(row) {
       this.doAuditSectionApply({ ...row, modeId: 2 }).then(() => {
         this.doGetSectionTransferFinish(1);
         this.doGetSectionTransferApply(1);
       });
-      // console.log(row);
     },
-    handleDelete() {
-      this.$message({
-        message: `假装删除成功`,
-        type: "success"
-      });
+    handleDelete(row) {
+      this.$confirm("确认删除此记录？")
+        .then(() => {
+          this.doDelSectionRecord(row.transferId);
+        })
+        .catch(() => {
+          return;
+        });
     }
   }
 };

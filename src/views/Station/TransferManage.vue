@@ -346,17 +346,13 @@ export default {
     },
     handleDelete(transferId) {
       this.$confirm("确认删除此记录？")
-        .then(res => {
-          if (res === "confirm") {
-            this.doDeleteTransferRecord(transferId).then(() => {
-              this.doGetPosTransferFinish(1);
-            });
-          } else {
-            return;
-          }
+        .then(() => {
+          this.doDeleteTransferRecord(transferId).then(() => {
+            this.doGetPosTransferFinish(1);
+          });
         })
-        .catch(err => {
-          throw err;
+        .catch(() => {
+          return;
         });
     }
   }

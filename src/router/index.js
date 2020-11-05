@@ -218,7 +218,7 @@ router.beforeEach((to, from, next) => {
             if (to.meta.reqPower.includes(store.getters.power)) {
               next();
             } else {
-              next({ name: "Center"});
+              next({ name: "Center" });
             }
           }
         }

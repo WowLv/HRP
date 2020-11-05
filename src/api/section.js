@@ -39,3 +39,13 @@ export function setSection(data) {
     data
   });
 }
+
+export function delSectionRecord(transferId) {
+  return request({
+    url: "/del_sectionRec",
+    method: "post",
+    data: {
+      transferId
+    }
+  });
+}

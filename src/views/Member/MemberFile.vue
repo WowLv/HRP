@@ -81,7 +81,11 @@
 
 <script>
 import { handleMsg } from "@/lib/util";
-import { getMemberFile, searchMemberFile } from "@/api/memberFile";
+import {
+  getMemberFile,
+  searchMemberFile,
+  delMemberFile
+} from "@/api/memberFile";
 export default {
   created() {
     this.doGetMemberFile(1);
@@ -102,6 +106,11 @@ export default {
     };
   },
   methods: {
+    async doDelMemberFile(data) {
+      const res = await delMemberFile(data);
+      handleMsg(res);
+      this.doGetMemberFile(1);
+    },
     async doGetMemberFile(page) {
       let res = await getMemberFile(page);
       if (res.success) {
@@ -136,20 +145,13 @@ export default {
       });
     },
     handleDelete(index, row) {
+      console.log(row);
       this.$confirm("确认删除此用户？")
-        .then(res => {
-          if (res === "confirm") {
-            this.$message({
-              message: "假装删除成功了",
-              type: "success"
-            });
-            console.log(row);
-          } else {
-            return;
-          }
+        .then(() => {
+          this.doDelMemberFile({ fid: row.fid, positionId: row.positionId });
         })
-        .catch(err => {
-          throw err;
+        .catch(() => {
+          return;
         });
     },
     async handleSearch() {

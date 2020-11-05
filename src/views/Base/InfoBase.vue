@@ -101,7 +101,7 @@ export default {
     return {
       isLoading: true,
       sum: 0,
-      powerOptions:[],
+      powerOptions: [],
       tagType: {
         1: "danger",
         2: "warning",
@@ -156,17 +156,13 @@ export default {
     },
     handleDelete(index, row) {
       this.$confirm("确认删除此用户？")
-        .then(res => {
-          if (res === "confirm") {
-            this.doDeleteUser(row.uid).then(() => {
-              this.doGetAllInfo(1);
-            });
-          } else {
-            return;
-          }
+        .then(() => {
+          this.doDeleteUser(row.uid).then(() => {
+            this.doGetAllInfo(1);
+          });
         })
-        .catch(err => {
-          throw err;
+        .catch(() => {
+          return;
         });
     },
     async handleSearch() {

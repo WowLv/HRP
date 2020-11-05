@@ -189,12 +189,15 @@ export default {
             message: "请使用本人职工号",
             type: "warning"
           });
-        } else if(this.oldStationId === this.stationId && this.levelId === this.oldLevelId) {
+        } else if (
+          this.oldStationId === this.stationId &&
+          this.levelId === this.oldLevelId
+        ) {
           this.$message({
             message: "与原岗位信息相同",
             type: "warning"
           });
-        }else {
+        } else {
           this.doPosTransferApply(
             Object.assign(this.applyForm, {
               transferTypeId: 2,

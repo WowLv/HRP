@@ -40,3 +40,11 @@ export function getPersonEvaluation(fid, year) {
     }
   });
 }
+
+export function resetGrade(data) {
+  return request({
+    url: "/reEvaluate",
+    method: "post",
+    data
+  });
+}

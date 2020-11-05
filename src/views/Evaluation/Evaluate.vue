@@ -104,7 +104,7 @@
               <el-button
                 type="danger"
                 size="medium"
-                @click="handleReEvaluate(scope.row)"
+                @click="handleOpenReEvaluate(scope.row)"
                 >再评</el-button
               >
             </template>
@@ -122,11 +122,36 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog
+      title="绩效再评"
+      :visible.sync="dialogFormVisible"
+      width="30%"
+      center
+    >
+      <el-form :model="reEvalInfo" ref="form" :rules="rule">
+        <el-form-item label="重设绩效分值" prop="grade">
+          <el-input
+            type="number"
+            v-model="reEvalInfo.grade"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleReEvaluate">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getGpaRecord, getEvaluation, evaluate } from "@/api/evaluation";
+import {
+  getGpaRecord,
+  getEvaluation,
+  evaluate,
+  resetGrade
+} from "@/api/evaluation";
 import { handleMsg } from "@/lib/util";
 export default {
   created() {
@@ -139,12 +164,21 @@ export default {
   data() {
     return {
       isLoading: true,
+      dialogFormVisible: false,
       activeName: "evaluate",
       evaluationYear: new Date(),
       evaluateData: [],
       finishedData: [],
       evaluateSum: 0,
-      finishedSum: 0
+      finishedSum: 0,
+      reEvalInfo: {
+        evaluateRecordId: "",
+        oldGrade: "",
+        grade: ""
+      },
+      rule: {
+        grade: [{ required: true, message: "请输入新分值", trigger: "blur" }]
+      }
     };
   },
   computed: {
@@ -153,6 +187,11 @@ export default {
     }
   },
   methods: {
+    async doResetGrade(data) {
+      const res = await resetGrade(data);
+      handleMsg(res);
+      this.doGetEvaluation(1, this.formatYear);
+    },
     async doEvaluate(row) {
       const res = await evaluate(row);
       handleMsg(res);
@@ -164,6 +203,7 @@ export default {
     async doGetEvaluation(page, year) {
       let res = await getEvaluation(page, year),
         { data, sum } = res.data;
+      console.log(res);
       this.finishedSum = sum;
       this.finishedData = data;
     },
@@ -187,8 +227,37 @@ export default {
     handleEvaluate(row) {
       this.doEvaluate(row);
     },
-    handleReEvaluate(row) {
-      console.log(row);
+    handleOpenReEvaluate(row) {
+      this.reEvalInfo.evaluateRecordId = row.evaluateRecordId;
+      this.reEvalInfo.oldGrade = row.grade;
+      this.dialogFormVisible = true;
+    },
+    handleReEvaluate() {
+      let { oldGrade, grade } = this.reEvalInfo;
+      this.$refs["form"].validate(valid => {
+        if (!valid) {
+          return false;
+        } else if (Number(oldGrade) === Number(grade)) {
+          this.$message({
+            message: "与原绩效分值相同",
+            type: "warning"
+          });
+        } else {
+          this.$confirm("确认重设绩效分值？")
+            .then(() => {
+              this.doResetGrade(
+                Object.assign(this.reEvalInfo, {
+                  grade: Number(grade)
+                })
+              );
+              this.$refs["form"].resetFields();
+              this.dialogFormVisible = false;
+            })
+            .catch(() => {
+              return;
+            });
+        }
+      });
     }
   }
 };

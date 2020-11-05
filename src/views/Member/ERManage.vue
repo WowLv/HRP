@@ -289,17 +289,13 @@ export default {
     },
     handleDelete(mid) {
       this.$confirm("确认删除此记录？")
-        .then(res => {
-          if (res === "confirm") {
-            this.doDelMemberRecord(mid).then(() => {
-              this.doGetAllMenberFinished(1);
-            });
-          } else {
-            return;
-          }
+        .then(() => {
+          this.doDelMemberRecord(mid).then(() => {
+            this.doGetAllMenberFinished(1);
+          });
         })
-        .catch(err => {
-          throw err;
+        .catch(() => {
+          return;
         });
     }
   }

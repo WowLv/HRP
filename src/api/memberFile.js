@@ -112,3 +112,11 @@ export function delMemberRecord(mid) {
     }
   });
 }
+
+export function delMemberFile(data) {
+  return request({
+    url: "/del_memberFile",
+    method: "post",
+    data
+  });
+}

@@ -16,7 +16,7 @@ export function getInfo(Uid) {
 //     url: "/personInfo",
 //     method: "get",
 //     params: {
-//       Uid
+//       uid
 //     }
 //   });
 // }

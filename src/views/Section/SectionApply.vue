@@ -115,7 +115,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["uid"])
+    ...mapGetters(["uid", "power"])
   },
   methods: {
     async doApplySection(data) {
@@ -135,7 +135,7 @@ export default {
       }, 2000);
     },
     validateSectionId(rule, value, callback) {
-      if (this.sectionId === this.oldSectionId) {
+      if (this.applyForm.sectionId === this.applyForm.oldSectionId) {
         callback(new Error("与原部门相同"));
       } else {
         callback();
@@ -153,7 +153,10 @@ export default {
       this.$refs["form"].validate(valid => {
         if (!valid) {
           return false;
-        } else if (this.uid !== parseInt(this.applyForm.fid)) {
+        } else if (
+          this.uid !== parseInt(this.applyForm.fid) &&
+          this.power > 4
+        ) {
           this.$message({
             message: "请使用本人职工号",
             type: "warning"

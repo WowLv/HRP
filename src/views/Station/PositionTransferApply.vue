@@ -131,7 +131,7 @@ export default {
       }, 2000);
     },
     validatePosId(rule, value, callback) {
-      if (this.positionId === this.oldPositionId) {
+      if (this.applyForm.positionId === this.applyForm.oldPositionId) {
         callback(new Error("与原职位相同"));
       } else {
         callback();

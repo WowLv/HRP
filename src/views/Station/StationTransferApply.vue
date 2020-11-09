@@ -190,8 +190,8 @@ export default {
             type: "warning"
           });
         } else if (
-          this.oldStationId === this.stationId &&
-          this.levelId === this.oldLevelId
+          this.applyForm.oldStationId === this.applyForm.stationId &&
+          this.applyForm.levelId === this.applyForm.oldLevelId
         ) {
           this.$message({
             message: "与原岗位信息相同",

@@ -20,6 +20,12 @@
             width="200"
           ></el-table-column>
           <el-table-column
+            prop="name"
+            label="姓名"
+            align="center"
+            width="200"
+          ></el-table-column>
+          <el-table-column
             prop="teachLoad"
             label="实际教学课时量"
             align="center"
@@ -71,6 +77,12 @@
           <el-table-column
             prop="fid"
             label="职工号"
+            align="center"
+            width="200"
+          ></el-table-column>
+          <el-table-column
+            prop="name"
+            label="姓名"
             align="center"
             width="200"
           ></el-table-column>
@@ -275,7 +287,7 @@ export default {
   .tab-pane {
     height: 740px;
     .table {
-      width: 1000px;
+      width: 1200px;
       .table-expand {
         width: 500px;
       }

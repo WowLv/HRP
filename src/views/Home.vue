@@ -127,7 +127,7 @@ export default {
 <style lang="scss" scoped>
 .container {
   margin: 0 auto;
-  // width: 1920px;
+  max-width: 1920px;
   width: 100%;
   .main {
     display: flex;

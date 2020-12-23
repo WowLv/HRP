@@ -54,7 +54,7 @@
       </el-form-item>
       <el-upload
         class="upload-item"
-        action="/api/publicLoad"
+        :action="uploadUrl"
         ref="upload"
         drag
         multiple
@@ -114,7 +114,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["uid", "username"])
+    ...mapGetters(["uid", "username"]),
+    uploadUrl() {
+      return `${window.location.origin}/publicLoad`
+    }
   },
   methods: {
     async doGetMeasure(workLoadTypeId, workLoadId) {

@@ -87,7 +87,7 @@
       </el-form-item>
       <el-upload
         class="upload-item"
-        action="/api/scientLoad"
+        :action="uploadUrl"
         ref="upload"
         drag
         multiple
@@ -151,7 +151,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["uid", "username"])
+    ...mapGetters(["uid", "username"]),
+    uploadUrl() {
+      return `${window.location.origin}/scientLoad`
+    }
   },
   methods: {
     async doGetMeasure(workLoadTypeId, workLoadId) {

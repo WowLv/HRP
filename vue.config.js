@@ -8,9 +8,9 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        // target: "http://192.168.1.102:3000",
+        target: "http://192.168.1.105:3000",
         // target: "http://127.0.0.1:3000",
-        target: "http://192.168.43.126:8080/hrp",
+        // target: "https://www.lyuhz.top",
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
